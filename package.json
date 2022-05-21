@@ -50,8 +50,9 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
+    "@ionic/react": "^6.1.6",
     "dotenv": "^16.0.1",
-    "react": "^18.1.0",
+    "react": "^17.0.1",
     "react-dom": "^18.1.0"
   },
   "lint-staged": {
