@@ -17,10 +17,12 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "noEmit": true,
-    "jsx": "react"
+    "noEmit": false,
+    "jsx": "react",
+    "outDir": "dist"
+    
   },
   "include": [
     "src"
-  ]
+, "src/server", "src/client"  ]
 }

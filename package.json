@@ -4,7 +4,6 @@
   "description": "Kafka Manager",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
   "repository": {
@@ -44,6 +43,7 @@
     "source-map-loader": "^3.0.1",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.0",
+    "ts-node": "^10.8.0",
     "typescript": "^4.6.4",
     "webpack": "^5.72.1",
     "webpack-bundle-analyzer": "^4.5.0",
@@ -58,11 +58,15 @@
     "@capacitor/status-bar": "^1.0.8",
     "@ionic/react": "^6.1.6",
     "@ionic/react-router": "^6.1.6",
-    "dotenv": "^16.0.1",
     "ionicons": "^6.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "ts-node": "^10.8.0"
+    "ts-node": "^10.8.0",
+    "apollo-server-core": "^3.7.0",
+    "apollo-server-express": "^3.7.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "graphql": "^16.5.0"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": "eslint --cache --fix",
