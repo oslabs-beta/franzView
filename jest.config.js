@@ -1,9 +1,7 @@
-/*
- * For a detailed explanation regarding each configuration property, visit:
- * https://jestjs.io/docs/configuration
- */
-
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -57,10 +55,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: undefined,
+  globalSetup: "./jest-setup.ts",
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: undefined,
+  globalTeardown: "./jest-teardown.ts",
 
   // A set of global variables that need to be available in all test environments
   // globals: {},

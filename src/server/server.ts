@@ -44,7 +44,9 @@ app.use(
   }
 );
 
-app.listen(PORT, (): void => console.log(`Listening on port ${PORT} 🎉!`));
+export default app.listen(PORT, (): void =>
+  console.log(`Listening on port ${PORT} 🎉!`)
+);
 
 // async function startApolloServer(typeDefs: any, resolvers: any) {
 //   const app = extpress();
