@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import { DefaultErr } from "../types";
 // import { ApolloServer } from "apollo-server-express";
 // import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 // import http from "http";
@@ -16,6 +17,31 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve all compiled files when using production build
 app.use("/", express.static(path.resolve(__dirname, "../../public")));
+
+// Set up 404s for invalid requests
+app.use("*", (req: express.Request, res: express.Response) => {
+  res.status(404).send("There was noting found at this route.");
+});
+
+// Global error handler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
+app.use(
+  (
+    err: express.Errback,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): express.Response<Record<string, any>> => {
+    const defaultErr: DefaultErr = {
+      log: "Express error handler caught unknown middleware error",
+      status: 500,
+      message: { err: "An error occurred" },
+    };
+    const errorObj: DefaultErr = Object.assign({}, defaultErr, err);
+    console.log(errorObj.log);
+    return res.status(errorObj.status).json(errorObj.message);
+  }
+);
 
 app.listen(PORT, (): void => console.log(`Listening on port ${PORT} 🎉!`));
 
