@@ -8,7 +8,7 @@ const BundleAnalyzerPlugin =
 
 const config = {
   mode: process.env.NODE_ENV,
-  entry: "./client/src/index.tsx",
+  entry: "./src/client/index.ts",
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
@@ -41,14 +41,14 @@ const config = {
   devtool: "inline-source-map",
   devServer: {
     proxy: {
-      "/*": "http://localhost:3000",
+      "*": "http://localhost:3000",
     },
     historyApiFallback: true,
     hot: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src/client/index.html"),
+      // template: path.join(__dirname, "src/client/index.html"),
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
