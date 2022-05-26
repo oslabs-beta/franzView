@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IonContent,
   IonHeader,
@@ -5,22 +6,22 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React from "react";
+import Test from "../components/Test";
 
 const Home: React.FC = () => {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle> Hey Look a Header</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonToolbar>
-          <IonTitle> This is where will plug in any components</IonTitle>
-        </IonToolbar>
-      </IonContent>
-    </IonPage>
+    <>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle> Hey Look a Header</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <Test />
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 
