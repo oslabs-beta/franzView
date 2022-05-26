@@ -1,4 +1,12 @@
 import React from "react";
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonFooter,
+} from "@ionic/react";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -20,7 +28,23 @@ import "@ionic/react/css/display.css";
 import "../theme/variables.css";
 
 const App: React.FC = () => {
-  return <div>Hello world</div>;
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Franz</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonTitle>Content goes here...</IonTitle>
+      </IonContent>
+      <IonFooter>
+        <IonToolbar>
+          <IonTitle>OS Labs Beta Copyright 2022</IonTitle>
+        </IonToolbar>
+      </IonFooter>
+    </IonPage>
+  );
 };
 
 export default App;
