@@ -1,3 +1,5 @@
+import React from "react";
+
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -15,9 +17,7 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import "./theme/variables.css";
-
-import React from "react";
+// import "./theme/variables.css";
 
 const App: React.FC = () => {
   return <div>Hello world</div>;
