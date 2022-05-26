@@ -103,3 +103,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# My notes on the process of building this app. 
+journal.md
