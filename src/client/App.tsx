@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  setupIonicReact,
   IonContent,
   IonHeader,
   IonPage,
@@ -7,6 +8,8 @@ import {
   IonToolbar,
   IonFooter,
 } from "@ionic/react";
+
+setupIonicReact();
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -27,6 +30,8 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.css";
 
+import Menu from "../components/Menu";
+
 const App: React.FC = () => {
   return (
     <IonPage>
@@ -40,7 +45,7 @@ const App: React.FC = () => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonTitle>OS Labs Beta Copyright 2022</IonTitle>
+          <IonTitle>OS Labs Beta Copyright © 2022</IonTitle>
         </IonToolbar>
       </IonFooter>
     </IonPage>
