@@ -16,6 +16,7 @@ import {
   IonItem,
   IonIcon,
   IonLabel,
+  IonPage,
   IonRouterOutlet,
 } from "@ionic/react";
 
@@ -58,9 +59,11 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/broker" component={Broker} exact={true} />
-        </IonRouterOutlet>
+        <IonPage>
+          <IonRouterOutlet>
+            <Route path={"/broker"} component={Broker} exact={true} />
+          </IonRouterOutlet>
+        </IonPage>
       </IonReactRouter>
 
       <IonSplitPane when="sm" contentId="main-content">
@@ -111,7 +114,7 @@ const App: React.FC = () => {
           </IonHeader>
           <IonContent className="ion-padding">
             <h1>Main Content</h1>
-            <Broker />
+            {/* <Broker /> */}
           </IonContent>
         </div>
       </IonSplitPane>
