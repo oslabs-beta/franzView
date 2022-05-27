@@ -10,7 +10,7 @@ const config = {
   mode: process.env.NODE_ENV,
   entry: "./src/client/index.tsx",
   output: {
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
     clean: true,
     publicPath: "/",
