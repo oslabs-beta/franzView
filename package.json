@@ -56,10 +56,6 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
-    "@types/react": "^16.14.3",
-    "@types/react-dom": "^16.9.10",
-    "@types/react-router": "^5.1.11",
-    "@types/react-router-dom": "^5.1.7",
     "apollo-server-core": "^3.7.0",
     "apollo-server-express": "^3.7.0",
     "dotenv": "^16.0.1",
