@@ -21,7 +21,7 @@ import {
 
 import { IonReactRouter } from "@ionic/react-router";
 
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
 import {
   home,
@@ -59,7 +59,7 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route path="/broker" component={Broker} />
+          <Route path="/broker" component={Broker} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>
 
@@ -106,11 +106,12 @@ const App: React.FC = () => {
                   </IonButton>
                 </IonMenuToggle>
               </IonButtons>
-              <IonTitle>Header</IonTitle>
+              <IonTitle>Franz</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
             <h1>Main Content</h1>
+            <Broker />
           </IonContent>
         </div>
       </IonSplitPane>
