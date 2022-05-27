@@ -17,9 +17,10 @@ import {
   IonIcon,
   IonLabel,
   IonRouterOutlet,
-  IonReactRouter,
   Route,
 } from "@ionic/react";
+
+import { IonReactRouter } from "@ionic/react-router";
 
 import {
   home,
