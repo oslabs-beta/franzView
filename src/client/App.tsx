@@ -3,11 +3,31 @@ import {
   setupIonicReact,
   IonContent,
   IonHeader,
-  IonPage,
   IonTitle,
   IonToolbar,
-  IonFooter,
+  IonApp,
+  IonSplitPane,
+  IonMenu,
+  IonButton,
+  IonButtons,
+  IonList,
+  IonListHeader,
+  IonMenuToggle,
+  IonItem,
+  IonIcon,
+  IonLabel,
+  IonRouterOutlet,
+  IonReactRouter,
+  Route,
 } from "@ionic/react";
+
+import {
+  home,
+  menu,
+  albumsOutline,
+  enterOutline,
+  exitOutline,
+} from "ionicons/icons";
 
 setupIonicReact();
 
@@ -30,25 +50,70 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.css";
 
-import Menu from "../components/Menu";
+import Broker from "./pages/Broker";
 
 const App: React.FC = () => {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Franz</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonTitle>Content goes here...</IonTitle>
-      </IonContent>
-      <IonFooter>
-        <IonToolbar>
-          <IonTitle>OS Labs Beta Copyright © 2022</IonTitle>
-        </IonToolbar>
-      </IonFooter>
-    </IonPage>
+    // <Broker />
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/broker" component={Broker} />
+        </IonRouterOutlet>
+      </IonReactRouter>
+
+      <IonSplitPane when="sm" contentId="main-content">
+        <IonMenu contentId="main-content">
+          <IonHeader>
+            <IonToolbar color="primary">
+              <IonTitle>Menu</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+
+          <IonContent>
+            <IonList>
+              <IonListHeader>Navigate</IonListHeader>
+              <IonMenuToggle autoHide={false}>
+                <IonItem button>
+                  <IonIcon slot="start" icon={home}></IonIcon>
+                  <IonLabel>Home</IonLabel>
+                </IonItem>
+                <IonItem button routerLink="/broker">
+                  <IonIcon slot="start" icon={albumsOutline}></IonIcon>
+                  <IonLabel>Brokers</IonLabel>
+                </IonItem>
+                <IonItem button>
+                  <IonIcon slot="start" icon={enterOutline}></IonIcon>
+                  <IonLabel>Producers</IonLabel>
+                </IonItem>
+                <IonItem button>
+                  <IonIcon slot="start" icon={exitOutline}></IonIcon>
+                  <IonLabel>Consumers</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
+            </IonList>
+          </IonContent>
+        </IonMenu>
+
+        <div className="ion-page" id="main-content">
+          <IonHeader>
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuToggle>
+                  <IonButton>
+                    <IonIcon slot="icon-only" icon={menu}></IonIcon>
+                  </IonButton>
+                </IonMenuToggle>
+              </IonButtons>
+              <IonTitle>Header</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <h1>Main Content</h1>
+          </IonContent>
+        </div>
+      </IonSplitPane>
+    </IonApp>
   );
 };
 
