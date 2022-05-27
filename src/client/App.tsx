@@ -17,10 +17,11 @@ import {
   IonIcon,
   IonLabel,
   IonRouterOutlet,
-  Route,
 } from "@ionic/react";
 
 import { IonReactRouter } from "@ionic/react-router";
+
+import { Route } from "react-router-dom";
 
 import {
   home,
@@ -55,7 +56,6 @@ import Broker from "./pages/Broker";
 
 const App: React.FC = () => {
   return (
-    // <Broker />
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
