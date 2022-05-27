@@ -56,6 +56,10 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.0",
+    "@mui/material": "^5.8.1",
     "apollo-server-core": "^3.7.0",
     "apollo-server-express": "^3.7.0",
     "dotenv": "^16.0.1",
