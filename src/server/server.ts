@@ -18,8 +18,17 @@ app.use(express.urlencoded({ extended: true }));
 // Serve all compiled files when using production build
 app.use("/", express.static(path.resolve(__dirname, "../../public")));
 
+// app.use('/broker',(req: express.Request, res: express.Response) => {
+//   res.status(200).send("Hello from the backend.");
+// });
+
+app.get("/*", (req: express.Request, res: express.Response) => {
+  return res
+    .status(200)
+    .sendFile(path.resolve(__dirname, "../../public/index.html"));
+});
 // Set up 404s for invalid requests
-app.use("*", (req: express.Request, res: express.Response) => {
+app.use((req: express.Request, res: express.Response) => {
   res.status(404).send("There was nothing found at this route.");
 });
 

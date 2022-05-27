@@ -54,18 +54,11 @@ import "@ionic/react/css/display.css";
 import "../theme/variables.css";
 
 import Broker from "./pages/Broker";
+import Test from "./pages/Test";
 
 const App: React.FC = () => {
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonPage>
-          <IonRouterOutlet>
-            <Route path={"/broker"} component={Broker} exact={true} />
-          </IonRouterOutlet>
-        </IonPage>
-      </IonReactRouter>
-
       <IonSplitPane when="sm" contentId="main-content">
         <IonMenu contentId="main-content">
           <IonHeader>
@@ -82,7 +75,7 @@ const App: React.FC = () => {
                   <IonIcon slot="start" icon={home}></IonIcon>
                   <IonLabel>Home</IonLabel>
                 </IonItem>
-                <IonItem button routerLink="/broker">
+                <IonItem routerLink="/broker">
                   <IonIcon slot="start" icon={albumsOutline}></IonIcon>
                   <IonLabel>Brokers</IonLabel>
                 </IonItem>
@@ -114,7 +107,14 @@ const App: React.FC = () => {
           </IonHeader>
           <IonContent className="ion-padding">
             <h1>Main Content</h1>
-            {/* <Broker /> */}
+            <IonReactRouter>
+              <IonPage>
+                <IonRouterOutlet>
+                  <Route path="/broker" component={Broker} exact={true} />
+                  <Route path="/" component={Test} exact={true} />
+                </IonRouterOutlet>
+              </IonPage>
+            </IonReactRouter>
           </IonContent>
         </div>
       </IonSplitPane>

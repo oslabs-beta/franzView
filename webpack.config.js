@@ -10,7 +10,7 @@ const config = {
   mode: process.env.NODE_ENV,
   entry: "./src/client/index.tsx",
   output: {
-    path: path.resolve(__dirname, "public"),
+    path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
     clean: true,
     publicPath: "/",
@@ -48,7 +48,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "public/index.html"),
+      template: path.join(__dirname, "src/client/index.html"),
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
