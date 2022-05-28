@@ -8,7 +8,7 @@ const BundleAnalyzerPlugin =
 
 const config = {
   mode: process.env.NODE_ENV,
-  entry: "./src/client/index.ts",
+  entry: "./src/client/index.tsx",
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
@@ -48,7 +48,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      // template: path.join(__dirname, "src/client/index.html"),
+      template: path.join(__dirname, "public/index.html"),
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
