@@ -6,6 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
+import ScrollableTabsButtonAuto from "./Tabs";
 
 // Generate Order Data
 function createData(
@@ -70,6 +71,7 @@ export default function Broker() {
   return (
     <React.Fragment>
       <Title>Broker</Title>
+      <ScrollableTabsButtonAuto />
       <Table size="small">
         <TableHead>
           <TableRow>
