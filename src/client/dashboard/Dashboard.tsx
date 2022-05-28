@@ -171,7 +171,20 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
+              <Grid item xs={12} md={6} lg={8}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 240,
+                  }}
+                >
+                  <Chart />
+                </Paper>
+              </Grid>
+              {/* Chart 2 */}
+              <Grid item xs={12} md={6} lg={8}>
                 <Paper
                   sx={{
                     p: 2,
@@ -184,6 +197,32 @@ function DashboardContent() {
                 </Paper>
               </Grid>
               {/* Metrics Card */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 240,
+                  }}
+                >
+                  <MetricsCard />
+                </Paper>
+              </Grid>
+              {/* Metrics Card 2 */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 240,
+                  }}
+                >
+                  <MetricsCard />
+                </Paper>
+              </Grid>
+              {/* Metrics Card 2 */}
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
