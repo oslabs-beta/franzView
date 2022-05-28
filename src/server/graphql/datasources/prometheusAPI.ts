@@ -32,7 +32,7 @@ class PrometheusAPI extends RESTDataSource {
     const formattedData = [];
     data.forEach((result) => {
       const obj = {
-        time: new Date(result.value[0]).toString(),
+        time: new Date(result.value[0] * 1000).toString(),
         resource: result.metric.instance,
         brokerId: brokerMap[result.metric.instance],
       };
