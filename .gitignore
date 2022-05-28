@@ -1,4 +1,6 @@
 .DS_Store
+public/report.html
+build/
 # Logs
 logs
 *.log
@@ -106,3 +108,5 @@ dist
 
 # My notes on the process of building this app. 
 journal.md
+
+./public/report.html

@@ -1,3 +1,3 @@
 export default async (globalConfig) => {
-  await global.testServer.close();
+  await global.testServer.stop();
 };

@@ -71,7 +71,8 @@
     "react-dom": "^17.0.1",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
-    "ts-node": "^10.8.0"
+    "ts-node": "^10.8.0",
+    "kafkajs": "^2.0.1"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": "eslint --cache --fix",
