@@ -3,6 +3,6 @@
 const regeneratorRuntime = "regenerator-runtime";
 import server from "./src/server/server";
 
-export default () => {
-  global.testServer = server;
+export default async () => {
+  global.testServer = await server;
 };

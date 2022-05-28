@@ -7,3 +7,9 @@ export interface DefaultErr {
 export interface Messsage {
   err: string;
 }
+
+export interface Broker {
+  brokerId: number;
+  brokerPort: number;
+  brokerHost: string;
+}
