@@ -21,7 +21,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import MetricsCard from "./MetricsCard";
-import Broker from "./Broker";
+import Broker from "../components/Broker";
 import ConsumerCard from "./ConsumerCard";
 
 function Copyright(props: any) {
