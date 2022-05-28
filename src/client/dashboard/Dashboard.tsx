@@ -22,6 +22,7 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import MetricsCard from "./MetricsCard";
 import Broker from "./Broker";
+import ConsumerCard from "./ConsumerCard";
 
 function Copyright(props: any) {
   return (
@@ -244,6 +245,11 @@ function DashboardContent() {
                 </Paper>
               </Grid>
             </Grid>
+            {/* Consumer/Consumer Groups Components */}
+            <Grid item xs={2}>
+              <ConsumerCard />
+            </Grid>
+
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>

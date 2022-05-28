@@ -4,10 +4,6 @@ import Title from "./Title";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { MonitorHeartTwoTone } from "@mui/icons-material";
 
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
-
 export default function MetricsCard() {
   return (
     <React.Fragment>
