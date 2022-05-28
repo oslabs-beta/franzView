@@ -56,12 +56,15 @@ async function startApolloServer(typeDefs, resolvers) {
       return res.status(errorObj.status).json(errorObj.message);
     }
   );
+
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: PORT }, resolve)
   );
   console.log(
     `🚀 Server ready at PORT: ${PORT}. Graphql path at ${server.graphqlPath} 🎉!`
   );
+
+  return server;
 }
 
 export default startApolloServer(typeDefs, resolvers);
