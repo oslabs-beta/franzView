@@ -106,3 +106,5 @@ dist
 
 # My notes on the process of building this app. 
 journal.md
+
+./public/report.html
