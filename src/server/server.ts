@@ -68,6 +68,3 @@ async function startApolloServer(typeDefs, resolvers) {
 }
 
 export default startApolloServer(typeDefs, resolvers);
-// export default app.listen(PORT, (): void =>
-//   console.log(`Listening on port ${PORT} 🎉!`)
-// );

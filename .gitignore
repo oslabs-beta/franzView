@@ -1,4 +1,6 @@
 .DS_Store
+public/report.html
+build/
 # Logs
 logs
 *.log
