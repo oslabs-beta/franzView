@@ -1,6 +1,6 @@
 import React from "react";
 
-import Dashboard from "../client/dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard";
 
 const App: React.FC = () => {
   return (
