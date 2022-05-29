@@ -27,12 +27,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
-      env:
-        KAKFA_BROKER: ${{ secrets.KAFKA_BROKER }}
-        PROMETHEUS_URL: ${{ secrets.PROMETHEUS_URL }}
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+      env:
+        KAKFA_BROKER: ${{ secrets.KAFKA_BROKER }}
+        PROMETHEUS_URL: ${{ secrets.PROMETHEUS_URL }}
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test --if-present
