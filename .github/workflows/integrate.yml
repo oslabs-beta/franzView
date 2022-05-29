@@ -12,6 +12,9 @@ on:
     branches: 
     - main
     - dev
+env:
+  KAKFA_BROKER: ${{ secrets.KAFKA_BROKER }}
+  PROMETHEUS_URL: ${{ secrets.PROMETHEUS_URL }}
 
 jobs:
   build:
@@ -30,9 +33,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-      env:
-        KAKFA_BROKER: ${{ secrets.KAFKA_BROKER }}
-        PROMETHEUS_URL: ${{ secrets.PROMETHEUS_URL }}
+    - run: echo "$KAFKA_BROKER"
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test --if-present
