@@ -12,9 +12,7 @@ on:
     branches: 
     - main
     - dev
-env:
-  KAKFA_BROKER: ${{ secrets.KAFKA_BROKER }}
-  PROMETHEUS_URL: ${{ secrets.PROMETHEUS_URL }}
+    
 
 jobs:
   build:
@@ -28,12 +26,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: create env file
+      run: |
+        touch .env
+        echo -e "KAKFA_BROKER=${{ secrets.KAFKA_BROKER }}\nPROMETHEUS_URL=${{ secrets.PROMETHEUS_URL }}" >> .env
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: echo "$KAFKA_BROKER"
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test --if-present
