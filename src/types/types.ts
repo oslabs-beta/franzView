@@ -19,3 +19,8 @@ export interface BrokerCpuUsage {
   cpuUsage: number;
   time: string;
 }
+
+export interface BrokerCpuUsage {
+  cpuUsage: number;
+  time: string;
+}
