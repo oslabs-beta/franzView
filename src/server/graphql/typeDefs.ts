@@ -2,9 +2,9 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Broker {
-    brokerId: Int
-    brokerPort: Int
-    brokerHost: String
+    brokerId: Int!
+    brokerPort: Int!
+    brokerHost: String!
     brokerCpuUsage: BrokerCpuUsage
   }
 
@@ -16,7 +16,5 @@ export const typeDefs = gql`
   type Query {
     brokers: [Broker]!
     broker(brokerId: Int!): Broker
-    allBrokerCpuUsage: [BrokerCpuUsage]!
-    brokerCpuUsage(brokerId: Int!): BrokerCpuUsage
   }
 `;
