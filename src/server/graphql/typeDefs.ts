@@ -5,7 +5,7 @@ export const typeDefs = gql`
     brokerId: Int
     brokerPort: Int
     brokerHost: String
-    brokerCpuUsage: BrokerCpuUsage
+    brokerCpuUsage: BrokerCpuUsage!
   }
 
   type BrokerCpuUsage {
@@ -16,7 +16,5 @@ export const typeDefs = gql`
   type Query {
     brokers: [Broker]!
     broker(brokerId: Int!): Broker
-    allBrokerCpuUsage: [BrokerCpuUsage]!
-    brokerCpuUsage(brokerId: Int!): BrokerCpuUsage
   }
 `;
