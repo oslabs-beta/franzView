@@ -30,6 +30,7 @@ jobs:
     - name: create env file
       run: |
         touch .env
+        echo KAKFA_BROKER=${{ secrets.KAFKA_BROKER }}
         echo KAKFA_BROKER=${{ secrets.KAFKA_BROKER }} >> .env
         echo PROMETHEUS_URL=${{ secrets.PROMETHEUS_URL }} >> .env
         cat .env
