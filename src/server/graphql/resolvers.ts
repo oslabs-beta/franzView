@@ -1,5 +1,14 @@
 import * as brokerData from "./datasources/brokerAdmin";
-import { Broker, BrokerCpuUsage } from "../../types/types";
+import {
+  Broker,
+  BrokerCpuUsage,
+  UnderReplicatedPartitions,
+} from "../../types/types";
+
+/**
+ * TODO: Throw graphql errors from catch statements.
+ * TODO: Refactor prometheusAPI to take brokerId to avoid fetching all data and then needing to filter
+ */
 
 const resolvers = {
   Broker: {
@@ -16,6 +25,27 @@ const resolvers = {
         return singleBrokerCpu;
       } catch (error) {
         console.log(`An error occured with Query Broker CPU Usage: ${error}`);
+      }
+    },
+
+    numberUnderReplicatedPartitions: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<UnderReplicatedPartitions> => {
+      try {
+        const totalUnderReplicatedPartitions =
+          await dataSources.prometheusAPI.getUnderReplicatedPartitions();
+        const brokerUnderReplicatedPartitions =
+          totalUnderReplicatedPartitions.filter(
+            (elem) => elem.brokerId === parent.brokerId
+          )[0];
+
+        return brokerUnderReplicatedPartitions;
+      } catch (error) {
+        console.log(
+          `An error occured with Query Broker numberUnderReplicatedPartitions: ${error}`
+        );
       }
     },
   },

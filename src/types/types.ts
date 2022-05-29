@@ -20,7 +20,7 @@ export interface BrokerCpuUsage {
   time: string;
 }
 
-export interface BrokerCpuUsage {
-  cpuUsage: number;
+export interface UnderReplicatedPartitions {
+  underReplicatedPartitions: number;
   time: string;
 }
