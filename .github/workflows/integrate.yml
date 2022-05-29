@@ -29,9 +29,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-      env:
-        KAKFA_BROKER: ${{ secrets.KAFKA_BROKER }}
-        PROMETHEUS_URL: ${{ secrets.PROMETHEUS_URL }}
         cache: 'npm'
       env:
         KAKFA_BROKER: ${{ secrets.KAFKA_BROKER }}
