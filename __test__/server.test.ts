@@ -86,6 +86,47 @@ describe("GraphQL Queries", () => {
         ])
       );
     });
+
+    it("A query for the cluster type can return information about which broker is the active controller.", () => {
+      const result = global.testServer.executeOperation({
+        query: `query Cluster() {
+          cluster {
+            activeController {
+              brokerHost
+              brokerId
+              brokerPort
+              brokerCpuUsage {
+                cpuUsage
+                time
+              }
+              numberUnderReplicatedPartitions {
+                  underReplicatedPartitions
+                  time
+                }
+            }
+          }
+        }`,
+      });
+
+      expect(Array.isArray(result.data.cluster.brokers)).toBeTruthy();
+      expect(result.data.cluster.brokers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            brokerId: expect.any(Number),
+            brokerPort: expect.any(Number),
+            brokerHost: expect.any(String),
+            brokerCpuUsage: expect.objectContaining({
+              cpuUsage: expect.any(Number),
+              time: expect.any(String),
+            }),
+            numberUnderReplicatedPartitions: expect.objectContaining({
+              underReplicatedPartitions: expect.any(Number),
+              time: expect.any(String),
+            }),
+          }),
+        ])
+      );
+    });
   });
 
   describe("Broker Queries", () => {
