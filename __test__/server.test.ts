@@ -137,8 +137,7 @@ describe("GraphQL Queries", () => {
                 time
               }
             }
-          }
-        }`,
+          }`,
       });
 
       expect(result.errors).toBeUndefined();

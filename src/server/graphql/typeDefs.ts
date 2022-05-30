@@ -5,6 +5,7 @@ export const typeDefs = gql`
     activeControllerCount: ActiveControllerCount
     activeController: Broker
     brokers: [Broker]!
+    offlinePartitionCount: OfflinePartitionCount
   }
 
   type Broker {
@@ -20,13 +21,18 @@ export const typeDefs = gql`
     time: String
   }
 
-  type UnderReplicatedPartitions {
-    underReplicatedPartitions: Int!
+  type BrokerCpuUsage {
+    cpuUsage: Float!
     time: String
   }
 
-  type BrokerCpuUsage {
-    cpuUsage: Float!
+  type OfflinePartitionCount {
+    count: Int!
+    time: String
+  }
+
+  type UnderReplicatedPartitions {
+    underReplicatedPartitions: Int!
     time: String
   }
 

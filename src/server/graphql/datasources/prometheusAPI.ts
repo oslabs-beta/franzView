@@ -37,6 +37,15 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "activeControllerCount");
   }
 
+  async getOfflinePartitionCount() {
+    const query =
+      "query=kafka_controller_kafkacontroller_offlinepartitionscount";
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "offlinePartitionCount");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatResponse(data: any[], metric: string) {
     /* Remove for production */

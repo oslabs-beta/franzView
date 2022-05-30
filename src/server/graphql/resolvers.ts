@@ -4,7 +4,7 @@ import {
   BrokerCpuUsage,
   UnderReplicatedPartitions,
   Cluster,
-  ActiveControllerCount,
+  Count,
 } from "../../types/types";
 
 /**
@@ -57,17 +57,33 @@ const resolvers = {
       parent,
       args,
       { dataSources }
-    ): Promise<ActiveControllerCount> => {
-      const activeControllerCount =
-        await dataSources.prometheusAPI.getActiveControllerCount();
-      const metric: ActiveControllerCount = {
-        count: activeControllerCount.reduce(
+    ): Promise<Count> => {
+      const metric = await dataSources.prometheusAPI.getActiveControllerCount();
+      const activeControllerCount: Count = {
+        count: metric.reduce(
           (prev, curr) => (prev += curr.activeControllerCount),
           0
         ),
-        time: activeControllerCount[0].time,
+        time: metric[0].time,
       };
-      return metric;
+
+      return activeControllerCount;
+    },
+
+    offlinePartitionCount: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<Count> => {
+      const metric = await dataSources.prometheusAPI.getOfflinePartitionCount();
+      const offlinePartitionCount: Count = {
+        count: metric.reduce(
+          (prev, curr) => (prev += curr.offlinePartitionCount),
+          0
+        ),
+        time: metric[0].time,
+      };
+      return offlinePartitionCount;
     },
   },
 
