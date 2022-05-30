@@ -12,4 +12,10 @@ export interface Broker {
   brokerId: number;
   brokerPort: number;
   brokerHost: string;
+  brokerCpuUsage?: BrokerCpuUsage;
+}
+
+export interface BrokerCpuUsage {
+  cpuUsage: number;
+  time: string;
 }
