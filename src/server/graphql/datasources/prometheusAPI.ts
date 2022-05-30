@@ -21,7 +21,8 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getUnderReplicatedPartitions() {
-    const query = "query=kafka_server_replicamanager_underreplicatedpartitions";
+    const query =
+      "query=kafka_server_replica_manager_UnderReplicatedPartitions";
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
@@ -29,8 +30,7 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getActiveControllerCount() {
-    const query =
-      "query=kafka_controller_kafkacontroller_activecontrollercount";
+    const query = "query=kafka_controller_ActiveControllerCount";
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
@@ -38,8 +38,7 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getOfflinePartitionCount() {
-    const query =
-      "query=kafka_controller_kafkacontroller_offlinepartitionscount";
+    const query = "query=kafka_controller_OfflinePartitionsCount";
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
