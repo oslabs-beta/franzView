@@ -6,10 +6,16 @@ export const typeDefs = gql`
     brokerPort: Int!
     brokerHost: String!
     brokerCpuUsage: BrokerCpuUsage
+    numberUnderReplicatedPartitions: UnderReplicatedPartitions
+  }
+
+  type UnderReplicatedPartitions {
+    underReplicatedPartitions: Int!
+    time: String
   }
 
   type BrokerCpuUsage {
-    cpuUsage: Float
+    cpuUsage: Float!
     time: String
   }
 

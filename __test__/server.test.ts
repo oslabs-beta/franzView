@@ -24,12 +24,16 @@ describe("REST Server", () => {
 
 describe("GraphQL Queries", () => {
   describe("Broker Queries", () => {
-    it("A query for a valid broker will have fields: brokerId: Int!, brokerPort: Int!, brokerHost: String!, brokerCpuUsage: BrokerCpuUsage.", async () => {
+    it("A query for a valid broker will have fields: brokerId: Int!, brokerPort: Int!, brokerHost: String!, brokerCpuUsage: BrokerCpuUsage, numberUnderReplicatedPartitions.", async () => {
       const result = await global.testServer.executeOperation({
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
               brokerCpuUsage {
                 cpuUsage
+                time
+              }
+              numberUnderReplicatedPartitions {
+                underReplicatedPartitions
                 time
               }
               brokerHost
@@ -46,6 +50,13 @@ describe("GraphQL Queries", () => {
       expect(typeof result.data.broker.brokerPort).toBe("number");
       expect(typeof result.data.broker.brokerCpuUsage.cpuUsage).toBe("number");
       expect(typeof result.data.broker.brokerCpuUsage.time).toBe("string");
+      expect(
+        typeof result.data.broker.numberUnderReplicatedPartitions
+          .underReplicatedPartitions
+      ).toBe("number");
+      expect(
+        typeof result.data.broker.numberUnderReplicatedPartitions.time
+      ).toBe("string");
     });
 
     it("A query for brokers will be an array of brokers", async () => {
@@ -59,6 +70,10 @@ describe("GraphQL Queries", () => {
               cpuUsage
               time
             }
+            numberUnderReplicatedPartitions {
+                underReplicatedPartitions
+                time
+              }
           }
         }`,
       });
@@ -72,6 +87,10 @@ describe("GraphQL Queries", () => {
             brokerHost: expect.any(String),
             brokerCpuUsage: expect.objectContaining({
               cpuUsage: expect.any(Number),
+              time: expect.any(String),
+            }),
+            numberUnderReplicatedPartitions: expect.objectContaining({
+              underReplicatedPartitions: expect.any(Number),
               time: expect.any(String),
             }),
           }),
