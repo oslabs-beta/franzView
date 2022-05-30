@@ -206,10 +206,14 @@ function DashboardContent() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 200,
                   }}
                 >
-                  <MetricsCard />
+                  <MetricsCard
+                    value={0}
+                    title="Underreplicated partitions"
+                    toBe="Should be zero."
+                  />
                 </Paper>
               </Grid>
               {/* Metrics Card 2 */}
@@ -219,23 +223,31 @@ function DashboardContent() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 200,
                   }}
                 >
-                  <MetricsCard />
+                  <MetricsCard
+                    value={1}
+                    title="Active controller count"
+                    toBe="Should be one."
+                  />
                 </Paper>
               </Grid>
-              {/* Metrics Card 2 */}
+              {/* Metrics Card 3 */}
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 200,
                   }}
                 >
-                  <MetricsCard />
+                  <MetricsCard
+                    value={0}
+                    title="Offline partitions count"
+                    toBe="Should be zero."
+                  />
                 </Paper>
               </Grid>
               {/* Broker Component */}
