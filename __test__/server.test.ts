@@ -127,6 +127,29 @@ describe("GraphQL Queries", () => {
         ])
       );
     });
+
+    it("A query for the cluster type can return the offline partition count which is an object with a time field and number.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `query Cluster {
+          cluster {
+            offlinePartitionCount {
+                count
+                time
+              }
+            }
+          }
+        }`,
+      });
+
+      expect(result.errors).toBeUndefined();
+      expect(result.data.cluster).toHaveProperty("offlinePartitionCount");
+      expect(result.data.cluster.offlinePartitionCount).toEqual(
+        expect.objectContaining({
+          count: expect.any(Number),
+          time: expect.any(String),
+        })
+      );
+    });
   });
 
   describe("Broker Queries", () => {
