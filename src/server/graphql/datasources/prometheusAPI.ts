@@ -45,6 +45,15 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "offlinePartitionCount");
   }
 
+  async getDiskUsage() {
+    const query =
+      'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "diskUsage");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatResponse(data: any[], metric: string) {
     /* Remove for production */
