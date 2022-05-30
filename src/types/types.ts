@@ -20,6 +20,17 @@ export interface BrokerCpuUsage {
   time: string;
 }
 
+export interface Cluster {
+  activeControllerCount?: ActiveControllerCount;
+  activeController: Broker;
+  brokers: Broker[];
+}
+
+export interface ActiveControllerCount {
+  count: number;
+  time: string;
+}
+
 export interface UnderReplicatedPartitions {
   underReplicatedPartitions: number;
   time: string;

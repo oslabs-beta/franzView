@@ -24,9 +24,9 @@ describe("REST Server", () => {
 
 describe("GraphQL Queries", () => {
   describe("Cluster Queries", () => {
-    it("A query for the cluster type can return the active controller count which is an object with a time field and number.", () => {
-      const result = global.testServer.executeOperation({
-        query: `query Cluster() {
+    it("A query for the cluster type can return the active controller count which is an object with a time field and number.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `query Cluster {
           cluster {
             activeControllerCount {
               count
@@ -37,8 +37,8 @@ describe("GraphQL Queries", () => {
       });
 
       expect(result.errors).toBeUndefined();
-      expect(result.data?.cluster).toHaveProperty("activeControllerCount");
-      expect(result.data?.cluster?.activeControllerCount).toEqual(
+      expect(result.data.cluster).toHaveProperty("activeControllerCount");
+      expect(result.data.cluster.activeControllerCount).toEqual(
         expect.objectContaining({
           count: expect.any(Number),
           time: expect.any(String),
@@ -46,9 +46,9 @@ describe("GraphQL Queries", () => {
       );
     });
 
-    it("A query for the cluster type can return the list of brokers in the cluster.", () => {
-      const result = global.testServer.executeOperation({
-        query: `query Cluster() {
+    it("A query for the cluster type can return the list of brokers in the cluster.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `query Cluster {
           cluster {
             brokers {
               brokerHost
@@ -87,22 +87,22 @@ describe("GraphQL Queries", () => {
       );
     });
 
-    it("A query for the cluster type can return information about which broker is the active controller.", () => {
-      const result = global.testServer.executeOperation({
-        query: `query Cluster() {
+    it("A query for the cluster type can return information about which broker is the active controller.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `query Cluster {
           cluster {
-            activeController {
-              brokerHost
-              brokerId
-              brokerPort
-              brokerCpuUsage {
-                cpuUsage
+            brokers {
+            brokerHost
+            brokerId
+            brokerPort
+            brokerCpuUsage {
+              cpuUsage
+              time
+            }
+            numberUnderReplicatedPartitions {
+                underReplicatedPartitions
                 time
               }
-              numberUnderReplicatedPartitions {
-                  underReplicatedPartitions
-                  time
-                }
             }
           }
         }`,

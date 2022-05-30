@@ -28,6 +28,15 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "underReplicatedPartitions");
   }
 
+  async getActiveControllerCount() {
+    const query =
+      "query=kafka_controller_kafkacontroller_activecontrollercount";
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "activeControllerCount");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatResponse(data: any[], metric: string) {
     /* Remove for production */

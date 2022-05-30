@@ -17,7 +17,7 @@ export const typeDefs = gql`
 
   type ActiveControllerCount {
     count: Int!
-    time: string
+    time: String
   }
 
   type UnderReplicatedPartitions {
@@ -33,6 +33,6 @@ export const typeDefs = gql`
   type Query {
     brokers: [Broker]!
     broker(brokerId: Int!): Broker
-    describeCluster: Cluster
+    cluster: Cluster
   }
 `;
