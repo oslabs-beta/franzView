@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
+// https://react-chartjs-2.js.org/faq/typescript
+
 ChartJS.register(
   CategoryScale,
   LinearScale,

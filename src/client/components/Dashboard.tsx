@@ -42,7 +42,7 @@ function Copyright(props: any) {
   );
 }
 
-const drawerWidth = 240; // type of number was specified, but no-inferable-types needs to be set to false in the tslint.json file
+const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
