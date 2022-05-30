@@ -3,6 +3,8 @@ import {
   Broker,
   BrokerCpuUsage,
   UnderReplicatedPartitions,
+  Cluster,
+  Count,
 } from "../../types/types";
 
 /**
@@ -50,21 +52,63 @@ const resolvers = {
     },
   },
 
+  Cluster: {
+    activeControllerCount: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<Count> => {
+      const metric = await dataSources.prometheusAPI.getActiveControllerCount();
+      const activeControllerCount: Count = {
+        count: metric.reduce(
+          (prev, curr) => (prev += curr.activeControllerCount),
+          0
+        ),
+        time: metric[0].time,
+      };
+
+      return activeControllerCount;
+    },
+
+    offlinePartitionCount: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<Count> => {
+      const metric = await dataSources.prometheusAPI.getOfflinePartitionCount();
+      const offlinePartitionCount: Count = {
+        count: metric.reduce(
+          (prev, curr) => (prev += curr.offlinePartitionCount),
+          0
+        ),
+        time: metric[0].time,
+      };
+      return offlinePartitionCount;
+    },
+  },
+
   Query: {
     brokers: async (): Promise<Broker[]> => {
       const clusterInfo = await brokerData.getClusterInfo();
-      return clusterInfo;
+      return clusterInfo.brokers;
     },
 
     broker: async (parent: Broker, { brokerId }): Promise<Broker> => {
       try {
         const cluster = await brokerData.getClusterInfo();
-        const broker = cluster.filter((elem) => elem.brokerId === brokerId)[0];
+        const broker = cluster.brokers.filter(
+          (elem) => elem.brokerId === brokerId
+        )[0];
 
         return broker;
       } catch (error) {
         console.log(`An error occured with Query Broker: ${error}`);
       }
+    },
+
+    cluster: async (): Promise<Cluster> => {
+      const clusterInfo = await brokerData.getClusterInfo();
+      return clusterInfo;
     },
   },
 };

@@ -1,6 +1,13 @@
 import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
+  type Cluster {
+    activeControllerCount: ActiveControllerCount
+    activeController: Broker
+    brokers: [Broker]!
+    offlinePartitionCount: OfflinePartitionCount
+  }
+
   type Broker {
     brokerId: Int!
     brokerPort: Int!
@@ -9,8 +16,8 @@ export const typeDefs = gql`
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
   }
 
-  type UnderReplicatedPartitions {
-    underReplicatedPartitions: Int!
+  type ActiveControllerCount {
+    count: Int!
     time: String
   }
 
@@ -19,8 +26,19 @@ export const typeDefs = gql`
     time: String
   }
 
+  type OfflinePartitionCount {
+    count: Int!
+    time: String
+  }
+
+  type UnderReplicatedPartitions {
+    underReplicatedPartitions: Int!
+    time: String
+  }
+
   type Query {
     brokers: [Broker]!
     broker(brokerId: Int!): Broker
+    cluster: Cluster
   }
 `;

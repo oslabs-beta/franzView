@@ -21,11 +21,28 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getUnderReplicatedPartitions() {
-    const query = "query=kafka_server_replicamanager_underreplicatedpartitions";
+    const query =
+      "query=kafka_server_replica_manager_UnderReplicatedPartitions";
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
     return this.formatResponse(data, "underReplicatedPartitions");
+  }
+
+  async getActiveControllerCount() {
+    const query = "query=kafka_controller_ActiveControllerCount";
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "activeControllerCount");
+  }
+
+  async getOfflinePartitionCount() {
+    const query = "query=kafka_controller_OfflinePartitionsCount";
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "offlinePartitionCount");
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
