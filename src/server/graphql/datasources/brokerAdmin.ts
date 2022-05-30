@@ -1,5 +1,5 @@
 import { admin } from "../../kafka/kafka";
-import { Broker } from "../../../types";
+import { Broker } from "../../../types/types";
 
 export async function getClusterInfo(): Promise<Broker[]> {
   try {
