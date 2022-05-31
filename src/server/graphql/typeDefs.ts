@@ -19,6 +19,15 @@ export const typeDefs = gql`
     brokerDiskUsageOverTime: [DiskUsage]
   }
 
+  type Topic {
+    name: String!
+    numPartitions: Int!
+    totalReplicas: Int
+    totalIsrs: Int
+    brokersWithReplicas: [Int]
+    logSize: Int
+  }
+
   type ActiveControllerCount {
     count: Int!
     time: String
@@ -48,5 +57,7 @@ export const typeDefs = gql`
     brokers(start: String, end: String, step: String): [Broker]!
     broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
+    topic(name: String!): Topic
+    topics: [Topic]
   }
 `;
