@@ -21,8 +21,7 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getUnderReplicatedPartitions() {
-    const query =
-      "query=kafka_server_replica_manager_UnderReplicatedPartitions";
+    const query = "query=kafka_server_replicamanager_underreplicatedpartitions";
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
@@ -30,7 +29,8 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getActiveControllerCount() {
-    const query = "query=kafka_controller_ActiveControllerCount";
+    const query =
+      "query=kafka_controller_kafkacontroller_activecontrollercount";
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
@@ -38,11 +38,21 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getOfflinePartitionCount() {
-    const query = "query=kafka_controller_OfflinePartitionsCount";
+    const query =
+      "query=kafka_controller_kafkacontroller_offlinepartitionscount";
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
     return this.formatResponse(data, "offlinePartitionCount");
+  }
+
+  async getDiskUsage() {
+    const query =
+      'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "diskUsage");
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

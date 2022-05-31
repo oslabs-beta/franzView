@@ -5,6 +5,7 @@ import {
   UnderReplicatedPartitions,
   Cluster,
   Count,
+  DiskUsage,
 } from "../../types/types";
 
 /**
@@ -27,6 +28,25 @@ const resolvers = {
         return singleBrokerCpu;
       } catch (error) {
         console.log(`An error occured with Query Broker CPU Usage: ${error}`);
+      }
+    },
+
+    brokerDiskUsage: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<DiskUsage> => {
+      try {
+        const totalBrokerDiskUsage =
+          await dataSources.prometheusAPI.getDiskUsage();
+        const brokerDiskUsage = totalBrokerDiskUsage.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return brokerDiskUsage;
+      } catch (error) {
+        console.log(
+          `An error has occured with Query Broker Disk Usage: ${error}`
+        );
       }
     },
 
