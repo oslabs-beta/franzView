@@ -14,6 +14,7 @@ export const typeDefs = gql`
     brokerHost: String!
     brokerCpuUsage: BrokerCpuUsage
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
+    brokerDiskUsage: DiskUsage
   }
 
   type ActiveControllerCount {
@@ -23,6 +24,11 @@ export const typeDefs = gql`
 
   type BrokerCpuUsage {
     cpuUsage: Float!
+    time: String
+  }
+
+  type DiskUsage {
+    diskUsage: Float!
     time: String
   }
 
