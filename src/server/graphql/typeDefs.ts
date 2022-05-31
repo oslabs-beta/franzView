@@ -12,9 +12,11 @@ export const typeDefs = gql`
     brokerId: Int!
     brokerPort: Int!
     brokerHost: String!
-    brokerCpuUsage: BrokerCpuUsage
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
+    brokerCpuUsage: BrokerCpuUsage
     brokerDiskUsage: DiskUsage
+    brokerCpuUsageOverTime: [BrokerCpuUsage]
+    brokerDiskUsageOverTime: [DiskUsage]
   }
 
   type ActiveControllerCount {
@@ -43,8 +45,8 @@ export const typeDefs = gql`
   }
 
   type Query {
-    brokers: [Broker]!
-    broker(brokerId: Int!): Broker
+    brokers(start: String, end: String, step: String): [Broker]!
+    broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
   }
 `;

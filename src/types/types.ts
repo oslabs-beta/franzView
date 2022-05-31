@@ -13,6 +13,9 @@ export interface Broker {
   brokerPort: number;
   brokerHost: string;
   brokerCpuUsage?: BrokerCpuUsage;
+  start?: string;
+  end?: string;
+  step?: string;
 }
 
 export interface BrokerCpuUsage {

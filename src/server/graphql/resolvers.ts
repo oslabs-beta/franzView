@@ -25,9 +25,56 @@ const resolvers = {
         const singleBrokerCpu = brokerCpu.filter(
           (elem) => elem.brokerId === parent.brokerId
         )[0];
+
         return singleBrokerCpu;
       } catch (error) {
         console.log(`An error occured with Query Broker CPU Usage: ${error}`);
+      }
+    },
+
+    brokerCpuUsageOverTime: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<BrokerCpuUsage> => {
+      try {
+        const brokerCpu =
+          await dataSources.prometheusAPI.getBrokerCpuUsageOverTime(
+            parent.start,
+            parent.end,
+            parent.step
+          );
+        const singleBrokerCpu = brokerCpu.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return singleBrokerCpu.values;
+      } catch (error) {
+        console.log(
+          `An error occured with Query Broker CPU Usage Over Time: ${error}`
+        );
+      }
+    },
+
+    brokerDiskUsageOverTime: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<BrokerCpuUsage> => {
+      try {
+        const totalBrokerDiskUsage =
+          await dataSources.prometheusAPI.getDiskUsageOverTime(
+            parent.start,
+            parent.end,
+            parent.step
+          );
+        const brokerDiskUsage = totalBrokerDiskUsage.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return brokerDiskUsage.values;
+      } catch (error) {
+        console.log(
+          `An error occured with Query Broker Disk Usage Over Time: ${error}`
+        );
       }
     },
 
@@ -108,17 +155,31 @@ const resolvers = {
   },
 
   Query: {
-    brokers: async (): Promise<Broker[]> => {
+    brokers: async (parent, { start, end, step }): Promise<Broker[]> => {
       const clusterInfo = await brokerData.getClusterInfo();
+      if (start) {
+        clusterInfo.brokers.forEach((broker) => {
+          broker.start = start;
+          broker.end = end;
+          broker.step = step;
+        });
+      }
       return clusterInfo.brokers;
     },
 
-    broker: async (parent: Broker, { brokerId }): Promise<Broker> => {
+    broker: async (
+      parent: Broker,
+      { brokerId, start, end, step }
+    ): Promise<Broker> => {
       try {
         const cluster = await brokerData.getClusterInfo();
         const broker = cluster.brokers.filter(
           (elem) => elem.brokerId === brokerId
         )[0];
+
+        broker.start = start;
+        broker.end = end;
+        broker.step = step;
 
         return broker;
       } catch (error) {
