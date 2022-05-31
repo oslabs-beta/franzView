@@ -225,5 +225,29 @@ describe("GraphQL Queries", () => {
         ])
       );
     });
+
+    it("A query for broker can return a field disk usage which is an object with a time field and number.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `query Broker($brokerId: Int!) {
+          broker(brokerId: $brokerId) {
+              brokerDiskUsage {
+                diskUsage
+                time
+              }
+            }
+          }`,
+        variables: {
+          brokerId: 1,
+        },
+      });
+      expect(result.errors).toBeUndefined();
+      expect(result.data.broker).toHaveProperty("brokerDiskUsage");
+      expect(result.data.broker.brokerDiskUsage).toEqual(
+        expect.objectContaining({
+          diskUsage: expect.any(Number),
+          time: expect.any(String),
+        })
+      );
+    });
   });
 });

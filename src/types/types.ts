@@ -20,6 +20,10 @@ export interface BrokerCpuUsage {
   time: string;
 }
 
+export interface DiskUsage extends Metric {
+  diskUsage: number;
+}
+
 export interface Metric {
   time: string;
 }
