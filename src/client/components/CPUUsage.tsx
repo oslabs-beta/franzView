@@ -11,11 +11,11 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-import type { ChartData, ChartOptions } from "chart.js";
-interface LineProps {
-  options: ChartOptions<"line">;
-  data: ChartData<"line">;
-}
+// import type { ChartData, ChartOptions } from "chart.js";
+// interface LineProps {
+//   options: ChartOptions<"line">;
+//   data: ChartData<"line">;
+// }
 
 ChartJS.register(
   CategoryScale,
@@ -29,10 +29,10 @@ ChartJS.register(
 
 const options = {
   responsive: true,
-  scales: {
-    x: { type: "time" },
-    time: { unit: "seconds" },
-  },
+  // scales: {
+  //   x: { type: "time" },
+  //   time: { unit: "seconds" },
+  // },
   plugins: {
     legend: {
       position: "top" as const,
