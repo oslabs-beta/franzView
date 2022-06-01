@@ -12,4 +12,10 @@ admin.on(CONNECT, () =>
   console.log(`Kafka Admin Connected to ${process.env.KAKFA_BROKER}!`)
 );
 
+async function run() {
+  return await admin.connect();
+}
+
+run();
+
 export { admin };

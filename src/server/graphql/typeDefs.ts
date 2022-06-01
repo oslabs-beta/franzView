@@ -6,15 +6,27 @@ export const typeDefs = gql`
     activeController: Broker
     brokers: [Broker]!
     offlinePartitionCount: OfflinePartitionCount
+    numberUnderReplicatedPartitions: UnderReplicatedPartitions
   }
 
   type Broker {
     brokerId: Int!
     brokerPort: Int!
     brokerHost: String!
-    brokerCpuUsage: BrokerCpuUsage
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
+    brokerCpuUsage: BrokerCpuUsage
     brokerDiskUsage: DiskUsage
+    brokerCpuUsageOverTime: [BrokerCpuUsage]
+    brokerDiskUsageOverTime: [DiskUsage]
+  }
+
+  type Topic {
+    name: String!
+    numPartitions: Int
+    totalReplicas: Int
+    totalIsrs: Int
+    brokersWithReplicas: [Int]
+    logSize: Float
   }
 
   type ActiveControllerCount {
@@ -43,8 +55,10 @@ export const typeDefs = gql`
   }
 
   type Query {
-    brokers: [Broker]!
-    broker(brokerId: Int!): Broker
+    brokers(start: String, end: String, step: String): [Broker]!
+    broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
+    topic(name: String!): Topic
+    topics: [Topic]
   }
 `;
