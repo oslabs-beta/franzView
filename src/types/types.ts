@@ -13,6 +13,9 @@ export interface Broker {
   brokerPort: number;
   brokerHost: string;
   brokerCpuUsage?: BrokerCpuUsage;
+  start?: string;
+  end?: string;
+  step?: string;
 }
 
 export interface BrokerCpuUsage {
@@ -22,6 +25,15 @@ export interface BrokerCpuUsage {
 
 export interface DiskUsage extends Metric {
   diskUsage: number;
+}
+
+export interface Topic {
+  name: string;
+  numPartitions: number;
+  totalReplicas: number;
+  totalIsrs: number;
+  brokersWithReplicas: [number];
+  logSize: number;
 }
 
 export interface Metric {

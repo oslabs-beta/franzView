@@ -25,9 +25,56 @@ const resolvers = {
         const singleBrokerCpu = brokerCpu.filter(
           (elem) => elem.brokerId === parent.brokerId
         )[0];
+
         return singleBrokerCpu;
       } catch (error) {
         console.log(`An error occured with Query Broker CPU Usage: ${error}`);
+      }
+    },
+
+    brokerCpuUsageOverTime: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<BrokerCpuUsage> => {
+      try {
+        const brokerCpu =
+          await dataSources.prometheusAPI.getBrokerCpuUsageOverTime(
+            parent.start,
+            parent.end,
+            parent.step
+          );
+        const singleBrokerCpu = brokerCpu.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return singleBrokerCpu.values;
+      } catch (error) {
+        console.log(
+          `An error occured with Query Broker CPU Usage Over Time: ${error}`
+        );
+      }
+    },
+
+    brokerDiskUsageOverTime: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<BrokerCpuUsage> => {
+      try {
+        const totalBrokerDiskUsage =
+          await dataSources.prometheusAPI.getDiskUsageOverTime(
+            parent.start,
+            parent.end,
+            parent.step
+          );
+        const brokerDiskUsage = totalBrokerDiskUsage.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return brokerDiskUsage.values;
+      } catch (error) {
+        console.log(
+          `An error occured with Query Broker Disk Usage Over Time: ${error}`
+        );
       }
     },
 
@@ -107,18 +154,69 @@ const resolvers = {
     },
   },
 
+  Topic: {
+    numPartitions: (parent): number => {
+      return parent.partitions.length;
+    },
+
+    totalReplicas: async ({ name }, args, { dataSources }): Promise<number> => {
+      const metric = await dataSources.prometheusAPI.getTotalReplicas(name);
+
+      return metric[0].totalReplicas;
+    },
+
+    totalIsrs: async ({ name }, args, { dataSources }): Promise<number> => {
+      const metric = await dataSources.prometheusAPI.getTotalIsrs(name);
+
+      return metric[0].totalIsrs;
+    },
+
+    brokersWithReplicas: async (
+      { name },
+      args,
+      { dataSources }
+    ): Promise<number[]> => {
+      const metric = await dataSources.prometheusAPI.getReplicasPerBroker(name);
+      const brokersWithReplicas: number[] = [];
+      metric.forEach((result) => brokersWithReplicas.push(result.brokerId));
+
+      return brokersWithReplicas;
+    },
+
+    logSize: async ({ name }, args, { dataSources }): Promise<number> => {
+      const metric = await dataSources.prometheusAPI.getLogSize(name);
+      const logSizeGB = Number((metric[0].logSize / 1000000000).toFixed(2));
+
+      return logSizeGB;
+    },
+  },
+
   Query: {
-    brokers: async (): Promise<Broker[]> => {
+    brokers: async (parent, { start, end, step }): Promise<Broker[]> => {
       const clusterInfo = await brokerData.getClusterInfo();
+      if (start) {
+        clusterInfo.brokers.forEach((broker) => {
+          broker.start = start;
+          broker.end = end;
+          broker.step = step;
+        });
+      }
       return clusterInfo.brokers;
     },
 
-    broker: async (parent: Broker, { brokerId }): Promise<Broker> => {
+    broker: async (
+      parent: Broker,
+      { brokerId, start, end, step }
+    ): Promise<Broker> => {
       try {
         const cluster = await brokerData.getClusterInfo();
         const broker = cluster.brokers.filter(
           (elem) => elem.brokerId === brokerId
         )[0];
+
+        broker.start = start;
+        broker.end = end;
+        broker.step = step;
 
         return broker;
       } catch (error) {
@@ -129,6 +227,18 @@ const resolvers = {
     cluster: async (): Promise<Cluster> => {
       const clusterInfo = await brokerData.getClusterInfo();
       return clusterInfo;
+    },
+
+    topic: async (parent, { name }): Promise<any> => {
+      const topic = await brokerData.getSingleTopic(name);
+
+      return topic;
+    },
+
+    topics: async (): Promise<any> => {
+      const topics = await brokerData.getAllTopics();
+
+      return topics;
     },
   },
 };
