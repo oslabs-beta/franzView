@@ -4,19 +4,29 @@ import Title from "./Title";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { MonitorHeartTwoTone } from "@mui/icons-material";
 
-export default function MetricsCard() {
+export type Props = {
+  value: number;
+  title: string;
+  toBe: string;
+};
+
+const MetricsCard = ({ value, title, toBe }: Props) => {
   return (
     <React.Fragment>
-      <Title>App Metrics</Title>
+      <Title>{title}</Title>
       <Typography component="p" variant="h5">
-        Underreplicated Partitions
+        {/* 0 */}
+        {value}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Should be 0
+        {/* TEST */}
+        {toBe}
       </Typography>
       <ListItemIcon>
         <MonitorHeartTwoTone />
       </ListItemIcon>
     </React.Fragment>
   );
-}
+};
+
+export default MetricsCard;
