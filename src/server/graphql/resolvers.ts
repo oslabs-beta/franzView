@@ -152,6 +152,17 @@ const resolvers = {
       };
       return offlinePartitionCount;
     },
+
+    numberUnderReplicatedPartitions: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<Count> => {
+      const metric =
+        await dataSources.prometheusAPI.getTotalUnderReplicatedPartitions();
+
+      return metric[0];
+    },
   },
 
   Topic: {
