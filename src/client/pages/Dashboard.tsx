@@ -103,7 +103,9 @@ function DashboardContent() {
     setOpen(!open);
   };
 
-  const { loading, error, data } = useQuery(CARD_METRICS_QUERY);
+  const { loading, error, data } = useQuery(CARD_METRICS_QUERY, {
+    pollInterval: 5000,
+  });
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -215,7 +217,12 @@ function DashboardContent() {
                   }}
                 >
                   <MetricsCard
-                    value={0}
+                    value={
+                      loading
+                        ? "Loading..."
+                        : data.cluster.numberUnderReplicatedPartitions
+                            .underReplicatedPartitions
+                    }
                     title="Underreplicated partitions"
                     toBe="Should be zero."
                   />
@@ -253,7 +260,11 @@ function DashboardContent() {
                   }}
                 >
                   <MetricsCard
-                    value={0}
+                    value={
+                      loading
+                        ? "Loading..."
+                        : data.cluster.offlinePartitionCount.count
+                    }
                     title="Offline partitions count"
                     toBe="Should be zero."
                   />
