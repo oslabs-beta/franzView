@@ -12,11 +12,13 @@ on:
     branches: 
     - main
     - dev
+    
 
 jobs:
   build:
 
     runs-on: macos-latest
+    environment: dev
 
     strategy:
       matrix:
@@ -25,6 +27,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: create env file
+      run: |
+        touch .env
+        echo KAKFA_BROKER=${{ secrets.BROKER }}
+        echo KAKFA_BROKER=${{ secrets.BROKER }} >> .env
+        echo PROMETHEUS_URL=${{ secrets.PROMETHEUS_URL }} >> .env
+        cat .env
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
