@@ -234,6 +234,12 @@ const resolvers = {
 
       return topic;
     },
+
+    topics: async (): Promise<any> => {
+      const topics = await brokerData.getAllTopics();
+
+      return topics;
+    },
   },
 };
 

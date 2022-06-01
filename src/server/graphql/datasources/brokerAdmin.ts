@@ -45,3 +45,15 @@ export async function getSingleTopic(name: string) {
     console.log(`Kafka Admin Error getting single topic: ${error}`);
   }
 }
+
+export async function getAllTopics() {
+  try {
+    await admin.connect();
+    const names = await admin.listTopics();
+    const topics = await admin.fetchTopicMetadata({ topics: names });
+
+    return topics.topics;
+  } catch (error) {
+    console.log(`Kafka Admin Error getting single topic: ${error}`);
+  }
+}
