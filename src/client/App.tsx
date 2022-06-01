@@ -17,11 +17,8 @@ const client = new ApolloClient({
 
 const App: React.FC = () => {
   return (
-    <div>
-      {/* Hello, this is a new App */}
-      <BrowserRouter>
-        <ApolloProvider client={client}>
-        
+    <BrowserRouter>
+      <ApolloProvider client={client}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/brokers" element={<Brokers />} />
@@ -34,9 +31,8 @@ const App: React.FC = () => {
             }
           />
         </Routes>
-        </ApolloProvider>
-      </BrowserRouter>
-    </div>
+      </ApolloProvider>
+    </BrowserRouter>
   );
 };
 

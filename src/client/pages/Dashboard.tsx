@@ -10,16 +10,15 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 
-import Chart from "../components/dashboard/Chart";
-import MetricsCard from "../components/dashboard/MetricsCard";
-import Broker from "../components/dashboard/Broker";
-import ConsumerCard from "../components/dashboard/ConsumerCard";
-import Sidebar from "../components/dashboard/Sidebar";
-import Header from "../components/dashboard/Header";
+import Chart from "../components/Chart";
+import MetricsCard from "../components/MetricsCard";
+import Broker from "../components/Broker";
+import ConsumerCard from "../components/ConsumerCard";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 import { CARD_METRICS_QUERY } from "../models/queries";
 import { useQuery } from "@apollo/client";
-
 
 function Copyright(props: any) {
   return (
