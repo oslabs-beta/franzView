@@ -154,6 +154,43 @@ const resolvers = {
     },
   },
 
+  Topic: {
+    numPartitions: (parent): number => {
+      return parent.partitions.length;
+    },
+
+    totalReplicas: async ({ name }, args, { dataSources }): Promise<number> => {
+      const metric = await dataSources.prometheusAPI.getTotalReplicas(name);
+
+      return metric[0].totalReplicas;
+    },
+
+    totalIsrs: async ({ name }, args, { dataSources }): Promise<number> => {
+      const metric = await dataSources.prometheusAPI.getTotalIsrs(name);
+
+      return metric[0].totalIsrs;
+    },
+
+    brokersWithReplicas: async (
+      { name },
+      args,
+      { dataSources }
+    ): Promise<number[]> => {
+      const metric = await dataSources.prometheusAPI.getReplicasPerBroker(name);
+      const brokersWithReplicas: number[] = [];
+      metric.forEach((result) => brokersWithReplicas.push(result.brokerId));
+
+      return brokersWithReplicas;
+    },
+
+    logSize: async ({ name }, args, { dataSources }): Promise<number> => {
+      const metric = await dataSources.prometheusAPI.getLogSize(name);
+      const logSizeGB = Number((metric[0].logSize / 1000000000).toFixed(2));
+
+      return logSizeGB;
+    },
+  },
+
   Query: {
     brokers: async (parent, { start, end, step }): Promise<Broker[]> => {
       const clusterInfo = await brokerData.getClusterInfo();
@@ -190,6 +227,12 @@ const resolvers = {
     cluster: async (): Promise<Cluster> => {
       const clusterInfo = await brokerData.getClusterInfo();
       return clusterInfo;
+    },
+
+    topic: async (parent, { name }): Promise<any> => {
+      const topic = await brokerData.getSingleTopic(name);
+
+      return topic;
     },
   },
 };

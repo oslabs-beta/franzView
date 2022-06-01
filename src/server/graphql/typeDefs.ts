@@ -21,11 +21,11 @@ export const typeDefs = gql`
 
   type Topic {
     name: String!
-    numPartitions: Int!
+    numPartitions: Int
     totalReplicas: Int
     totalIsrs: Int
     brokersWithReplicas: [Int]
-    logSize: Int
+    logSize: Float
   }
 
   type ActiveControllerCount {

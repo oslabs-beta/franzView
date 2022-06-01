@@ -83,6 +83,38 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponseSeries(data, "diskUsage");
   }
 
+  async getTotalReplicas(name) {
+    const query = `query=(sum(kafka_cluster_partition_replicascount{topic="${name}"})by(topic))`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "totalReplicas");
+  }
+
+  async getReplicasPerBroker(name) {
+    const query = `query=(sum(kafka_cluster_partition_replicascount{topic="${name}"})by(instance))>0`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "totalReplicasPerBroker");
+  }
+
+  async getTotalIsrs(name) {
+    const query = `query=(sum(kafka_cluster_partition_insyncreplicascount{topic="${name}"})by(topic))`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "totalIsrs");
+  }
+
+  async getLogSize(name) {
+    const query = `query=(sum(kafka_log_log_size{topic=~"${name}"})by(topic))`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "logSize");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatResponse(data: any[], metric: string) {
     /* Remove for production */

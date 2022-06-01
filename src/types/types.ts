@@ -27,6 +27,15 @@ export interface DiskUsage extends Metric {
   diskUsage: number;
 }
 
+export interface Topic {
+  name: string;
+  numPartitions: number;
+  totalReplicas: number;
+  totalIsrs: number;
+  brokersWithReplicas: [number];
+  logSize: number;
+}
+
 export interface Metric {
   time: string;
 }
