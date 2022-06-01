@@ -6,6 +6,7 @@ export const typeDefs = gql`
     activeController: Broker
     brokers: [Broker]!
     offlinePartitionCount: OfflinePartitionCount
+    numberUnderReplicatedPartitions: UnderReplicatedPartitions
   }
 
   type Broker {
