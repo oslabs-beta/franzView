@@ -8,7 +8,6 @@ import { Cluster, Broker } from "../../../types/types";
 
 export async function getClusterInfo(): Promise<Cluster> {
   try {
-    await admin.connect();
     const info = await admin.describeCluster();
     const brokers: Broker[] = [];
     for (let i = 0; i < info.brokers.length; i++) {
@@ -26,7 +25,6 @@ export async function getClusterInfo(): Promise<Cluster> {
       )[0],
     };
 
-    await admin.disconnect();
     return cluster;
   } catch (error) {
     console.log(error);
@@ -35,7 +33,6 @@ export async function getClusterInfo(): Promise<Cluster> {
 
 export async function getSingleTopic(name: string) {
   try {
-    await admin.connect();
     const topic = await admin
       .fetchTopicMetadata({ topics: [name] })
       .then((topics) => topics.topics[0]);
@@ -48,7 +45,6 @@ export async function getSingleTopic(name: string) {
 
 export async function getAllTopics() {
   try {
-    await admin.connect();
     const names = await admin.listTopics();
     const topics = await admin.fetchTopicMetadata({ topics: names });
 
