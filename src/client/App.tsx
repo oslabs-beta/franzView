@@ -1,6 +1,8 @@
 import React from "react";
 
 import Dashboard from "./pages/Dashboard";
+import Brokers from "./pages/Brokers";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 //https://github.com/apollographql/apollo-client/issues/3733
@@ -15,12 +17,22 @@ const client = new ApolloClient({
 
 const App: React.FC = () => {
   return (
-    <div>
+    <BrowserRouter>
       <ApolloProvider client={client}>
-        {/* Hello, this is a new App */}
-        <Dashboard />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/brokers" element={<Brokers />} />
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>nothing here!</p>
+              </main>
+            }
+          />
+        </Routes>
       </ApolloProvider>
-    </div>
+    </BrowserRouter>
   );
 };
 
