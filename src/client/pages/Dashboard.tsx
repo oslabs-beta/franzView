@@ -18,11 +18,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-import { mainListItems, secondaryListItems } from "../dashboard/listItems";
-import Chart from "../dashboard/Chart";
-import MetricsCard from "../dashboard/MetricsCard";
+import { mainListItems, secondaryListItems } from "../components/listItems";
+import Chart from "../components/Chart";
+import MetricsCard from "../components/MetricsCard";
 import Broker from "../components/Broker";
-import ConsumerCard from "../dashboard/ConsumerCard";
+import ConsumerCard from "../components/ConsumerCard";
 
 function Copyright(props: any) {
   return (
