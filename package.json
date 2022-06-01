@@ -60,6 +60,7 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.6",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.0",
