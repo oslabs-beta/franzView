@@ -24,6 +24,9 @@ import MetricsCard from "../components/MetricsCard";
 import Broker from "../components/Broker";
 import ConsumerCard from "../components/ConsumerCard";
 
+import { CARD_METRICS_QUERY } from "../models/queries";
+import { useQuery } from "@apollo/client";
+
 function Copyright(props: any) {
   return (
     <Typography
@@ -99,6 +102,10 @@ function DashboardContent() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const { loading, error, data } = useQuery(CARD_METRICS_QUERY, {
+    pollInterval: 5000,
+  });
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -227,7 +234,11 @@ function DashboardContent() {
                   }}
                 >
                   <MetricsCard
-                    value={1}
+                    value={
+                      loading || error
+                        ? "Loading..."
+                        : data.cluster.activeControllerCount.count
+                    }
                     title="Active controller count"
                     toBe="Should be one."
                   />
