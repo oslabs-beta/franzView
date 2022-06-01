@@ -103,9 +103,7 @@ function DashboardContent() {
     setOpen(!open);
   };
 
-  const { loading, error, data } = useQuery(CARD_METRICS_QUERY, {
-    pollInterval: 5000,
-  });
+  const { loading, error, data } = useQuery(CARD_METRICS_QUERY);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -235,7 +233,7 @@ function DashboardContent() {
                 >
                   <MetricsCard
                     value={
-                      loading || error
+                      loading
                         ? "Loading..."
                         : data.cluster.activeControllerCount.count
                     }

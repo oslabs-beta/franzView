@@ -9,10 +9,8 @@ export const CARD_METRICS_QUERY = gql`
       offlinePartitionCount {
         count
       }
-      brokers {
-        numberUnderReplicatedPartitions {
-          underReplicatedPartitions
-        }
+      numberUnderReplicatedPartitions {
+        underReplicatedPartitions
       }
     }
   }
