@@ -10,8 +10,7 @@ import {
   gql,
 } from "@apollo/client";
 //https://github.com/apollographql/apollo-client/issues/3733
-
-//typically would also import InMemoryCache and include that in the options
+//typically would also import useQuery and gql - removed them because they were defined but not used
 
 const client = new ApolloClient({
   uri: "https://localhost:3000/graphql",
