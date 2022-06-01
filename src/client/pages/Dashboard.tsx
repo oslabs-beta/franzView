@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -15,6 +16,10 @@ import Broker from "../components/dashboard/Broker";
 import ConsumerCard from "../components/dashboard/ConsumerCard";
 import Sidebar from "../components/dashboard/Sidebar";
 import Header from "../components/dashboard/Header";
+
+import { CARD_METRICS_QUERY } from "../models/queries";
+import { useQuery } from "@apollo/client";
+
 
 function Copyright(props: any) {
   return (
@@ -37,14 +42,16 @@ function Copyright(props: any) {
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  const { loading, error, data } = useQuery(CARD_METRICS_QUERY, {
+    pollInterval: 5000,
+  });
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-
         <Header />
         <Sidebar />
-
         <Box
           component="main"
           sx={{
@@ -93,10 +100,19 @@ function DashboardContent() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 200,
                   }}
                 >
-                  <MetricsCard />
+                  <MetricsCard
+                    value={
+                      loading
+                        ? "Loading..."
+                        : data.cluster.numberUnderReplicatedPartitions
+                            .underReplicatedPartitions
+                    }
+                    title="Underreplicated partitions"
+                    toBe="Should be zero."
+                  />
                 </Paper>
               </Grid>
               {/* Metrics Card 2 */}
@@ -106,23 +122,39 @@ function DashboardContent() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 200,
                   }}
                 >
-                  <MetricsCard />
+                  <MetricsCard
+                    value={
+                      loading
+                        ? "Loading..."
+                        : data.cluster.activeControllerCount.count
+                    }
+                    title="Active controller count"
+                    toBe="Should be one."
+                  />
                 </Paper>
               </Grid>
-              {/* Metrics Card 2 */}
+              {/* Metrics Card 3 */}
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 200,
                   }}
                 >
-                  <MetricsCard />
+                  <MetricsCard
+                    value={
+                      loading
+                        ? "Loading..."
+                        : data.cluster.offlinePartitionCount.count
+                    }
+                    title="Offline partitions count"
+                    toBe="Should be zero."
+                  />
                 </Paper>
               </Grid>
               {/* Broker Component */}
