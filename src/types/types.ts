@@ -1,3 +1,5 @@
+import { DocumentNode } from "graphql";
+
 export interface DefaultErr {
   log: string;
   status: number;
@@ -54,4 +56,9 @@ export interface Cluster {
 export interface UnderReplicatedPartitions {
   underReplicatedPartitions: number;
   time: string;
+}
+
+export interface ChartProps {
+  query: DocumentNode;
+  metric: "string";
 }
