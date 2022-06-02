@@ -12,8 +12,8 @@ import { BatchHttpLink } from "@apollo/client/link/batch-http";
 // Create a batch link to have reduce network requests needed to query data
 const link = new BatchHttpLink({
   uri: "/graphql",
-  batchMax: 3,
-  batchInterval: 10,
+  batchMax: 5,
+  batchInterval: 20,
   batchDebounce: true,
 });
 const client = new ApolloClient({

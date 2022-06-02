@@ -30,6 +30,8 @@ ChartJS.register(
   Legend
 );
 
+const animation = {};
+
 export default function Chart({
   query,
   metric,
@@ -38,14 +40,51 @@ export default function Chart({
   pollInterval,
   title,
 }: GqlChartProps) {
-  const [timeNow, setTimeNow] = useState(new Date());
+  const timeNow = useRef(new Date());
   const loaded = useRef(false);
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [],
   });
-  let refetching = false;
+
+  const colors = ["00f5d4", "00bbf9", "9b5de5", "f15bb5", "fee440"];
+
+  const delayBetweenPoints = 1000;
+  const previousY = (ctx) =>
+    ctx.index === 0
+      ? ctx.chart.scales.y.getPixelForValue(100)
+      : ctx.chart
+          .getDatasetMeta(ctx.datasetIndex)
+          .data[ctx.index - 1].getProps(["y"], true).y;
+  const animation = {
+    x: {
+      type: "string",
+      easing: "linear",
+      duration: delayBetweenPoints,
+      from: NaN, // the point is initially skipped
+      delay(ctx) {
+        if (ctx.type !== "data" || ctx.xStarted) {
+          return 0;
+        }
+        ctx.xStarted = true;
+        return ctx.index * delayBetweenPoints;
+      },
+    },
+    y: {
+      type: "number",
+      easing: "linear",
+      duration: delayBetweenPoints,
+      from: previousY,
+      delay(ctx) {
+        if (ctx.type !== "data" || ctx.yStarted) {
+          return 0;
+        }
+        ctx.yStarted = true;
+        return ctx.index * delayBetweenPoints;
+      },
+    },
+  };
 
   const options = {
     responsive: true,
@@ -60,17 +99,51 @@ export default function Chart({
     },
   };
 
-  const { loading, error, data, refetch, networkStatus } = useQuery(query, {
+  const { loading, data, refetch } = useQuery(query, {
     variables: {
-      start: new Date(timeNow.valueOf() - duration * 60000).toString(),
-      end: timeNow.toString(),
+      start: new Date(timeNow.current.valueOf() - duration * 60000).toString(),
+      end: timeNow.current.toString(),
       step: step,
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
-      console.log(metric, "completed");
+      console.log(metric, "request completed");
+      if (chartRef.current?.data.datasets.length > 1 && loaded.current) {
+        data.brokers.forEach((broker, index) => {
+          broker[`${metric}OverTime`].forEach((point) => {
+            if (index === 0) {
+              chartRef.current?.data?.labels.shift();
+              chartRef.current?.data?.labels.push(
+                new Date(point.time).toLocaleTimeString("en-us", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
+              );
+            }
+
+            chartRef.current?.data?.datasets[index].data.shift();
+            chartRef.current?.data?.datasets[index].data.push(point[metric]);
+          });
+        });
+
+        console.log(metric, "updating");
+        chartRef.current.update();
+      }
+
+      setTimeout(() => {
+        const variables = {
+          start: timeNow.current.toString(),
+          end: new Date(
+            timeNow.current.valueOf() + pollInterval * 1000
+          ).toString(),
+          step: step,
+        };
+        timeNow.current = new Date(variables.end);
+        refetch({ ...variables });
+      }, pollInterval * 1000);
       return data;
     },
   });
@@ -82,6 +155,10 @@ export default function Chart({
     data?.brokers.forEach((broker, index) => {
       const brokerData: any = {};
       brokerData.label = `brokerId: ${broker.brokerId}`;
+      brokerData.backgroundColor = `#${colors[index]}`;
+      brokerData.borderColor = `#${colors[index]}`;
+      brokerData.pointRadius = 0;
+      brokerData.tension = 0.2;
       brokerData.data = broker[`${metric}OverTime`].map((point) => {
         if (index === 0) {
           labels.push(
@@ -98,101 +175,25 @@ export default function Chart({
       datasets.push(brokerData);
     });
 
+    console.log("Updating State");
+
     setChartData({
       labels,
       datasets,
     });
 
-    const moreData = setInterval(() => {
-      console.log("Waiting to refetch:", metric);
-
-      if (!refetching) {
-        refetching = true;
-        console.log("Refetching:", metric);
-        const variables = {
-          start: timeNow.toString(),
-          end: new Date(timeNow.valueOf() + pollInterval * 1000).toString(),
-          step: step,
-        };
-        setTimeNow(new Date(variables.end));
-        refetch({ ...variables }).then((data) => {
-          console.log(metric, " refetched");
-          refetching = false;
-          return data;
-        });
-      }
-      return;
-    }, pollInterval * 1000);
-
     return () => (loaded.current = true);
   }, [data]);
 
-  useEffect(() => {
-    if (loading || !loaded.current) return;
-    if (!chartRef.current.data || !data) return;
-    data.brokers.forEach((broker, index, array) => {
-      broker[`${metric}OverTime`].forEach((point) => {
-        if (index === 0) {
-          chartRef.current?.data?.labels.shift();
-          chartRef.current?.data?.labels.push(
-            new Date(point.time).toLocaleTimeString("en-us", {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            })
-          );
-        }
-
-        chartRef.current?.data?.datasets[index].data.shift();
-        chartRef.current?.data?.datasets[index].data.push(point[metric]);
-      });
-    });
-
-    console.log(metric, "updating");
-    chartRef.current.update();
-  }, [data]);
-
-  // data?.brokers.forEach((broker, index) => {
-  //   if (!chartData.datasets[index]) {
-  //     console.log('First time')
-  //     const newLabels = [];
-  //     const brokerData: any = {}
-  //     brokerData.label = `brokerId: ${broker.brokerId}`
-  //     brokerData.data = broker[`${metric}OverTime`].map(point => {
-  //      if (index === 0){ chartData.labels.push(new Date(point.time).toLocaleTimeString('en-us', {
-  //         hour: '2-digit',
-  //         minute: '2-digit',
-  //         second: '2-digit'
-  //       }));}
-  //       return point[metric]
-  //     })
-  //     return chartData.datasets.push(brokerData)
-  //   }
-  //    else {
-  //     console.log('secondTime')
-  //     broker[`${metric}OverTime`].forEach(point => {
-  //       if (index === 0) {
-  //         chartData.labels.shift();
-  //         chartData.labels.push(new Date(point.time).toLocaleTimeString('en-us', {
-  //         hour: '2-digit',
-  //         minute: '2-digit',
-  //         second: '2-digit'
-  //       }))
-  //       }
-
-  //       chartData.datasets[index].data.shift();
-  //       return chartData.datasets[index].data.push(point[metric]);
-  //     })
-  //   }
-  // });
-
   return (
     <>
-      {loading && !loaded.current ? (
-        <div>Loading...</div>
-      ) : (
-        <Line options={options} data={chartData} ref={chartRef} />
-      )}
+      {useMemo(() => {
+        return loading && !loaded.current ? (
+          <div>Loading...</div>
+        ) : (
+          <Line options={options} data={chartData} ref={chartRef} />
+        );
+      }, [chartData])}
     </>
   );
 }
