@@ -1,6 +1,9 @@
 import * as React from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
+import { gql } from "@apollo/client";
+
+const quearyBroker = gql`broker information ()`;
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
