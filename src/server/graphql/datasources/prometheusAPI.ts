@@ -179,9 +179,13 @@ class PrometheusAPI extends RESTDataSource {
       };
       result.values.forEach((value) => {
         const point = {
-          time: new Date(value[0] * 1000).toString(),
+          time: new Date(value[0] * 1000).toLocaleString("en-US", {
+            timeStyle: "long",
+            dateStyle: "short",
+            hour12: false,
+          }),
         };
-        point[metric] = Number(value[1]);
+        point[metric] = Number(value[1]).toFixed(2);
         obj.values.push(point);
       });
       formattedData.push(obj);
