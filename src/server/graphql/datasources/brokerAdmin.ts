@@ -1,9 +1,13 @@
 import { admin } from "../../kafka/kafka";
-import { Broker } from "../../../types";
+import { Cluster, Broker } from "../../../types/types";
 
-export async function getClusterInfo(): Promise<Broker[]> {
+/**
+ * TODO: Keep admin connection to avoid needing to reconnect multiple times. Disconnect if not needed for extended time.
+ *
+ */
+
+export async function getClusterInfo(): Promise<Cluster> {
   try {
-    await admin.connect();
     const info = await admin.describeCluster();
     const brokers: Broker[] = [];
     for (let i = 0; i < info.brokers.length; i++) {
@@ -14,9 +18,38 @@ export async function getClusterInfo(): Promise<Broker[]> {
       });
     }
 
-    await admin.disconnect();
-    return brokers;
+    const cluster: Cluster = {
+      brokers,
+      activeController: brokers.filter(
+        (broker) => broker.brokerId === info.controller
+      )[0],
+    };
+
+    return cluster;
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function getSingleTopic(name: string) {
+  try {
+    const topic = await admin
+      .fetchTopicMetadata({ topics: [name] })
+      .then((topics) => topics.topics[0]);
+
+    return topic;
+  } catch (error) {
+    console.log(`Kafka Admin Error getting single topic: ${error}`);
+  }
+}
+
+export async function getAllTopics() {
+  try {
+    const names = await admin.listTopics();
+    const topics = await admin.fetchTopicMetadata({ topics: names });
+
+    return topics.topics;
+  } catch (error) {
+    console.log(`Kafka Admin Error getting single topic: ${error}`);
   }
 }

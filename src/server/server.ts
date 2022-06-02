@@ -1,11 +1,12 @@
 import express from "express";
 import path from "path";
-import { DefaultErr } from "../types";
-import { typeDefs } from "./graphql/typeDef";
+import { DefaultErr } from "../types/types";
+import { typeDefs } from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import http from "http";
+import PrometheusAPI from "./graphql/datasources/prometheusAPI";
 
 // Default port as 3000 or PORT defined by a user in an env file.
 const PORT: number | string = process.env.PORT || 3000;
@@ -27,6 +28,11 @@ async function startApolloServer(typeDefs, resolvers) {
     resolvers,
     csrfPrevention: true,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    dataSources: () => {
+      return {
+        prometheusAPI: new PrometheusAPI(),
+      };
+    },
   });
 
   await server.start();
