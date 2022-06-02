@@ -1,4 +1,5 @@
 import { DocumentNode } from "graphql";
+import { ChartProps } from "react-chartjs-2";
 
 export interface DefaultErr {
   log: string;
@@ -58,7 +59,11 @@ export interface UnderReplicatedPartitions {
   time: string;
 }
 
-export interface ChartProps {
+export interface GqlChartProps {
   query: DocumentNode;
-  metric: "string";
+  metric: string;
+  duration: number;
+  step: string;
+  pollInterval?: number;
+  title?: string;
 }
