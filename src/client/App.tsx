@@ -5,11 +5,19 @@ import Brokers from "./pages/Brokers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { BatchHttpLink } from "@apollo/client/link/batch-http";
 //https://github.com/apollographql/apollo-client/issues/3733
 //typically would also import useQuery and gql - removed them because they were defined but not used
 
+// Create a batch link to have reduce network requests needed to query data
+const link = new BatchHttpLink({
+  uri: "/graphql",
+  batchMax: 3,
+  batchInterval: 10,
+  batchDebounce: true,
+});
 const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
+  link,
   cache: new InMemoryCache({
     typePolicies: {
       Broker: {

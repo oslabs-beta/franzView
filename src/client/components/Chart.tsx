@@ -30,19 +30,6 @@ ChartJS.register(
   Legend
 );
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top" as const,
-    },
-    title: {
-      display: true,
-      text: "CPU Usage",
-    },
-  },
-};
-
 export default function Chart({
   query,
   metric,
@@ -60,6 +47,19 @@ export default function Chart({
   });
   let refetching = false;
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: title,
+      },
+    },
+  };
+
   const { loading, error, data, refetch, networkStatus } = useQuery(query, {
     variables: {
       start: new Date(timeNow.valueOf() - duration * 60000).toString(),
@@ -69,6 +69,10 @@ export default function Chart({
     fetchPolicy: "network-only",
     nextFetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      console.log(metric, "completed");
+      return data;
+    },
   });
 
   useEffect(() => {
@@ -111,9 +115,10 @@ export default function Chart({
           step: step,
         };
         setTimeNow(new Date(variables.end));
-        refetch({ ...variables }).then(() => {
+        refetch({ ...variables }).then((data) => {
           console.log(metric, " refetched");
           refetching = false;
+          return data;
         });
       }
       return;

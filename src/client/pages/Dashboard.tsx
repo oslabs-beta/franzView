@@ -86,6 +86,7 @@ function DashboardContent() {
                     step="15s"
                     duration={5}
                     pollInterval={30}
+                    title="CPU Usage"
                   />
                 </Paper>
               </Grid>
@@ -105,6 +106,7 @@ function DashboardContent() {
                     step="15s"
                     duration={5}
                     pollInterval={30}
+                    title="Disk Usage"
                   />
                 </Paper>
               </Grid>
