@@ -17,7 +17,11 @@ import ConsumerCard from "../components/ConsumerCard";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 
-import { CARD_METRICS_QUERY } from "../models/queries";
+import {
+  ALL_BROKER_CPU_USAGE,
+  CARD_METRICS_QUERY,
+  ALL_BROKER_DISK_USAGE,
+} from "../models/queries";
 import { useQuery } from "@apollo/client";
 
 function Copyright(props: any) {
@@ -42,7 +46,7 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const { loading, error, data } = useQuery(CARD_METRICS_QUERY, {
-    pollInterval: 5000,
+    pollInterval: 60000,
   });
 
   return (
@@ -64,36 +68,50 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={6} lg={8}>
+              <Grid item xs={12} md={6}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
                   }}
                 >
-                  <Chart />
+                  <Chart
+                    query={ALL_BROKER_CPU_USAGE}
+                    metric="cpuUsage"
+                    step="30s"
+                    duration={5}
+                    pollInterval={60}
+                    title="CPU Usage"
+                    yAxisLabel="% CPU Used"
+                  />
                 </Paper>
               </Grid>
               {/* Chart 2 */}
-              <Grid item xs={12} md={6} lg={8}>
+              <Grid item xs={12} md={6}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
                   }}
                 >
-                  <Chart />
+                  <Chart
+                    query={ALL_BROKER_DISK_USAGE}
+                    metric="diskUsage"
+                    step="30s"
+                    duration={5}
+                    pollInterval={60}
+                    title="Disk Usage"
+                    yAxisLabel="% Memory Used"
+                  />
                 </Paper>
               </Grid>
               {/* Metrics Card */}
-              <Grid item xs={12} md={4} lg={3}>
+              <Grid item xs={12} md={4}>
                 <Paper
                   sx={{
                     p: 2,
@@ -115,7 +133,7 @@ function DashboardContent() {
                 </Paper>
               </Grid>
               {/* Metrics Card 2 */}
-              <Grid item xs={12} md={4} lg={3}>
+              <Grid item xs={12} md={4}>
                 <Paper
                   sx={{
                     p: 2,
@@ -136,7 +154,7 @@ function DashboardContent() {
                 </Paper>
               </Grid>
               {/* Metrics Card 3 */}
-              <Grid item xs={12} md={4} lg={3}>
+              <Grid item xs={12} md={4}>
                 <Paper
                   sx={{
                     p: 2,

@@ -54,7 +54,7 @@ describe("GraphQL Queries", () => {
               brokerHost
               brokerId
               brokerPort
-              brokerCpuUsage {
+              cpuUsage {
                 cpuUsage
                 time
               }
@@ -74,7 +74,7 @@ describe("GraphQL Queries", () => {
             brokerId: expect.any(Number),
             brokerPort: expect.any(Number),
             brokerHost: expect.any(String),
-            brokerCpuUsage: expect.objectContaining({
+            cpuUsage: expect.objectContaining({
               cpuUsage: expect.any(Number),
               time: expect.any(String),
             }),
@@ -95,7 +95,7 @@ describe("GraphQL Queries", () => {
             brokerHost
             brokerId
             brokerPort
-            brokerCpuUsage {
+            cpuUsage {
               cpuUsage
               time
             }
@@ -115,7 +115,7 @@ describe("GraphQL Queries", () => {
             brokerId: expect.any(Number),
             brokerPort: expect.any(Number),
             brokerHost: expect.any(String),
-            brokerCpuUsage: expect.objectContaining({
+            cpuUsage: expect.objectContaining({
               cpuUsage: expect.any(Number),
               time: expect.any(String),
             }),
@@ -156,7 +156,7 @@ describe("GraphQL Queries", () => {
       const result = await global.testServer.executeOperation({
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
-              brokerCpuUsage {
+              cpuUsage {
                 cpuUsage
                 time
               }
@@ -176,8 +176,8 @@ describe("GraphQL Queries", () => {
       expect(typeof result.data.broker.brokerId).toBe("number");
       expect(typeof result.data.broker.brokerHost).toBe("string");
       expect(typeof result.data.broker.brokerPort).toBe("number");
-      expect(typeof result.data.broker.brokerCpuUsage.cpuUsage).toBe("number");
-      expect(typeof result.data.broker.brokerCpuUsage.time).toBe("string");
+      expect(typeof result.data.broker.cpuUsage.cpuUsage).toBe("number");
+      expect(typeof result.data.broker.cpuUsage.time).toBe("string");
       expect(
         typeof result.data.broker.numberUnderReplicatedPartitions
           .underReplicatedPartitions
@@ -194,7 +194,7 @@ describe("GraphQL Queries", () => {
             brokerHost
             brokerId
             brokerPort
-            brokerCpuUsage {
+            cpuUsage {
               cpuUsage
               time
             }
@@ -213,7 +213,7 @@ describe("GraphQL Queries", () => {
             brokerId: expect.any(Number),
             brokerPort: expect.any(Number),
             brokerHost: expect.any(String),
-            brokerCpuUsage: expect.objectContaining({
+            cpuUsage: expect.objectContaining({
               cpuUsage: expect.any(Number),
               time: expect.any(String),
             }),
@@ -230,7 +230,7 @@ describe("GraphQL Queries", () => {
       const result = await global.testServer.executeOperation({
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
-              brokerDiskUsage {
+              diskUsage {
                 diskUsage
                 time
               }
@@ -241,8 +241,8 @@ describe("GraphQL Queries", () => {
         },
       });
       expect(result.errors).toBeUndefined();
-      expect(result.data.broker).toHaveProperty("brokerDiskUsage");
-      expect(result.data.broker.brokerDiskUsage).toEqual(
+      expect(result.data.broker).toHaveProperty("diskUsage");
+      expect(result.data.broker.diskUsage).toEqual(
         expect.objectContaining({
           diskUsage: expect.any(Number),
           time: expect.any(String),
