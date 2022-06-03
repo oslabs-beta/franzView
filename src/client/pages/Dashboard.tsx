@@ -86,6 +86,7 @@ function DashboardContent() {
                     duration={5}
                     pollInterval={60}
                     title="CPU Usage"
+                    yAxisLabel="% CPU Used"
                   />
                 </Paper>
               </Grid>
@@ -105,6 +106,7 @@ function DashboardContent() {
                     duration={5}
                     pollInterval={60}
                     title="Disk Usage"
+                    yAxisLabel="% Memory Used"
                   />
                 </Paper>
               </Grid>

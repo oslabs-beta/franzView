@@ -43,6 +43,8 @@ export default function Chart({
   step,
   pollInterval,
   title,
+  xAxisLabel,
+  yAxisLabel,
 }: GqlChartProps) {
   const timeNow = useRef(new Date());
   const loaded = useRef(false);
@@ -96,6 +98,10 @@ export default function Chart({
     },
     scales: {
       xAxes: {
+        title: {
+          display: xAxisLabel ? true : false,
+          text: xAxisLabel,
+        },
         type: "realtime",
         time: {
           unit: "minute",
@@ -115,6 +121,12 @@ export default function Chart({
           autoSkip: false,
           maxRotation: 45,
           minRotation: 45,
+        },
+      },
+      yAxes: {
+        title: {
+          display: yAxisLabel ? true : false,
+          text: yAxisLabel,
         },
       },
     },

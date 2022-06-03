@@ -66,4 +66,6 @@ export interface GqlChartProps {
   step: string;
   pollInterval?: number;
   title?: string;
+  xAxisLabel?: string;
+  yAxisLabel?: string;
 }
