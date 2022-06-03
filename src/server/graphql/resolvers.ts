@@ -15,7 +15,7 @@ import {
 
 const resolvers = {
   Broker: {
-    brokerCpuUsage: async (
+    cpuUsage: async (
       parent,
       args,
       { dataSources }
@@ -32,7 +32,7 @@ const resolvers = {
       }
     },
 
-    brokerCpuUsageOverTime: async (
+    cpuUsageOverTime: async (
       parent,
       args,
       { dataSources }
@@ -55,7 +55,7 @@ const resolvers = {
       }
     },
 
-    brokerDiskUsageOverTime: async (
+    diskUsageOverTime: async (
       parent,
       args,
       { dataSources }
@@ -78,11 +78,7 @@ const resolvers = {
       }
     },
 
-    brokerDiskUsage: async (
-      parent,
-      args,
-      { dataSources }
-    ): Promise<DiskUsage> => {
+    diskUsage: async (parent, args, { dataSources }): Promise<DiskUsage> => {
       try {
         const totalBrokerDiskUsage =
           await dataSources.prometheusAPI.getDiskUsage();
@@ -212,7 +208,7 @@ const resolvers = {
           broker.step = step;
         });
       }
-      return clusterInfo.brokers;
+      return clusterInfo.brokers.sort((a, b) => a.brokerId - b.brokerId);
     },
 
     broker: async (
