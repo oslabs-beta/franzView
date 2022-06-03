@@ -77,15 +77,14 @@ function DashboardContent() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
                   }}
                 >
                   <Chart
                     query={ALL_BROKER_CPU_USAGE}
                     metric="cpuUsage"
-                    step="15s"
+                    step="30s"
                     duration={5}
-                    pollInterval={30}
+                    pollInterval={60}
                     title="CPU Usage"
                   />
                 </Paper>
@@ -97,15 +96,14 @@ function DashboardContent() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
                   }}
                 >
                   <Chart
                     query={ALL_BROKER_DISK_USAGE}
                     metric="diskUsage"
-                    step="15s"
+                    step="30s"
                     duration={5}
-                    pollInterval={30}
+                    pollInterval={60}
                     title="Disk Usage"
                   />
                 </Paper>

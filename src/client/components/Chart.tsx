@@ -73,7 +73,6 @@ export default function Chart({
         delay: pollInterval * 1000,
         refresh: pollInterval * 1000,
         onRefresh: (chart) => {
-          console.log(`Refreshing ${metric}`);
           const variables = {
             start: timeNow.current.toString(),
             end: new Date().toString(),
@@ -85,7 +84,6 @@ export default function Chart({
             if (loaded.current) {
               result.data.brokers.forEach((broker, index) => {
                 broker[`${metric}OverTime`].forEach((point) => {
-                  // chart.data.datasets[index].data.shift();
                   chart.data.datasets[index].data.push(point);
                 });
               });
@@ -112,6 +110,11 @@ export default function Chart({
             local: "en-us",
             setZone: true,
           },
+        },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 45,
         },
       },
     },
