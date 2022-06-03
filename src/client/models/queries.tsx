@@ -17,9 +17,14 @@ export const CARD_METRICS_QUERY = gql`
 `;
 
 export const BROKER_METRICS_QUERY = gql`
-  query Topic {
-    topic {
-
+  query Topics {
+    topics {
+      name
+      numPartitions
+      totalReplicas
+      totalIsrs
+      brokersWithReplicas
+      logSize
     }
   }
 `;

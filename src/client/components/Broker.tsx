@@ -1,9 +1,8 @@
 import * as React from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-// import { gql } from "@apollo/client";
-
-// const queryBroker = gql`broker information ()`;
+import { BROKER_METRICS_QUERY } from "../models/queries";
+import { useQuery } from "@apollo/client";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
@@ -75,17 +74,28 @@ const rows = [
 ];
 
 export default function Broker() {
+  const { loading, data, error } = useQuery(BROKER_METRICS_QUERY);
+
+  console.log("LOOK AT ME!!!!", data);
+
   return (
-    <React.Fragment>
-      <Title>Kafka Cluster</Title>
-      <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          // checkboxSelection
-          rows={rows}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
+    <>
+      {/* {data.values.map((test: any, index: number) => (
+      <div key={index} >
+        {test.name}
       </div>
-    </React.Fragment>
+    ))} */}
+      <React.Fragment>
+        <Title>Kafka Cluster</Title>
+        <div style={{ height: 400, width: "100%" }}>
+          <DataGrid
+            // checkboxSelection
+            rows={rows}
+            columns={columns}
+            components={{ Toolbar: GridToolbar }}
+          />
+        </div>
+      </React.Fragment>
+    </>
   );
 }
