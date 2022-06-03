@@ -1,5 +1,4 @@
 import { DocumentNode } from "graphql";
-import { ChartProps } from "react-chartjs-2";
 
 export interface DefaultErr {
   log: string;

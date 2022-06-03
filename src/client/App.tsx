@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { BatchHttpLink } from "@apollo/client/link/batch-http";
 import { Chart } from "chart.js";
-import { deepPurple, lightBlue } from "@mui/material/colors";
+import { Layout } from "./Layout/Layout";
 //https://github.com/apollographql/apollo-client/issues/3733
 //typically would also import useQuery and gql - removed them because they were defined but not used
 
@@ -50,18 +50,20 @@ const App: React.FC = () => {
     <BrowserRouter>
       <ThemeProvider theme={darkTheme}>
         <ApolloProvider client={client}>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/brokers" element={<Brokers />} />
-            <Route
-              path="*"
-              element={
-                <main style={{ padding: "1rem" }}>
-                  <p>nothing here!</p>
-                </main>
-              }
-            />
-          </Routes>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/brokers" element={<Brokers />} />
+              <Route
+                path="*"
+                element={
+                  <main style={{ padding: "1rem" }}>
+                    <p>nothing here!</p>
+                  </main>
+                }
+              />
+            </Routes>
+          </Layout>
         </ApolloProvider>
       </ThemeProvider>
     </BrowserRouter>
