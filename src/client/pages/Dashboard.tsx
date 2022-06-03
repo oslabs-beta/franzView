@@ -1,5 +1,4 @@
 import * as React from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -41,15 +40,13 @@ function Copyright(props: any) {
   );
 }
 
-const mdTheme = createTheme();
-
 function DashboardContent() {
   const { loading, error, data } = useQuery(CARD_METRICS_QUERY, {
     pollInterval: 60000,
   });
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <Header />
@@ -77,6 +74,7 @@ function DashboardContent() {
                     display: "flex",
                     flexDirection: "column",
                   }}
+                  elevation={16}
                 >
                   <Chart
                     query={ALL_BROKER_CPU_USAGE}
@@ -97,6 +95,7 @@ function DashboardContent() {
                     display: "flex",
                     flexDirection: "column",
                   }}
+                  elevation={16}
                 >
                   <Chart
                     query={ALL_BROKER_DISK_USAGE}
@@ -118,6 +117,7 @@ function DashboardContent() {
                     flexDirection: "column",
                     height: 200,
                   }}
+                  elevation={8}
                 >
                   <MetricsCard
                     value={
@@ -140,6 +140,7 @@ function DashboardContent() {
                     flexDirection: "column",
                     height: 200,
                   }}
+                  elevation={8}
                 >
                   <MetricsCard
                     value={
@@ -161,6 +162,7 @@ function DashboardContent() {
                     flexDirection: "column",
                     height: 200,
                   }}
+                  elevation={8}
                 >
                   <MetricsCard
                     value={
@@ -175,7 +177,10 @@ function DashboardContent() {
               </Grid>
               {/* Broker Component */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                <Paper
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                  elevation={4}
+                >
                   <Broker />
                 </Paper>
               </Grid>
@@ -189,7 +194,7 @@ function DashboardContent() {
           </Container>
         </Box>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }
 
