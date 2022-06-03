@@ -1,70 +1,57 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Grid from "@mui/material/Grid";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeartPulse } from "@fortawesome/free-solid-svg-icons";
 
-function generate(element: React.ReactElement) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    })
-  );
-}
-
-const ConsumerCard = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-}));
-
-export default function InteractiveList() {
+export default function ConsumerCard() {
   return (
-    <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-            Consumers
+    <div>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <FontAwesomeIcon icon={faHeartPulse} />
+          <Typography>Consumer 1</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
-          <ConsumerCard>
-            <List>
-              {generate(
-                <ListItem>
-                  <ListItemText primary="Single-line item" />
-                </ListItem>
-              )}
-            </List>
-          </ConsumerCard>
-          <ConsumerCard>
-            <List>
-              {generate(
-                <ListItem>
-                  <ListItemText primary="Single-line item" />
-                </ListItem>
-              )}
-            </List>
-          </ConsumerCard>
-          <ConsumerCard>
-            <List>
-              {generate(
-                <ListItem>
-                  <ListItemText primary="Single-line item" />
-                </ListItem>
-              )}
-            </List>
-          </ConsumerCard>
-          <ConsumerCard>
-            <List>
-              {generate(
-                <ListItem>
-                  <ListItemText primary="Single-line item" />
-                </ListItem>
-              )}
-            </List>
-          </ConsumerCard>
-        </Grid>
-      </Grid>
-    </Box>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <FontAwesomeIcon icon={faHeartPulse} />
+          <Typography>Consumer 2</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel3a-content"
+          id="panel3a-header"
+        >
+          <FontAwesomeIcon icon={faHeartPulse} />
+          <Typography>Consumer 3</Typography>
+        </AccordionSummary>
+      </Accordion>
+    </div>
   );
 }
