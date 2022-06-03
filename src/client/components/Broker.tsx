@@ -1,8 +1,12 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-// import { BROKER_METRICS_QUERY } from "../models/queries";
-// import { useQuery } from "@apollo/client";
+import { BROKER_METRICS_QUERY } from "../models/queries";
+import { useQuery } from "@apollo/client";
+import { IndexRouteProps } from "react-router";
+
+// onQueryCallback with use query
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
@@ -73,29 +77,110 @@ const rows = [
   },
 ];
 
-export default function Broker() {
-  // const { loading, data, error } = useQuery(BROKER_METRICS_QUERY);
+// const test = {
+//   "data": {
+//     "topics": [
+//       {
+//         "name": "__consumer_offsets",
+//         "numPartitions": 50,
+//         "totalReplicas": 100,
+//         "totalIsrs": 100,
+//         "brokersWithReplicas": [
+//           1,
+//           2,
+//           3
+//         ],
+//         "logSize": 0
+//       },
+//       {
+//         "name": "stackoverflow-test",
+//         "numPartitions": 1,
+//         "totalReplicas": 3,
+//         "totalIsrs": 3,
+//         "brokersWithReplicas": [
+//           3
+//         ],
+//         "logSize": 0
+//       },
+//       {
+//         "name": "stackoverflow",
+//         "numPartitions": 3,
+//         "totalReplicas": 9,
+//         "totalIsrs": 9,
+//         "brokersWithReplicas": [
+//           1,
+//           2,
+//           3
+//         ],
+//         "logSize": 2.67
+//       }
+//     ]
+//   }
+// }
 
-  // console.log("LOOK AT ME!!!!", data);
+type test = {
+  id: number;
+  topic: string;
+  partitionNum: number;
+  partitionRep: number;
+  isrPerPart: number;
+  brokersRep: number[];
+  logSize: number;
+};
+
+export default function Broker() {
+  const [rowData, setRowData] = useState([]);
+  const { loading, error, data } = useQuery(BROKER_METRICS_QUERY, {
+    onCompleted: (data) => {
+      const newRowData = data.topics.map((item, index) => {
+        return {
+          id: index,
+          topic: item.name,
+          partitionNum: item.numPartitions,
+          partitionRep: item.totalReplicas,
+          isrPerPart: item.totalIsrs,
+          brokersRep: item.brokersWithReplicas,
+          logSize: item.logSize,
+        };
+      });
+
+      setRowData(newRowData);
+      return data;
+    },
+  });
+  console.log("this is the data", data);
+
+  function BrokerData() {
+    const testData = [];
+    if (loading) return <p>Loading...</p>;
+    data.topics.map((item, index) => {
+      rows.push({
+        id: index,
+        topic: item.name,
+        partitionNum: item.numPartitions,
+        partitionRep: item.totalReplicas,
+        isrPerPart: item.totalIsrs,
+        brokersRep: item.brokersWithReplicas,
+        logSize: item.logSize,
+      });
+    });
+    return testData;
+  }
 
   return (
-    <>
-      {/* {data.values.map((test: any, index: number) => (
-      <div key={index} >
-        {test.name}
-      </div>
-    ))} */}
-      <React.Fragment>
-        <Title>Kafka Cluster</Title>
+    <React.Fragment>
+      <Title>Kafka Cluster</Title>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
         <div style={{ height: 400, width: "100%" }}>
           <DataGrid
-            // checkboxSelection
-            rows={rows}
+            rows={rowData}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
           />
         </div>
-      </React.Fragment>
-    </>
+      )}
+    </React.Fragment>
   );
 }
