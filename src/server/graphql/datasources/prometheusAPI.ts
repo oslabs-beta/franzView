@@ -23,7 +23,10 @@ class PrometheusAPI extends RESTDataSource {
   async getBrokerCpuUsageOverTime(start, end, step) {
     const unixStart = Math.round(new Date(start).getTime() / 1000);
     const unixEnd = Math.round(new Date(end).getTime() / 1000);
+
     try {
+      if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
+        throw "Date input incorrect";
       const query = `query=rate(process_cpu_seconds_total{job="kafka"}[1m])*100&start=${unixStart}&end=${unixEnd}&step=${step}`;
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
@@ -85,11 +88,22 @@ class PrometheusAPI extends RESTDataSource {
   async getDiskUsageOverTime(start, end, step) {
     const unixStart = Math.round(new Date(start).getTime() / 1000);
     const unixEnd = Math.round(new Date(end).getTime() / 1000);
-    const query = `query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100&start=${unixStart}&end=${unixEnd}&step=${step}`;
-    const result = await this.get(`api/v1/query_range?${query}`);
-    const data = result.data.result;
 
-    return this.formatResponseSeries(data, "diskUsage");
+    try {
+      if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
+        throw "Date input incorrect";
+      const query = `query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100&start=${unixStart}&end=${unixEnd}&step=${step}`;
+      const result = await this.get(`api/v1/query_range?${query}`);
+      const data = result.data.result;
+
+      return this.formatResponseSeries(data, "diskUsage");
+    } catch (error) {
+      console.log(`Error occured for Disk Usage Query to Prometheus with:
+       start: ${start}, 
+       end:  ${end},
+       step: ${step}
+       Error: ${error}`);
+    }
   }
 
   async getTotalReplicas(name) {
@@ -165,9 +179,13 @@ class PrometheusAPI extends RESTDataSource {
       };
       result.values.forEach((value) => {
         const point = {
-          time: new Date(value[0] * 1000).toString(),
+          time: new Date(value[0] * 1000).toLocaleString("en-US", {
+            timeStyle: "long",
+            dateStyle: "short",
+            hour12: false,
+          }),
         };
-        point[metric] = Number(value[1]);
+        point[metric] = Number(value[1]).toFixed(2);
         obj.values.push(point);
       });
       formattedData.push(obj);
