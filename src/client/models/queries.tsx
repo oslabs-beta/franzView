@@ -54,16 +54,17 @@ export const ALL_BROKER_DISK_USAGE = gql`
 
 export const BROKER_FRAGMENT = gql`
   fragment CoreBrokerFields on Broker {
-    brokerId: Int!
-    brokerPort: Int!
-    brokerHost: String!
+    brokerId
+    brokerPort
+    brokerHost
   }
 `;
 
 export const CORE_ALL_BROKERS_QUERY = gql`
+  ${BROKER_FRAGMENT}
   query CoreAllBrokerFields {
     brokers {
-      ${BROKER_FRAGMENT}
+      ...CoreBrokerFields
     }
   }
 `;
