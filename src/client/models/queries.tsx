@@ -16,6 +16,18 @@ export const CARD_METRICS_QUERY = gql`
   }
 `;
 
+export const BROKER_METRICS_QUERY = gql`
+  query Topics {
+    topics {
+      name
+      numPartitions
+      totalReplicas
+      totalIsrs
+      brokersWithReplicas
+      logSize
+    }
+  }
+`;
 export const ALL_BROKER_CPU_USAGE = gql`
   query BrokersCPUUsage($start: String, $end: String, $step: String) {
     brokers(start: $start, end: $end, step: $step) {
