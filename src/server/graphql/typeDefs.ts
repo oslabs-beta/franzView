@@ -14,10 +14,10 @@ export const typeDefs = gql`
     brokerPort: Int!
     brokerHost: String!
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
-    brokerCpuUsage: BrokerCpuUsage
-    brokerDiskUsage: DiskUsage
-    brokerCpuUsageOverTime: [BrokerCpuUsage]
-    brokerDiskUsageOverTime: [DiskUsage]
+    cpuUsage: BrokerCpuUsage
+    diskUsage: DiskUsage
+    cpuUsageOverTime: [BrokerCpuUsage]
+    diskUsageOverTime: [DiskUsage]
   }
 
   type Topic {
