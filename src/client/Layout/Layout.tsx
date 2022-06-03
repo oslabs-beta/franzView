@@ -25,6 +25,7 @@ import Logout from "@mui/icons-material/Logout";
 import Topic from "@mui/icons-material/Topic";
 import { BugReport } from "@mui/icons-material";
 import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -46,14 +47,41 @@ function Copyright(props: any) {
   );
 }
 
-const icons = [
-  <DashboardIcon key={0} />,
-  <DynamicFeed key={1} />,
-  <Login key={2} />,
-  <Logout key={3} />,
-  <Topic key={4} />,
+const menuItems = [
+  {
+    text: "Home",
+    icon: <DashboardIcon />,
+    link: "/",
+  },
+  {
+    text: "Broker",
+    icon: <DynamicFeed />,
+    link: "/brokers",
+  },
+  {
+    text: "Producers",
+    icon: <Login />,
+    link: "/",
+  },
+  {
+    text: "Consumers",
+    icon: <Logout />,
+    link: "/",
+  },
+  {
+    text: "Topics",
+    icon: <Topic />,
+    link: "/",
+  },
 ];
-const secondaryIcons = [<BugReport key={icons.length + 1} />];
+
+const secondaryMenuItems = [
+  {
+    text: "Franz",
+    icon: <BugReport />,
+    link: "/",
+  },
+];
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -181,9 +209,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Home", "Broker", "Producers", "Topics"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {menuItems.map((el) => (
+            <ListItem key={el.text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
+                component={RouterLink}
+                to={el.link}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -197,18 +227,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     justifyContent: "center",
                   }}
                 >
-                  {icons[index]}
+                  {el.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={el.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
         <List>
-          {["More Features"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {secondaryMenuItems.map((el) => (
+            <ListItem key={el.text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
+                component={RouterLink}
+                to={el.link}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -222,9 +257,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     justifyContent: "center",
                   }}
                 >
-                  {secondaryIcons[index]}
+                  {el.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={el.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -232,7 +270,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <DrawerHeader />
-        {children}
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          {children}
+        </Box>
         <Copyright sx={{ pt: 4 }} />
       </Box>
     </Box>
