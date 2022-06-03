@@ -1,8 +1,8 @@
 import * as React from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-import { BROKER_METRICS_QUERY } from "../models/queries";
-import { useQuery } from "@apollo/client";
+// import { BROKER_METRICS_QUERY } from "../models/queries";
+// import { useQuery } from "@apollo/client";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
@@ -74,9 +74,9 @@ const rows = [
 ];
 
 export default function Broker() {
-  const { loading, data, error } = useQuery(BROKER_METRICS_QUERY);
+  // const { loading, data, error } = useQuery(BROKER_METRICS_QUERY);
 
-  console.log("LOOK AT ME!!!!", data);
+  // console.log("LOOK AT ME!!!!", data);
 
   return (
     <>
