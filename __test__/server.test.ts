@@ -54,7 +54,7 @@ describe("GraphQL Queries", () => {
               brokerHost
               brokerId
               brokerPort
-              brokerCpuUsage {
+              cpuUsage {
                 cpuUsage
                 time
               }
@@ -74,7 +74,7 @@ describe("GraphQL Queries", () => {
             brokerId: expect.any(Number),
             brokerPort: expect.any(Number),
             brokerHost: expect.any(String),
-            brokerCpuUsage: expect.objectContaining({
+            cpuUsage: expect.objectContaining({
               cpuUsage: expect.any(Number),
               time: expect.any(String),
             }),
