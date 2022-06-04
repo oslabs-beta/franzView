@@ -34,29 +34,6 @@ const Brokers = () => {
     },
     pollInterval: 20000,
   });
-  // const {loading, error, data } = useQuery(ALL_BROKERS_TIME_MS, {
-  //   pollInterval:60000,
-  // onCompleted: data => {
-  // 	const networkRequestTimeMs = {
-  //     produceTime: 0,
-  //     consumerTime: 0,
-  //     followerTime: 0
-  //   };
-  // 	let produceTime = 0;
-  // 	let consumerTime = 0;
-  // 	let followerTime = 0;
-  // 	data.brokers.forEach(element => {
-  // 		produceTime += element.produceTotalTimeMs.totalTimeMs;
-  // 		consumerTime += element.consumerTotalTimeMs.totalTimeMs;
-  // 		followerTime += element.followerTotalTimeMs.totalTimeMs;
-  // 	});
-  // 	networkRequestTimeMs.produceTime = produceTime/data.brokers.length;
-  // 	networkRequestTimeMs.consumerTime = consumerTime/data.brokers.length;
-  // 	networkRequestTimeMs.followerTime = followerTime/data.brokers.length;
-
-  // 	return networkRequestTimeMs;
-  // }
-  // });
 
   return (
     <>
