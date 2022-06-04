@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import MetricsCard from "../components/MetricsCard";
 import { useQuery } from "@apollo/client";
+import RealTimeLineChart from "../components/RealTimeLineChart";
 import { ALL_BROKERS_TIME_MS, AVERAGE_TOTALTIMEMS } from "../models/queries";
 
 const Brokers = () => {

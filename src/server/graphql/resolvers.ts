@@ -15,6 +15,50 @@ import {
 
 const resolvers = {
   Broker: {
+    bytesInPerSecondOverTime: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<BrokerCpuUsage> => {
+      try {
+        const brokerBytesInPerSecond =
+          await dataSources.prometheusAPI.getBytesInPerSec(
+            parent.start,
+            parent.end,
+            parent.step,
+            [parent.brokerId]
+          );
+
+        return brokerBytesInPerSecond;
+      } catch (error) {
+        console.log(
+          `An error occured with Query Broker Bytes In Per Second Over Time: ${error}`
+        );
+      }
+    },
+
+    bytesOutPerSecondOverTime: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<BrokerCpuUsage> => {
+      try {
+        const brokerBytesOutPerSecond =
+          await dataSources.prometheusAPI.getBytesOutPerSec(
+            parent.start,
+            parent.end,
+            parent.step,
+            [parent.brokerId]
+          );
+
+        return brokerBytesOutPerSecond;
+      } catch (error) {
+        console.log(
+          `An error occured with Query Broker Bytes In Per Second Over Time: ${error}`
+        );
+      }
+    },
+
     cpuUsage: async (
       parent,
       args,
@@ -324,6 +368,58 @@ const resolvers = {
         );
 
         return totalTimeMs[0];
+      } catch (error) {
+        console.log(`An error has occured with Query Total Time MS: ${error}`);
+      }
+    },
+
+    bytesInPerSecondOverTime: async (
+      parent,
+      { brokerIds, topics, start, step, end },
+      { dataSources }
+    ): Promise<Count> => {
+      try {
+        let allBytesInPerSecond =
+          await dataSources.prometheusAPI.getBytesInPerSec(
+            start,
+            end,
+            step,
+            brokerIds
+          );
+
+        if (topics) {
+          allBytesInPerSecond = allBytesInPerSecond.filter((el) =>
+            topics.includes(el.topic)
+          );
+        }
+
+        return allBytesInPerSecond;
+      } catch (error) {
+        console.log(`An error has occured with Query Total Time MS: ${error}`);
+      }
+    },
+
+    bytesOutPerSecondOverTime: async (
+      parent,
+      { brokerIds, topics, start, step, end },
+      { dataSources }
+    ): Promise<Count> => {
+      try {
+        let allBytesOutPerSecond =
+          await dataSources.prometheusAPI.getBytesOutPerSec(
+            start,
+            end,
+            step,
+            brokerIds
+          );
+
+        if (topics) {
+          allBytesOutPerSecond = allBytesOutPerSecond.filter((el) =>
+            topics.includes(el.topic)
+          );
+        }
+
+        return allBytesOutPerSecond;
       } catch (error) {
         console.log(`An error has occured with Query Total Time MS: ${error}`);
       }

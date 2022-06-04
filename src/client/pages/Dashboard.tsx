@@ -2,7 +2,7 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Chart from "../components/RealTimeLineChart";
+import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
 import Broker from "../components/Broker";
 import ConsumerCard from "../components/ConsumerCard";
@@ -33,7 +33,7 @@ function DashboardContent() {
               }}
               elevation={16}
             >
-              <Chart
+              <RealTimeLineChart
                 query={ALL_BROKER_CPU_USAGE}
                 metric="cpuUsage"
                 step="30s"
@@ -54,7 +54,7 @@ function DashboardContent() {
               }}
               elevation={16}
             >
-              <Chart
+              <RealTimeLineChart
                 query={ALL_BROKER_DISK_USAGE}
                 metric="diskUsage"
                 step="30s"

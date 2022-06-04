@@ -36,7 +36,7 @@ ChartJS.register(
   ChartStreaming
 );
 
-export default function Chart({
+export default function RealTimeLineChart({
   query,
   metric,
   duration,

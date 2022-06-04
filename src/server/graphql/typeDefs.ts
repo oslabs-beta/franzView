@@ -21,6 +21,8 @@ export const typeDefs = gql`
     produceTotalTimeMs: TotalTimeMs
     consumerTotalTimeMs: TotalTimeMs
     followerTotalTimeMs: TotalTimeMs
+    bytesInPerSecondOverTime: [TimeSeriesMetric]
+    bytesOutPerSecondOverTime: [TimeSeriesMetric]
   }
 
   type Topic {
@@ -40,6 +42,16 @@ export const typeDefs = gql`
   type BrokerCpuUsage {
     cpuUsage: Float!
     time: String
+  }
+
+  type TimeSeriesMetric {
+    topic: String
+    values: [Metric]
+  }
+
+  type Metric {
+    time: String
+    metric: Int
   }
 
   type DiskUsage {
@@ -74,5 +86,19 @@ export const typeDefs = gql`
     topic(name: String!): Topic
     topics: [Topic]
     totalTimeMs(request: String!): TotalTimeMs
+    bytesInPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
+    bytesOutPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
   }
 `;
