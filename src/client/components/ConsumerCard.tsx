@@ -4,6 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Title from "./Title";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeartPulse } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +12,7 @@ import { faHeartPulse } from "@fortawesome/free-solid-svg-icons";
 export default function ConsumerCard() {
   return (
     <div>
+      <Title>Consumers and Consumer Groups</Title>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -20,7 +22,7 @@ export default function ConsumerCard() {
           <Box sx={{ color: "#9b5ee5" }}>
             <FontAwesomeIcon icon={faHeartPulse} className={"fa-beat"} />
           </Box>
-          <Typography sx={{ mx: 2 }}>Consumer 1</Typography>
+          <Typography sx={{ mx: 2 }}>Consumer id: 1</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -38,7 +40,7 @@ export default function ConsumerCard() {
           <Box sx={{ color: "#9b5ee5" }}>
             <FontAwesomeIcon icon={faHeartPulse} className={"fa-beat"} />
           </Box>
-          <Typography sx={{ mx: 2 }}>Consumer 2</Typography>
+          <Typography sx={{ mx: 2 }}>Consumer id: 2</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -56,7 +58,7 @@ export default function ConsumerCard() {
           <Box sx={{ color: "#9b5ee5" }}>
             <FontAwesomeIcon icon={faHeartPulse} className={"fa-beat"} />
           </Box>
-          <Typography sx={{ mx: 2 }}>Consumer 3</Typography>
+          <Typography sx={{ mx: 2 }}>Consumer id: 3</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
