@@ -1,8 +1,11 @@
 import * as React from "react";
+import { useState } from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-// import { BROKER_METRICS_QUERY } from "../models/queries";
-// import { useQuery } from "@apollo/client";
+import { BROKER_METRICS_QUERY } from "../models/queries";
+import { useQuery } from "@apollo/client";
+
+// onQueryCallback with use query
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
@@ -34,68 +37,42 @@ const columns: GridColDef[] = [
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
 ];
 
-const rows = [
-  {
-    id: 1,
-    topic: "Metamorphasis",
-    partitionNum: 42,
-    partitionRep: 7,
-    isrPerPart: 0,
-    brokersRep: 4,
-    logSize: 57,
-  },
-  {
-    id: 2,
-    topic: "The_Castle",
-    partitionNum: 3,
-    partitionRep: 3,
-    isrPerPart: 1,
-    brokersRep: 3,
-    logSize: 42,
-  },
-  {
-    id: 3,
-    topic: "A_Country_Doctor",
-    partitionNum: 2,
-    partitionRep: 2,
-    isrPerPart: 0,
-    brokersRep: 2,
-    logSize: 5,
-  },
-  {
-    id: 4,
-    topic: "In_the_Penal_Colony",
-    partitionNum: 7,
-    partitionRep: 7,
-    isrPerPart: 1,
-    brokersRep: 1,
-    logSize: 107,
-  },
-];
-
 export default function Broker() {
-  // const { loading, data, error } = useQuery(BROKER_METRICS_QUERY);
+  const [rowData, setRowData] = useState([]);
+  const { loading, error, data } = useQuery(BROKER_METRICS_QUERY, {
+    onCompleted: (data) => {
+      const newRowData = data.topics.map((item, index) => {
+        return {
+          id: index,
+          topic: item.name,
+          partitionNum: item.numPartitions,
+          partitionRep: item.totalReplicas,
+          isrPerPart: item.totalIsrs,
+          brokersRep: item.brokersWithReplicas,
+          logSize: item.logSize,
+        };
+      });
 
-  // console.log("LOOK AT ME!!!!", data);
+      setRowData(newRowData);
+      return data;
+    },
+  });
+  console.log("this is the data", data);
 
   return (
-    <>
-      {/* {data.values.map((test: any, index: number) => (
-      <div key={index} >
-        {test.name}
-      </div>
-    ))} */}
-      <React.Fragment>
-        <Title>Kafka Cluster</Title>
+    <React.Fragment>
+      <Title>Kafka Cluster</Title>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
         <div style={{ height: 400, width: "100%" }}>
           <DataGrid
-            // checkboxSelection
-            rows={rows}
+            rows={rowData}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
           />
         </div>
-      </React.Fragment>
-    </>
+      )}
+    </React.Fragment>
   );
 }
