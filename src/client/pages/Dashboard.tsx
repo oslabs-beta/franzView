@@ -157,7 +157,12 @@ function DashboardContent() {
           </Grid>
           {/* Consumer/Consumer Groups Components */}
           <Grid item xs={2}>
-            <ConsumerCard />
+            <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "column" }}
+              elevation={4}
+            >
+              <ConsumerCard />
+            </Paper>
           </Grid>
         </Container>
       </Box>

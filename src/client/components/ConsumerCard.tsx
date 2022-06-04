@@ -15,9 +15,10 @@ export default function ConsumerCard() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          sx={{ color: "#9b5ee5" }}
         >
-          <FontAwesomeIcon icon={faHeartPulse} />
-          <Typography>Consumer 1</Typography>
+          <FontAwesomeIcon icon={faHeartPulse} className={"fa-beat"} />
+          <Typography sx={{ mx: 2 }}>Consumer 1</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -33,7 +34,7 @@ export default function ConsumerCard() {
           id="panel2a-header"
         >
           <FontAwesomeIcon icon={faHeartPulse} />
-          <Typography>Consumer 2</Typography>
+          <Typography sx={{ mx: 2 }}>Consumer 2</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -49,7 +50,7 @@ export default function ConsumerCard() {
           id="panel3a-header"
         >
           <FontAwesomeIcon icon={faHeartPulse} />
-          <Typography>Consumer 3</Typography>
+          <Typography sx={{ mx: 2 }}>Consumer 3</Typography>
         </AccordionSummary>
       </Accordion>
     </div>
