@@ -18,6 +18,11 @@ export const typeDefs = gql`
     diskUsage: DiskUsage
     cpuUsageOverTime: [BrokerCpuUsage]
     diskUsageOverTime: [DiskUsage]
+    produceTotalTimeMs: TotalTimeMs
+    consumerTotalTimeMs: TotalTimeMs
+    followerTotalTimeMs: TotalTimeMs
+    bytesInPerSecondOverTime: [TimeSeriesMetric]
+    bytesOutPerSecondOverTime: [TimeSeriesMetric]
   }
 
   type Topic {
@@ -39,6 +44,16 @@ export const typeDefs = gql`
     time: String
   }
 
+  type TimeSeriesMetric {
+    topic: String
+    values: [Metric]
+  }
+
+  type Metric {
+    time: String
+    metric: Int
+  }
+
   type DiskUsage {
     diskUsage: Float!
     time: String
@@ -54,11 +69,36 @@ export const typeDefs = gql`
     time: String
   }
 
+  type TotalTimeMs {
+    totalTimeMs: Float!
+    time: String
+  }
+
   type Query {
-    brokers(start: String, end: String, step: String): [Broker]!
+    brokers(
+      start: String
+      end: String
+      step: String
+      brokerIds: [Int]
+    ): [Broker]!
     broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
     topic(name: String!): Topic
     topics: [Topic]
+    totalTimeMs(request: String!): TotalTimeMs
+    bytesInPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
+    bytesOutPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
   }
 `;

@@ -18,6 +18,7 @@ const link = new BatchHttpLink({
   batchInterval: 20,
   batchDebounce: true,
 });
+
 const client = new ApolloClient({
   link,
   cache: new InMemoryCache({

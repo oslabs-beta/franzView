@@ -67,4 +67,6 @@ export interface GqlChartProps {
   title?: string;
   xAxisLabel?: string;
   yAxisLabel?: string;
+  resource?: string;
+  label?: string;
 }
