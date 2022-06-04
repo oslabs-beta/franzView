@@ -30,9 +30,9 @@ export const BROKER_METRICS_QUERY = gql`
 `;
 export const ALL_BROKER_CPU_USAGE = gql`
   query BrokersCPUUsage($start: String, $end: String, $step: String) {
-    brokers(start: $start, end: $end, step: $step) {
+    broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
-      cpuUsageOverTime {
+      cpuUsage: cpuUsageOverTime {
         cpuUsage
         time
       }
@@ -42,9 +42,9 @@ export const ALL_BROKER_CPU_USAGE = gql`
 
 export const ALL_BROKER_DISK_USAGE = gql`
   query BrokersDiskUsage($start: String, $end: String, $step: String) {
-    brokers(start: $start, end: $end, step: $step) {
+    broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
-      diskUsageOverTime {
+      diskUsage: diskUsageOverTime {
         diskUsage
         time
       }
@@ -95,6 +95,50 @@ export const AVERAGE_TOTALTIMEMS = gql`
     totalTimeMs(request: $request) {
       totalTimeMs
       time
+    }
+  }
+`;
+
+export const BYTES_IN_PER_SECOND = gql`
+  query BytesInPerSecondOverTime(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: bytesInPerSecondOverTime(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      bytesInPerSecond: values {
+        time
+        bytesInPerSecond: metric
+      }
+    }
+  }
+`;
+
+export const BYTES_OUT_PER_SECOND = gql`
+  query BytesOutPerSecondOverTime(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: bytesOutPerSecondOverTime(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      bytesOutPerSecond: values {
+        time
+        bytesOutPerSecond: metric
+      }
     }
   }
 `;

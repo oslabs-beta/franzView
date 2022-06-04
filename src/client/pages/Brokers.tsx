@@ -7,7 +7,11 @@ import Paper from "@mui/material/Paper";
 import MetricsCard from "../components/MetricsCard";
 import { useQuery } from "@apollo/client";
 import RealTimeLineChart from "../components/RealTimeLineChart";
-import { ALL_BROKERS_TIME_MS, AVERAGE_TOTALTIMEMS } from "../models/queries";
+import {
+  BYTES_IN_PER_SECOND,
+  BYTES_OUT_PER_SECOND,
+  AVERAGE_TOTALTIMEMS,
+} from "../models/queries";
 
 const Brokers = () => {
   const produce = useQuery(AVERAGE_TOTALTIMEMS, {
@@ -122,6 +126,50 @@ const Brokers = () => {
                 }
                 title="Follower Request (TotalTimeMs)"
                 toBe="milliseconds"
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
+              elevation={16}
+            >
+              <RealTimeLineChart
+                query={BYTES_IN_PER_SECOND}
+                metric="bytesInPerSecond"
+                step="30s"
+                duration={5}
+                pollInterval={60}
+                title="Bytes In Per Second"
+                yAxisLabel="BytesPerSecond"
+                resource="topic"
+                label="topic"
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
+              elevation={16}
+            >
+              <RealTimeLineChart
+                query={BYTES_OUT_PER_SECOND}
+                metric="bytesOutPerSecond"
+                step="30s"
+                duration={5}
+                pollInterval={60}
+                title="Bytes Out Per Second"
+                yAxisLabel="BytesPerSecond"
+                resource="topic"
+                label="topic"
               />
             </Paper>
           </Grid>

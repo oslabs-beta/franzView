@@ -45,6 +45,8 @@ export default function RealTimeLineChart({
   title,
   xAxisLabel,
   yAxisLabel,
+  resource,
+  label,
 }: GqlChartProps) {
   const timeNow = useRef(new Date());
   const loaded = useRef(false);
@@ -84,8 +86,9 @@ export default function RealTimeLineChart({
           refetch({ ...variables }).then((result) => {
             console.log(metric, "request completed");
             if (loaded.current) {
-              result.data.brokers.forEach((broker, index) => {
-                broker[`${metric}OverTime`].forEach((point) => {
+              result.data[resource].forEach((broker, index) => {
+                broker[`${metric}`].forEach((point) => {
+                  console.log(point);
                   chart.data.datasets[index].data.push(point);
                 });
               });
@@ -147,15 +150,15 @@ export default function RealTimeLineChart({
     if (loading || loaded.current) return;
     const datasets = [];
     const labels = [];
-    data?.brokers.forEach((broker, index) => {
+    data[resource].forEach((broker, index) => {
       const brokerData: any = {};
-      brokerData.label = `brokerId: ${broker.brokerId}`;
+      brokerData.label = `${resource}: ${broker.brokerId || broker[label]}`;
       brokerData.backgroundColor = `#${colors[index]}`;
       brokerData.borderColor = `#${colors[index]}`;
       brokerData.pointRadius = 0;
       brokerData.tension = 0.2;
 
-      brokerData.data = broker[`${metric}OverTime`];
+      brokerData.data = broker[`${metric}`];
 
       datasets.push(brokerData);
     });
