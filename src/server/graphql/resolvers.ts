@@ -255,7 +255,10 @@ const resolvers = {
   },
 
   Query: {
-    brokers: async (parent, { start, end, step }): Promise<Broker[]> => {
+    brokers: async (
+      parent,
+      { start, end, step, brokerIds }
+    ): Promise<Broker[]> => {
       const clusterInfo = await brokerData.getClusterInfo();
       if (start) {
         clusterInfo.brokers.forEach((broker) => {
@@ -264,6 +267,12 @@ const resolvers = {
           broker.step = step;
         });
       }
+      if (brokerIds) {
+        clusterInfo.brokers = clusterInfo.brokers.filter((broker) =>
+          brokerIds.includes(broker.brokerId)
+        );
+      }
+
       return clusterInfo.brokers.sort((a, b) => a.brokerId - b.brokerId);
     },
 

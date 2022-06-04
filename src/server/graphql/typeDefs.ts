@@ -63,7 +63,12 @@ export const typeDefs = gql`
   }
 
   type Query {
-    brokers(start: String, end: String, step: String): [Broker]!
+    brokers(
+      start: String
+      end: String
+      step: String
+      brokerIds: [Int]
+    ): [Broker]!
     broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
     topic(name: String!): Topic
