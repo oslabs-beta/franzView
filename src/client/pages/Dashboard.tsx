@@ -85,7 +85,7 @@ function DashboardContent() {
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  height: 200,
+                  height: 125,
                 }}
                 elevation={8}
               >
@@ -108,7 +108,7 @@ function DashboardContent() {
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  height: 200,
+                  height: 125,
                 }}
                 elevation={8}
               >
@@ -130,7 +130,7 @@ function DashboardContent() {
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  height: 200,
+                  height: 125,
                 }}
                 elevation={8}
               >
