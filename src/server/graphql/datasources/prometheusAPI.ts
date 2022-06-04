@@ -138,6 +138,14 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "logSize");
   }
 
+  async getMedianTotalTimeMs(requestType) {
+    const query = `query=kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"}`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "totalTimeMs");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatResponse(data: any[], metric: string) {
     /* Remove for production */

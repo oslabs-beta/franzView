@@ -18,6 +18,9 @@ export const typeDefs = gql`
     diskUsage: DiskUsage
     cpuUsageOverTime: [BrokerCpuUsage]
     diskUsageOverTime: [DiskUsage]
+    produceTotalTimeMs: TotalTimeMs
+    consumerTotalTimeMs: TotalTimeMs
+    followerTotalTimeMs: TotalTimeMs
   }
 
   type Topic {
@@ -51,6 +54,11 @@ export const typeDefs = gql`
 
   type UnderReplicatedPartitions {
     underReplicatedPartitions: Int!
+    time: String
+  }
+
+  type TotalTimeMs {
+    totalTimeMs: Float!
     time: String
   }
 

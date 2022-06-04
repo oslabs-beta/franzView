@@ -113,6 +113,62 @@ const resolvers = {
         );
       }
     },
+    produceTotalTimeMs: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<Count> => {
+      try {
+        const totalProduceTimeMS =
+          await dataSources.prometheusAPI.getMedianTotalTimeMs("Produce");
+        const produceTotalTimeMs = totalProduceTimeMS.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return produceTotalTimeMs;
+      } catch (error) {
+        console.log(
+          `An error has occured with Query Produce Total Time MS: ${error}`
+        );
+      }
+    },
+
+    consumerTotalTimeMs: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<Count> => {
+      try {
+        const totalConsumerTotalTimeMs =
+          await dataSources.prometheusAPI.getMedianTotalTimeMs("FetchConsumer");
+        const consumerTotalTimeMs = totalConsumerTotalTimeMs.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return consumerTotalTimeMs;
+      } catch (error) {
+        console.log(
+          `An error has occured with Query Consumer Total Time MS: ${error}`
+        );
+      }
+    },
+
+    followerTotalTimeMs: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<Count> => {
+      try {
+        const totalFollowerTotalTimeMs =
+          await dataSources.prometheusAPI.getMedianTotalTimeMs("FetchFollower");
+        const followerTotalTimeMs = totalFollowerTotalTimeMs.filter(
+          (elem) => elem.brokerId === parent.brokerId
+        )[0];
+        return followerTotalTimeMs;
+      } catch (error) {
+        console.log(
+          `An error has occured with Query Follower Total Time MS: ${error}`
+        );
+      }
+    },
   },
 
   Cluster: {
