@@ -145,6 +145,13 @@ class PrometheusAPI extends RESTDataSource {
 
     return this.formatResponse(data, "totalTimeMs");
   }
+  async getAvgTotalTimeMs(requestType) {
+    const query = `query=avg(kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"})by(quantile)`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "totalTimeMs");
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatResponse(data: any[], metric: string) {

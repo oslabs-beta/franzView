@@ -68,5 +68,6 @@ export const typeDefs = gql`
     cluster: Cluster
     topic(name: String!): Topic
     topics: [Topic]
+    totalTimeMs(request: String!): TotalTimeMs
   }
 `;

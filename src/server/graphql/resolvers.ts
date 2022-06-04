@@ -303,6 +303,22 @@ const resolvers = {
 
       return topics;
     },
+
+    totalTimeMs: async (
+      parent,
+      { request },
+      { dataSources }
+    ): Promise<Count> => {
+      try {
+        const totalTimeMs = await dataSources.prometheusAPI.getAvgTotalTimeMs(
+          request
+        );
+
+        return totalTimeMs[0];
+      } catch (error) {
+        console.log(`An error has occured with Query Total Time MS: ${error}`);
+      }
+    },
   },
 };
 

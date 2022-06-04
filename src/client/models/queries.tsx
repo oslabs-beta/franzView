@@ -68,3 +68,33 @@ export const CORE_ALL_BROKERS_QUERY = gql`
     }
   }
 `;
+
+export const ALL_BROKERS_TIME_MS = gql`
+  ${BROKER_FRAGMENT}
+  query BrokerTimeMs {
+    brokers {
+      produceTotalTimeMs {
+        totalTimeMs
+        time
+      }
+      consumerTotalTimeMs {
+        totalTimeMs
+        time
+      }
+      followerTotalTimeMs {
+        totalTimeMs
+        time
+      }
+      ...CoreBrokerFields
+    }
+  }
+`;
+
+export const AVERAGE_TOTALTIMEMS = gql`
+  query totalTimeMs($request: String!) {
+    totalTimeMs(request: $request) {
+      totalTimeMs
+      time
+    }
+  }
+`;
