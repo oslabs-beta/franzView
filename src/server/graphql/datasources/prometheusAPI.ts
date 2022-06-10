@@ -184,16 +184,20 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "logSize");
   }
 
-  async getMedianTotalTimeMs(requestType) {
-    const query = `query=kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"}`;
+  async getMedianTotalTimeMs(requestType, filter) {
+    const query = `query=kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"${
+      filter ? `,instance=~"${this.filter(filter)}"` : ""
+    }}`;
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
     return this.formatResponse(data, "totalTimeMs");
   }
 
-  async getAvgTotalTimeMs(requestType) {
-    const query = `query=avg(kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"})by(quantile)`;
+  async getAvgTotalTimeMs(requestType, filter) {
+    const query = `query=avg(kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"${
+      filter ? `,instance=~"${this.filter(filter)}"` : ""
+    }})by(quantile)`;
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
