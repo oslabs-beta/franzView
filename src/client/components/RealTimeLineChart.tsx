@@ -84,11 +84,9 @@ export default function RealTimeLineChart({
           };
           timeNow.current = new Date(variables.end);
           refetch({ ...variables }).then((result) => {
-            console.log(metric, "request completed");
             if (loaded.current) {
               result.data[resource].forEach((broker, index) => {
                 broker[`${metric}`].forEach((point) => {
-                  console.log(point);
                   chart.data.datasets[index].data.push(point);
                 });
               });
@@ -162,8 +160,6 @@ export default function RealTimeLineChart({
 
       datasets.push(brokerData);
     });
-
-    console.log("Updating State");
 
     setChartData({
       labels,
