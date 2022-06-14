@@ -91,8 +91,8 @@ export const ALL_BROKERS_TIME_MS = gql`
 `;
 
 export const AVERAGE_TOTALTIMEMS = gql`
-  query totalTimeMs($request: String!) {
-    totalTimeMs(request: $request) {
+  query totalTimeMs($request: String!, $brokerIds: [Int]) {
+    totalTimeMs(request: $request, brokerIds: $brokerIds) {
       totalTimeMs
       time
     }

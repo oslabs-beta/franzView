@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import SearchBar from "../components/Searchbar";
 import { CORE_ALL_BROKERS_QUERY } from "../models/queries";
@@ -14,9 +14,12 @@ import {
 } from "../models/queries";
 
 const Brokers = () => {
+  const [filter, setFilter] = useState([]);
+
   const produce = useQuery(AVERAGE_TOTALTIMEMS, {
     variables: {
       request: "Produce",
+      brokerIds: filter.length > 0 ? filter : null,
     },
     pollInterval: 20000,
   });
@@ -24,6 +27,7 @@ const Brokers = () => {
   const consumer = useQuery(AVERAGE_TOTALTIMEMS, {
     variables: {
       request: "FetchConsumer",
+      brokerIds: filter.length > 0 ? filter : null,
     },
     pollInterval: 20000,
   });
@@ -31,6 +35,7 @@ const Brokers = () => {
   const follower = useQuery(AVERAGE_TOTALTIMEMS, {
     variables: {
       request: "FetchFollower",
+      brokerIds: filter.length > 0 ? filter : null,
     },
     pollInterval: 20000,
   });
@@ -39,7 +44,11 @@ const Brokers = () => {
     <>
       <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
         <h1>Brokers</h1>
-        <SearchBar searchingFor="brokers" query={CORE_ALL_BROKERS_QUERY} />
+        <SearchBar
+          setFilter={setFilter}
+          searchingFor="brokers"
+          query={CORE_ALL_BROKERS_QUERY}
+        />
         <Grid container spacing={3} sx={{ mt: 1, mb: 4 }}>
           <Grid item xs={12} md={4}>
             <Paper
@@ -125,6 +134,7 @@ const Brokers = () => {
                 yAxisLabel="BytesPerSecond"
                 resource="topic"
                 label="topic"
+                args={{ brokerIds: filter.length > 0 ? filter : null }}
               />
             </Paper>
           </Grid>
@@ -147,6 +157,7 @@ const Brokers = () => {
                 yAxisLabel="BytesPerSecond"
                 resource="topic"
                 label="topic"
+                args={{ brokerIds: filter.length > 0 ? filter : null }}
               />
             </Paper>
           </Grid>

@@ -47,6 +47,7 @@ export default function RealTimeLineChart({
   yAxisLabel,
   resource,
   label,
+  args,
 }: GqlChartProps) {
   const timeNow = useRef(new Date());
   const loaded = useRef(false);
@@ -81,14 +82,13 @@ export default function RealTimeLineChart({
             start: timeNow.current.toString(),
             end: new Date().toString(),
             step: step,
+            ...args,
           };
           timeNow.current = new Date(variables.end);
           refetch({ ...variables }).then((result) => {
-            console.log(metric, "request completed");
             if (loaded.current) {
               result.data[resource].forEach((broker, index) => {
                 broker[`${metric}`].forEach((point) => {
-                  console.log(point);
                   chart.data.datasets[index].data.push(point);
                 });
               });
@@ -140,6 +140,7 @@ export default function RealTimeLineChart({
       start: new Date(timeNow.current.valueOf() - duration * 60000).toString(),
       end: timeNow.current.toString(),
       step: step,
+      ...args,
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "network-only",
@@ -163,8 +164,6 @@ export default function RealTimeLineChart({
       datasets.push(brokerData);
     });
 
-    console.log("Updating State");
-
     setChartData({
       labels,
       datasets,
@@ -172,6 +171,10 @@ export default function RealTimeLineChart({
 
     return () => (loaded.current = true);
   }, [data]);
+
+  useEffect(() => {
+    loaded.current = false;
+  }, [args]);
 
   return (
     <>

@@ -85,7 +85,7 @@ export const typeDefs = gql`
     cluster: Cluster
     topic(name: String!): Topic
     topics: [Topic]
-    totalTimeMs(request: String!): TotalTimeMs
+    totalTimeMs(request: String!, brokerIds: [Int]): TotalTimeMs
     bytesInPerSecondOverTime(
       brokerIds: [Int]
       topics: [String]
