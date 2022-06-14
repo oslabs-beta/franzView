@@ -359,12 +359,13 @@ const resolvers = {
 
     totalTimeMs: async (
       parent,
-      { request },
+      { request, brokerIds },
       { dataSources }
     ): Promise<Count> => {
       try {
         const totalTimeMs = await dataSources.prometheusAPI.getAvgTotalTimeMs(
-          request
+          request,
+          brokerIds
         );
 
         return totalTimeMs[0];
