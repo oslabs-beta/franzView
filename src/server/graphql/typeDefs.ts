@@ -51,7 +51,7 @@ export const typeDefs = gql`
 
   type Metric {
     time: String
-    metric: Int
+    metric: Float
   }
 
   type DiskUsage {
