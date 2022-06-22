@@ -76,27 +76,27 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "offlinePartitionCount");
   }
 
-  async getDiskUsage() {
+  async getJVMMemoryUsage() {
     const query =
-      'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
+      'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_committed{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "diskUsage");
+    return this.formatResponse(data, "JVMMemoryUsage");
   }
 
-  async getDiskUsageOverTime(start, end, step) {
+  async getJVMMemoryUsageOverTime(start, end, step) {
     const unixStart = Math.round(new Date(start).getTime() / 1000);
     const unixEnd = Math.round(new Date(end).getTime() / 1000);
 
     try {
       if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
         throw "Date input incorrect";
-      const query = `query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100&start=${unixStart}&end=${unixEnd}&step=${step}`;
+      const query = `query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[${step}]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[${step}]))by(application,instance))*100&start=${unixStart}&end=${unixEnd}&step=${step}`;
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
 
-      return this.formatResponseSeries(data, "diskUsage");
+      return this.formatResponseSeries(data, "JVMMemoryUsage");
     } catch (error) {
       console.log(`Error occured for Disk Usage Query to Prometheus with:
        start: ${start}, 

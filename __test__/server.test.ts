@@ -226,8 +226,8 @@ describe("GraphQL Queries", () => {
       const result = await global.testServer.executeOperation({
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
-              diskUsage {
-                diskUsage
+              JVMMemoryUsage {
+                JVMMemoryUsage
                 time
               }
             }
@@ -237,10 +237,10 @@ describe("GraphQL Queries", () => {
         },
       });
       expect(result.errors).toBeUndefined();
-      expect(result.data.broker).toHaveProperty("diskUsage");
-      expect(result.data.broker.diskUsage).toEqual(
+      expect(result.data.broker).toHaveProperty("JVMMemoryUsage");
+      expect(result.data.broker.JVMMemoryUsage).toEqual(
         expect.objectContaining({
-          diskUsage: expect.any(Number),
+          JVMMemoryUsage: expect.any(Number),
           time: expect.any(String),
         })
       );

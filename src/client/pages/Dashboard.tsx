@@ -57,7 +57,7 @@ function DashboardContent() {
             >
               <RealTimeLineChart
                 query={ALL_BROKER_DISK_USAGE}
-                metric="diskUsage"
+                metric="JVMMemoryUsage"
                 step="30s"
                 duration={5}
                 pollInterval={60}

@@ -5,7 +5,7 @@ import {
   UnderReplicatedPartitions,
   Cluster,
   Count,
-  DiskUsage,
+  JVMMemoryUsage,
 } from "../../types/types";
 
 /**
@@ -99,22 +99,22 @@ const resolvers = {
       }
     },
 
-    diskUsageOverTime: async (
+    JVMMemoryUsageOverTime: async (
       parent,
       args,
       { dataSources }
     ): Promise<BrokerCpuUsage> => {
       try {
-        const totalBrokerDiskUsage =
-          await dataSources.prometheusAPI.getDiskUsageOverTime(
+        const totalBrokerJVMMemoryUsage =
+          await dataSources.prometheusAPI.getJVMMemoryUsageOverTime(
             parent.start,
             parent.end,
             parent.step
           );
-        const brokerDiskUsage = totalBrokerDiskUsage.filter(
+        const brokerJVMMemoryUsage = totalBrokerJVMMemoryUsage.filter(
           (elem) => elem.brokerId === parent.brokerId
         )[0];
-        return brokerDiskUsage.values;
+        return brokerJVMMemoryUsage.values;
       } catch (error) {
         console.log(
           `An error occured with Query Broker Disk Usage Over Time: ${error}`
@@ -122,14 +122,18 @@ const resolvers = {
       }
     },
 
-    diskUsage: async (parent, args, { dataSources }): Promise<DiskUsage> => {
+    JVMMemoryUsage: async (
+      parent,
+      args,
+      { dataSources }
+    ): Promise<JVMMemoryUsage> => {
       try {
-        const totalBrokerDiskUsage =
-          await dataSources.prometheusAPI.getDiskUsage();
-        const brokerDiskUsage = totalBrokerDiskUsage.filter(
+        const totalBrokerJVMMemoryUsage =
+          await dataSources.prometheusAPI.getJVMMemoryUsage();
+        const brokerJVMMemoryUsage = totalBrokerJVMMemoryUsage.filter(
           (elem) => elem.brokerId === parent.brokerId
         )[0];
-        return brokerDiskUsage;
+        return brokerJVMMemoryUsage;
       } catch (error) {
         console.log(
           `An error has occured with Query Broker Disk Usage: ${error}`

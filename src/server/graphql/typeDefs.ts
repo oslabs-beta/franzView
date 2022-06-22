@@ -15,9 +15,9 @@ export const typeDefs = gql`
     brokerHost: String!
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
     cpuUsage: BrokerCpuUsage
-    diskUsage: DiskUsage
+    JVMMemoryUsage: JVMMemoryUsage
     cpuUsageOverTime: [BrokerCpuUsage]
-    diskUsageOverTime: [DiskUsage]
+    JVMMemoryUsageOverTime: [JVMMemoryUsage]
     produceTotalTimeMs: TotalTimeMs
     consumerTotalTimeMs: TotalTimeMs
     followerTotalTimeMs: TotalTimeMs
@@ -54,8 +54,8 @@ export const typeDefs = gql`
     metric: Float
   }
 
-  type DiskUsage {
-    diskUsage: Float!
+  type JVMMemoryUsage {
+    JVMMemoryUsage: Float!
     time: String
   }
 
