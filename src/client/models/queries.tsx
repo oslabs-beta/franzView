@@ -41,11 +41,11 @@ export const ALL_BROKER_CPU_USAGE = gql`
 `;
 
 export const ALL_BROKER_DISK_USAGE = gql`
-  query BrokersDiskUsage($start: String, $end: String, $step: String) {
+  query BrokersJVMMemoryUsage($start: String, $end: String, $step: String) {
     broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
-      diskUsage: diskUsageOverTime {
-        diskUsage
+      JVMMemoryUsage: JVMMemoryUsageOverTime {
+        JVMMemoryUsage
         time
       }
     }
