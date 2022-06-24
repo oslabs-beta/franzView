@@ -36,7 +36,7 @@ ChartJS.register(
   ChartStreaming
 );
 
-export default function Chart({
+export default function RealTimeLineChart({
   query,
   metric,
   duration,
@@ -45,6 +45,9 @@ export default function Chart({
   title,
   xAxisLabel,
   yAxisLabel,
+  resource,
+  label,
+  args,
 }: GqlChartProps) {
   const timeNow = useRef(new Date());
   const loaded = useRef(false);
@@ -79,13 +82,13 @@ export default function Chart({
             start: timeNow.current.toString(),
             end: new Date().toString(),
             step: step,
+            ...args,
           };
           timeNow.current = new Date(variables.end);
           refetch({ ...variables }).then((result) => {
-            console.log(metric, "request completed");
             if (loaded.current) {
-              result.data.brokers.forEach((broker, index) => {
-                broker[`${metric}OverTime`].forEach((point) => {
+              result.data[resource].forEach((broker, index) => {
+                broker[`${metric}`].forEach((point) => {
                   chart.data.datasets[index].data.push(point);
                 });
               });
@@ -137,6 +140,7 @@ export default function Chart({
       start: new Date(timeNow.current.valueOf() - duration * 60000).toString(),
       end: timeNow.current.toString(),
       step: step,
+      ...args,
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "network-only",
@@ -147,20 +151,18 @@ export default function Chart({
     if (loading || loaded.current) return;
     const datasets = [];
     const labels = [];
-    data?.brokers.forEach((broker, index) => {
+    data[resource].forEach((broker, index) => {
       const brokerData: any = {};
-      brokerData.label = `brokerId: ${broker.brokerId}`;
+      brokerData.label = `${resource}: ${broker.brokerId || broker[label]}`;
       brokerData.backgroundColor = `#${colors[index]}`;
       brokerData.borderColor = `#${colors[index]}`;
       brokerData.pointRadius = 0;
       brokerData.tension = 0.2;
 
-      brokerData.data = broker[`${metric}OverTime`];
+      brokerData.data = broker[`${metric}`];
 
       datasets.push(brokerData);
     });
-
-    console.log("Updating State");
 
     setChartData({
       labels,
@@ -169,6 +171,10 @@ export default function Chart({
 
     return () => (loaded.current = true);
   }, [data]);
+
+  useEffect(() => {
+    loaded.current = false;
+  }, [args]);
 
   return (
     <>
