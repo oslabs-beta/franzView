@@ -25,8 +25,8 @@ export interface BrokerCpuUsage {
   time: string;
 }
 
-export interface DiskUsage extends Metric {
-  diskUsage: number;
+export interface JVMMemoryUsage extends Metric {
+  JVMMemoryUsage: number;
 }
 
 export interface Topic {
@@ -67,4 +67,7 @@ export interface GqlChartProps {
   title?: string;
   xAxisLabel?: string;
   yAxisLabel?: string;
+  resource?: string;
+  label?: string;
+  args?: any;
 }

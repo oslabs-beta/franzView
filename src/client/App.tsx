@@ -14,10 +14,11 @@ import { Layout } from "./Layout/Layout";
 // Create a batch link to have reduce network requests needed to query data
 const link = new BatchHttpLink({
   uri: "/graphql",
-  batchMax: 5,
+  batchMax: 6,
   batchInterval: 20,
   batchDebounce: true,
 });
+
 const client = new ApolloClient({
   link,
   cache: new InMemoryCache({
