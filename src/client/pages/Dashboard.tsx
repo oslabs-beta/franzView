@@ -6,6 +6,7 @@ import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
 import Broker from "../components/Broker";
 import ConsumerCard from "../components/ConsumerCard";
+import { MonitorHeartTwoTone } from "@mui/icons-material";
 
 import {
   ALL_BROKER_CPU_USAGE,
@@ -74,7 +75,7 @@ function DashboardContent() {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: 200,
+                height: 150,
               }}
               elevation={8}
             >
@@ -87,6 +88,7 @@ function DashboardContent() {
                 }
                 title="Underreplicated partitions"
                 toBe="Should be zero."
+                icon={<MonitorHeartTwoTone />}
               />
             </Paper>
           </Grid>
@@ -97,7 +99,7 @@ function DashboardContent() {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: 200,
+                height: 150,
               }}
               elevation={8}
             >
@@ -109,6 +111,7 @@ function DashboardContent() {
                 }
                 title="Active controller count"
                 toBe="Should be one."
+                icon={<MonitorHeartTwoTone />}
               />
             </Paper>
           </Grid>
@@ -119,7 +122,7 @@ function DashboardContent() {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: 200,
+                height: 150,
               }}
               elevation={8}
             >
@@ -131,6 +134,7 @@ function DashboardContent() {
                 }
                 title="Offline partitions count"
                 toBe="Should be zero."
+                icon={<MonitorHeartTwoTone />}
               />
             </Paper>
           </Grid>
