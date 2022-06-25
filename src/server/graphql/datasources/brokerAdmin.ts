@@ -53,3 +53,26 @@ export async function getAllTopics() {
     console.log(`Kafka Admin Error getting single topic: ${error}`);
   }
 }
+
+export async function createTopic(
+  topic: string,
+  replicationFactor: number,
+  numPartitions: number
+) {
+  const topicConfig = {
+    topic,
+    replicationFactor,
+    numPartitions,
+  };
+
+  try {
+    if (await admin.createTopics({ topics: [topicConfig] })) {
+      const topics = await admin.fetchTopicMetadata({ topics: [topic] });
+      return topics.topics[0];
+    } else {
+      throw `Topic ${topic} already exists`;
+    }
+  } catch (error) {
+    console.warn(`Error when creating topic: ${topic}. Error: ${error}`);
+  }
+}
