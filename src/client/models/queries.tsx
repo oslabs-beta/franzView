@@ -142,3 +142,47 @@ export const BYTES_OUT_PER_SECOND = gql`
     }
   }
 `;
+
+export const UNDERMIN_ISR = gql`
+  query UnderminISR(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: underminISR(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      underminISR: values {
+        time
+        underminISR: metric
+      }
+    }
+  }
+`;
+
+export const UNDERREPLICATED_PARTITIONS = gql`
+  query UnderreplicatedPartitions(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: underreplicatedPartitions(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      underreplicatedPartitions: values {
+        time
+        underreplicatedPartitions: metric
+      }
+    }
+  }
+`;

@@ -112,7 +112,7 @@ function DashboardContent() {
               />
             </Paper>
           </Grid>
-          {/* Metrics Card 3 */}
+          Metrics Card 3
           <Grid item xs={12} md={4}>
             <Paper
               sx={{

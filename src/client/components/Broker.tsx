@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/client";
 
 // onQueryCallback with use query
 
+// data grid schema
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
   { field: "topic", headerName: "Topic", width: 150 },

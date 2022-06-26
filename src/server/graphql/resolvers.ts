@@ -253,6 +253,15 @@ const resolvers = {
       return offlinePartitionCount;
     },
 
+    underMinIsr: async (parent, args, { dataSources }): Promise<Count> => {
+      const metric = await dataSources.prometheusAPI.getUnderMinIsr();
+      const underMinIsr: Count = {
+        count: metric.reduce((prev, curr) => (prev += curr.underMinIsr), 0),
+        time: metric[0].time,
+      };
+      return underMinIsr;
+    },
+
     numberUnderReplicatedPartitions: async (
       parent,
       args,
