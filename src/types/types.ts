@@ -51,6 +51,7 @@ export interface Cluster {
   brokers: Broker[];
   activeControllerCount?: Count;
   offlinePartitionCount?: Count;
+  underMinIsr?: Count;
 }
 
 export interface UnderReplicatedPartitions {

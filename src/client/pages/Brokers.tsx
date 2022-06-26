@@ -11,8 +11,6 @@ import {
   BYTES_IN_PER_SECOND,
   BYTES_OUT_PER_SECOND,
   AVERAGE_TOTALTIMEMS,
-  UNDERMIN_ISR,
-  UNDERREPLICATED_PARTITIONS,
   CARD_METRICS_QUERY,
 } from "../models/queries";
 
@@ -168,9 +166,9 @@ const Brokers = () => {
             >
               <MetricsCard
                 value={
-                  counts.loading
+                   counts.loading
                     ? "Loading..."
-                    : counts.data.cluster.underMinISR.count
+                    : counts.data.cluster.UnderMinIsr.count
                         
                 }
                 title="Under Min ISR"

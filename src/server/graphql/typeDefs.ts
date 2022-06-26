@@ -71,7 +71,7 @@ export const typeDefs = gql`
   }
 
   type UnderMinIsr {
-    underMinIsr: Int!
+    underMinIsr: Int
     time: String
   }
 

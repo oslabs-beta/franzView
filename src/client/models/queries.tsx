@@ -143,27 +143,27 @@ export const BYTES_OUT_PER_SECOND = gql`
   }
 `;
 
-export const UNDERMIN_ISR = gql`
-  query UnderminISR(
-    $start: String!
-    $end: String!
-    $step: String!
-    $brokerIds: [Int]
-  ) {
-    topic: underminISR(
-      start: $start
-      end: $end
-      step: $step
-      brokerIds: $brokerIds
-    ) {
-      topic
-      underminISR: values {
-        time
-        underminISR: metric
-      }
-    }
-  }
-`;
+// export const UNDERMIN_ISR = gql`
+//   query UnderMinIsr(
+//     $start: String!
+//     $end: String!
+//     $step: String!
+//     $brokerIds: [Int]
+//   ) {
+//     topic: underMinIsr(
+//       start: $start
+//       end: $end
+//       step: $step
+//       brokerIds: $brokerIds
+//     ) {
+//       topic
+//       underMinIsr: values {
+//         time
+//         underMinIsr: metric
+//       }
+//     }
+//   }
+// `;
 
 export const UNDERREPLICATED_PARTITIONS = gql`
   query UnderreplicatedPartitions(
