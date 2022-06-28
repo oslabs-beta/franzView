@@ -62,7 +62,7 @@ export const BROKER_FRAGMENT = gql`
 
 export const CORE_ALL_BROKERS_QUERY = gql`
   ${BROKER_FRAGMENT}
-  query CoreAllBrokerFields {
+  query Brokers {
     brokers {
       ...CoreBrokerFields
     }

@@ -57,7 +57,6 @@ export default function Broker() {
       return data;
     },
   });
-  console.log("this is the data", data);
 
   return (
     <React.Fragment>

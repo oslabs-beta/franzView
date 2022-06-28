@@ -4,17 +4,39 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { useMutation } from "@apollo/client";
-import { ADD_TOPIC } from "../models/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { ADD_TOPIC, CORE_ALL_BROKERS_QUERY } from "../models/queries";
 
 function AddTopic() {
   const [topicName, setTopicName] = useState("");
+  const [topicNameInvalid, setTopicNameInvalid] = useState(false);
   const [replicationFactor, setReplicationFactor] = useState("");
+  const [replicationFactorInvalid, setReplicationFactorInvalid] =
+    useState(false);
   const [numPartitions, setNumPartitions] = useState("");
+  const brokers = useQuery(CORE_ALL_BROKERS_QUERY, {
+    fetchPolicy: "cache-and-network",
+  });
+
   const [addTopic, { data, loading, error }] = useMutation(ADD_TOPIC);
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    let invalidSubmission = false;
+
+    if (topicName === "") {
+      setTopicNameInvalid(true);
+      invalidSubmission = true;
+    }
+
+    if (Number(replicationFactor) > brokers.data.brokers.length) {
+      setReplicationFactorInvalid(true);
+      invalidSubmission = true;
+    }
+
+    if (invalidSubmission) return;
+
     addTopic({
       variables: {
         name: topicName.replaceAll(" ", "-").toLowerCase(),
@@ -23,6 +45,14 @@ function AddTopic() {
         numPartitions: Number(numPartitions) <= 0 ? -1 : Number(numPartitions),
       },
     });
+
+    if (!loading && !error) {
+      setTopicNameInvalid(false);
+      setReplicationFactorInvalid(false);
+      setTopicName("");
+      setReplicationFactor("");
+      setNumPartitions("");
+    }
   };
 
   return (
@@ -45,6 +75,8 @@ function AddTopic() {
           <Grid item xs={12} lg={10}>
             <TextField
               required
+              error={topicNameInvalid}
+              helperText={topicNameInvalid && "Topic Name cannot be blank"}
               id="topic-name"
               label="Topic Name"
               placeholder="Enter name"
@@ -61,6 +93,11 @@ function AddTopic() {
           <Box width="100%" />
           <Grid item xs={4}>
             <TextField
+              error={replicationFactorInvalid}
+              helperText={
+                replicationFactorInvalid &&
+                "Replication factor cannot be more than the number of brokers in the cluster"
+              }
               id="replication-factor"
               label="Replication Factor"
               placeholder="Enter number"

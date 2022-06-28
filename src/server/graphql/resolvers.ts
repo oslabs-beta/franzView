@@ -278,7 +278,6 @@ const resolvers = {
     ): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalReplicas(name);
       if (metric.length === 0) {
-        console.log(partitions);
         return partitions.reduce(
           (prev, current) => prev + current.replicas.length,
           0
@@ -294,7 +293,6 @@ const resolvers = {
     ): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalIsrs(name);
       if (metric.length === 0) {
-        console.log(partitions);
         return partitions.reduce(
           (prev, current) => prev + current.isr.length,
           0
@@ -460,7 +458,6 @@ const resolvers = {
           replicationFactor,
           numPartitions
         );
-        console.log(topic.partitions[0].replicas);
         return topic;
       } catch (error) {
         console.warn(
