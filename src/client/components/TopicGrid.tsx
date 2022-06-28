@@ -37,8 +37,14 @@ const columns: GridColDef[] = [
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
 ];
 
-export default function Broker() {
+interface TopicGridProps {
+  title?: string;
+  rowCount: number;
+}
+
+export default function TopicGrid({ title, rowCount }: TopicGridProps) {
   const [rowData, setRowData] = useState([]);
+  const [pageSize, setPageSize] = useState(rowCount);
   const { loading, error, data } = useQuery(BROKER_METRICS_QUERY, {
     onCompleted: (data) => {
       const newRowData = data.topics.map((item, index) => {
@@ -59,19 +65,23 @@ export default function Broker() {
   });
 
   return (
-    <React.Fragment>
-      <Title>Kafka Cluster</Title>
+    <div style={{ height: "100%" }}>
+      <Title>{title}</Title>
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div style={{ height: 400, width: "100%" }}>
+        <div style={{ width: "100%" }}>
           <DataGrid
             rows={rowData}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
+            pageSize={pageSize}
+            onPageSizeChange={(pageSize) => setPageSize(pageSize)}
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            style={{ height: 52 * rowCount + 147 }}
           />
         </div>
       )}
-    </React.Fragment>
+    </div>
   );
 }
