@@ -15,25 +15,25 @@ const columns: GridColDef[] = [
     field: "partitionNum",
     headerName: "Partition",
     type: "number",
-    width: 100,
+    width: 150,
   },
   {
     field: "partitionRep",
     headerName: "Replicas per partition",
     type: "number",
-    width: 100,
+    width: 150,
   },
   {
     field: "isrPerPart",
     headerName: "# ISRs per partition",
     type: "number",
-    width: 90,
+    width: 150,
   },
   {
     field: "brokersRep",
     headerName: "# Brokers with replicas",
     type: "number",
-    width: 90,
+    width: 150,
   },
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
 ];
@@ -50,7 +50,7 @@ export default function Broker() {
           partitionRep: item.totalReplicas,
           isrPerPart: item.totalIsrs,
           brokersRep: item.brokersWithReplicas,
-          logSize: item.logSize,
+          logSize: `${item.logSize} GB`,
         };
       });
 

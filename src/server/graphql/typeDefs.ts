@@ -7,7 +7,7 @@ export const typeDefs = gql`
     brokers: [Broker]!
     offlinePartitionCount: OfflinePartitionCount
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
-    underMinIsr: UnderMinIsr
+    underMinIsr: Metric
   }
 
   type Broker {
@@ -67,11 +67,6 @@ export const typeDefs = gql`
 
   type UnderReplicatedPartitions {
     underReplicatedPartitions: Int!
-    time: String
-  }
-
-  type UnderMinIsr {
-    underMinIsr: Int
     time: String
   }
 

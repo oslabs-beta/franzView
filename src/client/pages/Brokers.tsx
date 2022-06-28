@@ -14,6 +14,7 @@ import {
   CARD_METRICS_QUERY,
 } from "../models/queries";
 
+//Move real-line charts to top of page
 const Brokers = () => {
   const [filter, setFilter] = useState([]);
 
@@ -153,8 +154,8 @@ const Brokers = () => {
             </Paper>
           </Grid>
 
-          {/* Metrics Card 5 - Under Min ISR 
-           <Grid item xs={12} md={4}>
+          {/* Metrics Card 5 - Under Min ISR  */}
+          <Grid item xs={12} md={4}>
             <Paper
               sx={{
                 p: 2,
@@ -166,16 +167,18 @@ const Brokers = () => {
             >
               <MetricsCard
                 value={
-                   counts.loading
+                  counts.loading
                     ? "Loading..."
-                    : counts.data.cluster.UnderMinIsr.count
-                        
+                    : // We checked this in graphql the response is null, when we checked it in prometheus it was 0. We (P & R) suspect that the graphql is pulling the 0 and returning null
+                    counts.data.cluster.underMinIsr.metric
+                    ? counts.data.cluster.underMinIsr.metric
+                    : 0
                 }
                 title="Under Min ISR"
                 toBe="Should be zero."
               />
             </Paper>
-          </Grid> */}
+          </Grid>
 
           <Grid item xs={12} md={6}>
             <Paper
