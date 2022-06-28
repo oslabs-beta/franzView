@@ -14,6 +14,9 @@
 		"resolveJsonModule": true,
 		"isolatedModules": false,
 		"jsx": "react",
+		"types": [
+			"jest",
+		],
 	},
-	"include": ["src", "src/server", "src/client"]
+	"include": ["src", "src/server", "src/client", "__test__"]
 }
