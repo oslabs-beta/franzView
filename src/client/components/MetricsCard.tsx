@@ -4,14 +4,24 @@ import Title from "./Title";
 import Box from "@mui/material/Box";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
-export type Props = {
-  value: number;
-  title: string;
-  toBe: string;
-  icon?: React.ReactNode;
-};
+import { useQuery } from "@apollo/client";
 
-const MetricsCard = ({ value, title, toBe, icon }: Props) => {
+import { MetricsCardProps } from "../../types/types";
+
+const MetricsCard = ({
+  value,
+  title,
+  description,
+  icon,
+  query,
+  variables,
+  searchingFor,
+}: MetricsCardProps) => {
+  if (query) {
+    const { loading, data } = useQuery(query, { ...variables });
+    value = loading ? "Loading..." : data[searchingFor];
+  }
+
   return (
     <React.Fragment>
       <Title>{title}</Title>
@@ -20,7 +30,7 @@ const MetricsCard = ({ value, title, toBe, icon }: Props) => {
       </Typography>
       <Box sx={{ display: "flex" }}>
         <Typography color="text.secondary" sx={{ flex: 1 }}>
-          {toBe}
+          {description}
         </Typography>
         <ListItemIcon>{icon}</ListItemIcon>
       </Box>

@@ -71,3 +71,13 @@ export interface GqlChartProps {
   label?: string;
   args?: any;
 }
+
+export type MetricsCardProps = {
+  value?: string | number;
+  title: string;
+  description: string;
+  icon?: React.ReactNode;
+  query?: DocumentNode;
+  variables?: any;
+  searchingFor?: string;
+};

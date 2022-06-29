@@ -87,7 +87,7 @@ function DashboardContent() {
                         .underReplicatedPartitions
                 }
                 title="Underreplicated partitions"
-                toBe="Should be zero."
+                description="Should be zero."
                 icon={<MonitorHeartTwoTone />}
               />
             </Paper>
@@ -110,7 +110,7 @@ function DashboardContent() {
                     : data.cluster.activeControllerCount.count
                 }
                 title="Active controller count"
-                toBe="Should be one."
+                description="Should be one."
                 icon={<MonitorHeartTwoTone />}
               />
             </Paper>
@@ -133,7 +133,7 @@ function DashboardContent() {
                     : data.cluster.offlinePartitionCount.count
                 }
                 title="Offline partitions count"
-                toBe="Should be zero."
+                description="Should be zero."
                 icon={<MonitorHeartTwoTone />}
               />
             </Paper>
