@@ -65,8 +65,6 @@ export async function createTopic(
     numPartitions,
   };
 
-  console.log(topicConfig);
-
   try {
     if (await admin.createTopics({ topics: [topicConfig] })) {
       const topics = await admin.fetchTopicMetadata({ topics: [topic] });

@@ -66,7 +66,7 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
 
   return (
     <div style={{ height: "100%" }}>
-      <Title>{title}</Title>
+      {title && <Title>{title}</Title>}
       {loading ? (
         <div>Loading...</div>
       ) : (
