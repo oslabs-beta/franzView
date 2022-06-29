@@ -2,6 +2,8 @@ import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Dashboard from "./pages/Dashboard";
 import Brokers from "./pages/Brokers";
+import AddTopic from "./components/AddTopic";
+import TopicsList from "./pages/TopicsList";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -55,6 +57,8 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/brokers" element={<Brokers />} />
+              <Route path="/addtopic" element={<AddTopic />} />
+              <Route path="/topics" element={<TopicsList />} />
               <Route
                 path="*"
                 element={

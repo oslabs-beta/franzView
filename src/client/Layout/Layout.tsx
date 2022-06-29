@@ -25,7 +25,9 @@ import Logout from "@mui/icons-material/Logout";
 import Topic from "@mui/icons-material/Topic";
 import { BugReport } from "@mui/icons-material";
 import Link from "@mui/material/Link";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Link as RouterLink } from "react-router-dom";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const drawerWidth = 240;
 
@@ -80,6 +82,16 @@ const secondaryMenuItems = [
     text: "Franz",
     icon: <BugReport />,
     link: "/",
+  },
+  {
+    text: "Manage Topics",
+    icon: <ListAltIcon />,
+    link: "/",
+  },
+  {
+    text: "Create a Topic",
+    icon: <AddBoxIcon />,
+    link: "/addtopic",
   },
 ];
 

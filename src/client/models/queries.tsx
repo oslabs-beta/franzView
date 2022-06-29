@@ -62,7 +62,7 @@ export const BROKER_FRAGMENT = gql`
 
 export const CORE_ALL_BROKERS_QUERY = gql`
   ${BROKER_FRAGMENT}
-  query CoreAllBrokerFields {
+  query Brokers {
     brokers {
       ...CoreBrokerFields
     }
@@ -139,6 +139,22 @@ export const BYTES_OUT_PER_SECOND = gql`
         time
         bytesOutPerSecond: metric
       }
+    }
+  }
+`;
+
+export const ADD_TOPIC = gql`
+  mutation AddTopic(
+    $name: String!
+    $replicationFactor: Int
+    $numPartitions: Int
+  ) {
+    addTopic(
+      name: $name
+      replicationFactor: $replicationFactor
+      numPartitions: $numPartitions
+    ) {
+      name
     }
   }
 `;
