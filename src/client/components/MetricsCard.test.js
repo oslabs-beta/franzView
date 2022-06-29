@@ -1,12 +1,8 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
+// /**
+//  * @jest-environment jsdom
+//  */
 
-import MetricsCard from "./MetricsCard";
-
-describe("MetricsCard", () => {
-  test("renders MetricsCard component", () => {
-    render(<MetricsCard />);
-
-    screen.debug();
-  });
-});
+//  test('use jsdom in this test file', () => {
+//   const element = document.createElement('div');
+//   expect(element).not.toBeNull();
+// });
