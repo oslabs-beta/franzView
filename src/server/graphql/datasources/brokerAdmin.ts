@@ -1,4 +1,5 @@
 import { admin } from "../../kafka/kafka";
+import { ConfigResourceTypes } from "kafkajs";
 import { Cluster, Broker, ConfigEntries } from "../../../types/types";
 
 /**
@@ -76,5 +77,31 @@ export async function createTopic(
     }
   } catch (error) {
     console.warn(`Error when creating topic: ${topic}. Error: ${error}`);
+  }
+}
+
+export async function deleteTopic(topic: string) {
+  try {
+    const cluster = await admin.describeCluster();
+    const canDelete = await admin.describeConfigs({
+      includeSynonyms: true,
+      resources: [
+        {
+          type: ConfigResourceTypes.BROKER,
+          name: cluster.brokers[0].nodeId.toString(),
+          configNames: ["delete.topic.enable"],
+        },
+      ],
+    });
+
+    if (canDelete.resources[0].configEntries[0].configValue != "true")
+      throw "Delete topic is not enabled on this cluster.";
+
+    const topicToDelete = await getSingleTopic(topic);
+    await admin.deleteTopics({ topics: [topic] });
+    return topicToDelete;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 }

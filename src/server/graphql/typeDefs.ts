@@ -114,5 +114,6 @@ export const typeDefs = gql`
       numPartitions: Int
       configEntries: [ConfigEntry]
     ): Topic!
+    deleteTopic(name: String!): Topic
   }
 `;

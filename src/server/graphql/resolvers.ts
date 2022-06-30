@@ -469,6 +469,18 @@ const resolvers = {
         );
       }
     },
+
+    deleteTopic: async (parent, { name }) => {
+      try {
+        const topic = await brokerData.deleteTopic(name);
+        return topic;
+      } catch (error) {
+        console.warn(
+          `Mutation deleteTopic failed for topic: ${name}. Error: ${error}`
+        );
+        return error;
+      }
+    },
   },
 };
 
