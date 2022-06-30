@@ -8,6 +8,30 @@ import { useQuery } from "@apollo/client";
 
 import { MetricsCardProps } from "../../types/types";
 
+const keySearch = (obj, string) => {
+  for (const key in obj) {
+    // console.log('key', key, 'obj', obj);
+    if (key === string) {
+      const output = obj[key];
+      console.log(
+        "key match",
+        key,
+        "string",
+        string,
+        "obj",
+        obj,
+        "value",
+        obj[key],
+        "output",
+        output
+      );
+      return output;
+    } else if (typeof obj[key] === "object") {
+      return keySearch(obj[key], string);
+    }
+  }
+};
+
 const MetricsCard = ({
   value,
   title,
@@ -19,7 +43,8 @@ const MetricsCard = ({
 }: MetricsCardProps) => {
   if (query) {
     const { loading, data } = useQuery(query, { ...variables });
-    value = loading ? "Loading..." : data[searchingFor];
+    const metric = keySearch(data, searchingFor);
+    value = loading ? "Loading..." : metric;
   }
 
   return (
