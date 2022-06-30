@@ -104,5 +104,6 @@ export const typeDefs = gql`
 
   type Mutation {
     addTopic(name: String!, replicationFactor: Int, numPartitions: Int): Topic!
+    deleteTopic(name: String!): Topic
   }
 `;

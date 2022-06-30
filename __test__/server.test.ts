@@ -247,3 +247,30 @@ describe("GraphQL Queries", () => {
     });
   });
 });
+
+describe("GraphQL Mutation", () => {
+  describe("Delete Topic", () => {
+    it("The delete topic mutation returns the topic that was deleted.", async () => {
+      await global.testServer.executeOperation({
+        query: `mutation AddTopic($name: String!) {
+        addTopic(name: $name) {
+          name
+            }
+          }`,
+        variables: {
+          name: "topicToBeDeleted",
+        },
+      });
+      const result = await global.testServer.executeOperation({
+        query: `mutation DeleteTopic(name: String!) {
+          deleteTopic(name: $name) {
+            name
+          }
+        }`,
+        variables: { name: "topicToBeDeleted" },
+      });
+
+      expect(result).toMatchSnapshot();
+    });
+  });
+});

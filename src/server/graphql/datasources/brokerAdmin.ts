@@ -1,5 +1,6 @@
 import { admin } from "../../kafka/kafka";
 import { Cluster, Broker } from "../../../types/types";
+import { ConfigResourceTypes } from "kafkajs";
 
 /**
  * TODO: Keep admin connection to avoid needing to reconnect multiple times. Disconnect if not needed for extended time.
@@ -74,5 +75,31 @@ export async function createTopic(
     }
   } catch (error) {
     console.warn(`Error when creating topic: ${topic}. Error: ${error}`);
+  }
+}
+
+export async function deleteTopic(topic: string) {
+  try {
+    const cluster = await admin.describeCluster();
+    const canDelete = await admin.describeConfigs({
+      includeSynonyms: true,
+      resources: [
+        {
+          type: ConfigResourceTypes.BROKER,
+          name: cluster.brokers[0].nodeId.toString(),
+          configNames: ["delete.topic.enable"],
+        },
+      ],
+    });
+
+    if (canDelete[0].configValue != "true")
+      throw "Delete topic is not enabled on this cluster.";
+
+    const topicToDelete = await getSingleTopic(topic);
+    await admin.deleteTopics({ topics: [topic] });
+    return topicToDelete;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 }

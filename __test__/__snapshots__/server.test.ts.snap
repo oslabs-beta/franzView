@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphQL Mutation Delete Topic The delete topic mutation returns the topic that was deleted. 1`] = `
+Object {
+  "data": undefined,
+  "errors": Array [
+    Object {
+      "extensions": Object {
+        "code": "GRAPHQL_PARSE_FAILED",
+      },
+      "message": "Syntax Error: Expected \\"$\\", found Name \\"name\\".",
+    },
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
