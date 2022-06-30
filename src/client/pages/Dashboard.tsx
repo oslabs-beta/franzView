@@ -104,14 +104,11 @@ function DashboardContent() {
               elevation={8}
             >
               <MetricsCard
-                value={
-                  loading
-                    ? "Loading..."
-                    : data.cluster.activeControllerCount.count
-                }
                 title="Active controller count"
                 description="Should be one."
                 icon={<MonitorHeartTwoTone />}
+                query={CARD_METRICS_QUERY}
+                searchingFor="count"
               />
             </Paper>
           </Grid>
