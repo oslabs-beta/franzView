@@ -451,12 +451,16 @@ const resolvers = {
   },
 
   Mutation: {
-    addTopic: async (parent, { name, replicationFactor, numPartitions }) => {
+    addTopic: async (
+      parent,
+      { name, replicationFactor, numPartitions, configEntries }
+    ) => {
       try {
         const topic = await brokerData.createTopic(
           name,
           replicationFactor,
-          numPartitions
+          numPartitions,
+          configEntries
         );
         return topic;
       } catch (error) {

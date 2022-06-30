@@ -1,6 +1,6 @@
 import { admin } from "../../kafka/kafka";
-import { Cluster, Broker } from "../../../types/types";
 import { ConfigResourceTypes } from "kafkajs";
+import { Cluster, Broker, ConfigEntries } from "../../../types/types";
 
 /**
  * TODO: Keep admin connection to avoid needing to reconnect multiple times. Disconnect if not needed for extended time.
@@ -58,12 +58,14 @@ export async function getAllTopics() {
 export async function createTopic(
   topic: string,
   replicationFactor: number,
-  numPartitions: number
+  numPartitions: number,
+  configEntries: ConfigEntries[]
 ) {
   const topicConfig = {
     topic,
     replicationFactor,
     numPartitions,
+    configEntries,
   };
 
   try {
