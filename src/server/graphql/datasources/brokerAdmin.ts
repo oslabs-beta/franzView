@@ -1,5 +1,5 @@
 import { admin } from "../../kafka/kafka";
-import { Cluster, Broker } from "../../../types/types";
+import { Cluster, Broker, ConfigEntries } from "../../../types/types";
 
 /**
  * TODO: Keep admin connection to avoid needing to reconnect multiple times. Disconnect if not needed for extended time.
@@ -51,5 +51,30 @@ export async function getAllTopics() {
     return topics.topics;
   } catch (error) {
     console.log(`Kafka Admin Error getting single topic: ${error}`);
+  }
+}
+
+export async function createTopic(
+  topic: string,
+  replicationFactor: number,
+  numPartitions: number,
+  configEntries: ConfigEntries[]
+) {
+  const topicConfig = {
+    topic,
+    replicationFactor,
+    numPartitions,
+    configEntries,
+  };
+
+  try {
+    if (await admin.createTopics({ topics: [topicConfig] })) {
+      const topics = await admin.fetchTopicMetadata({ topics: [topic] });
+      return topics.topics[0];
+    } else {
+      throw `Topic ${topic} already exists`;
+    }
+  } catch (error) {
+    console.warn(`Error when creating topic: ${topic}. Error: ${error}`);
   }
 }

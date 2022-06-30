@@ -76,27 +76,73 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "offlinePartitionCount");
   }
 
-  async getDiskUsage() {
+  async getJVMMemoryUsage() {
     const query =
-      'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
+      'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_committed{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "diskUsage");
+    return this.formatResponse(data, "JVMMemoryUsage");
   }
 
-  async getDiskUsageOverTime(start, end, step) {
+  async getJVMMemoryUsageOverTime(start, end, step) {
     const unixStart = Math.round(new Date(start).getTime() / 1000);
     const unixEnd = Math.round(new Date(end).getTime() / 1000);
 
     try {
       if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
         throw "Date input incorrect";
-      const query = `query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100&start=${unixStart}&end=${unixEnd}&step=${step}`;
+      const query = `query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[${step}]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_max{area="heap", job!="zookeeper"}[${step}]))by(application,instance))*100&start=${unixStart}&end=${unixEnd}&step=${step}`;
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
 
-      return this.formatResponseSeries(data, "diskUsage");
+      return this.formatResponseSeries(data, "JVMMemoryUsage");
+    } catch (error) {
+      console.log(`Error occured for Disk Usage Query to Prometheus with:
+       start: ${start}, 
+       end:  ${end},
+       step: ${step}
+       Error: ${error}`);
+    }
+  }
+
+  async getBytesInPerSec(start, end, step, filter) {
+    const unixStart = Math.round(new Date(start).getTime() / 1000);
+    const unixEnd = Math.round(new Date(end).getTime() / 1000);
+
+    try {
+      if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
+        throw "Date input incorrect";
+      const query = `query=sum(rate(kafka_server_brokertopicmetrics_bytesinpersec{topic!=""${
+        filter ? `,instance=~"${this.filter(filter)}"` : ""
+      }}[${step}]))by(topic)&start=${unixStart}&end=${unixEnd}&step=${step}`;
+      const result = await this.get(`api/v1/query_range?${query}`);
+      const data = result.data.result;
+
+      return this.formatResponseSeries(data, "metric");
+    } catch (error) {
+      console.log(`Error occured for getBytesInPerSec Query to Prometheus with:
+       start: ${start}, 
+       end:  ${end},
+       step: ${step}
+       Error: ${error}`);
+    }
+  }
+
+  async getBytesOutPerSec(start, end, step, filter) {
+    const unixStart = Math.round(new Date(start).getTime() / 1000);
+    const unixEnd = Math.round(new Date(end).getTime() / 1000);
+
+    try {
+      if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
+        throw "Date input incorrect";
+      const query = `query=sum(rate(kafka_server_brokertopicmetrics_bytesoutpersec{topic!=""${
+        filter ? `,instance=~"${this.filter(filter)}"` : ""
+      }}[${step}]))by(topic)&start=${unixStart}&end=${unixEnd}&step=${step}`;
+      const result = await this.get(`api/v1/query_range?${query}`);
+      const data = result.data.result;
+
+      return this.formatResponseSeries(data, "metric");
     } catch (error) {
       console.log(`Error occured for Disk Usage Query to Prometheus with:
        start: ${start}, 
@@ -138,6 +184,26 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "logSize");
   }
 
+  async getMedianTotalTimeMs(requestType, filter) {
+    const query = `query=kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"${
+      filter ? `,instance=~"${this.filter(filter)}"` : ""
+    }}`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "totalTimeMs");
+  }
+
+  async getAvgTotalTimeMs(requestType, filter) {
+    const query = `query=avg(kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"${
+      filter ? `,instance=~"${this.filter(filter)}"` : ""
+    }})by(quantile)`;
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "totalTimeMs");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatResponse(data: any[], metric: string) {
     /* Remove for production */
@@ -153,6 +219,7 @@ class PrometheusAPI extends RESTDataSource {
         time: new Date(result.value[0] * 1000).toString(),
         resource: result.metric.instance,
         brokerId: brokerMap[result.metric.instance],
+        topic: result.metric.topic,
       };
       obj[metric] = Number(result.value[1]);
       formattedData.push(obj);
@@ -176,6 +243,7 @@ class PrometheusAPI extends RESTDataSource {
         resource: result.metric.instance,
         brokerId: brokerMap[result.metric.instance],
         values: [],
+        topic: result.metric.topic,
       };
       result.values.forEach((value) => {
         const point = {
@@ -192,6 +260,18 @@ class PrometheusAPI extends RESTDataSource {
     });
 
     return formattedData;
+  }
+
+  filter(brokers: number[]) {
+    const reverseBrokerMap = {
+      1: "kafka1:8081",
+      2: "kafka2:8081",
+      3: "kafka3:8081",
+    };
+
+    let filter = "";
+    brokers.forEach((broker) => (filter += `${reverseBrokerMap[broker]}|`));
+    return filter;
   }
 }
 

@@ -4,10 +4,6 @@ const server = "http://localhost:3000";
 
 describe("REST Server", () => {
   describe("404s for non-existant routes", () => {
-    it("Bad GET Request", () => {
-      return request(server).get("/badRoute").expect(404);
-    });
-
     it("Bad POST Request", () => {
       return request(server).post("/badRoute").expect(404);
     });
@@ -230,8 +226,8 @@ describe("GraphQL Queries", () => {
       const result = await global.testServer.executeOperation({
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
-              diskUsage {
-                diskUsage
+              JVMMemoryUsage {
+                JVMMemoryUsage
                 time
               }
             }
@@ -241,10 +237,10 @@ describe("GraphQL Queries", () => {
         },
       });
       expect(result.errors).toBeUndefined();
-      expect(result.data.broker).toHaveProperty("diskUsage");
-      expect(result.data.broker.diskUsage).toEqual(
+      expect(result.data.broker).toHaveProperty("JVMMemoryUsage");
+      expect(result.data.broker.JVMMemoryUsage).toEqual(
         expect.objectContaining({
-          diskUsage: expect.any(Number),
+          JVMMemoryUsage: expect.any(Number),
           time: expect.any(String),
         })
       );

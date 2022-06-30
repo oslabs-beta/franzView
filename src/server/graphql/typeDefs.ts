@@ -15,9 +15,14 @@ export const typeDefs = gql`
     brokerHost: String!
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
     cpuUsage: BrokerCpuUsage
-    diskUsage: DiskUsage
+    JVMMemoryUsage: JVMMemoryUsage
     cpuUsageOverTime: [BrokerCpuUsage]
-    diskUsageOverTime: [DiskUsage]
+    JVMMemoryUsageOverTime: [JVMMemoryUsage]
+    produceTotalTimeMs: TotalTimeMs
+    consumerTotalTimeMs: TotalTimeMs
+    followerTotalTimeMs: TotalTimeMs
+    bytesInPerSecondOverTime: [TimeSeriesMetric]
+    bytesOutPerSecondOverTime: [TimeSeriesMetric]
   }
 
   type Topic {
@@ -39,8 +44,18 @@ export const typeDefs = gql`
     time: String
   }
 
-  type DiskUsage {
-    diskUsage: Float!
+  type TimeSeriesMetric {
+    topic: String
+    values: [Metric]
+  }
+
+  type Metric {
+    time: String
+    metric: Float
+  }
+
+  type JVMMemoryUsage {
+    JVMMemoryUsage: Float!
     time: String
   }
 
@@ -54,11 +69,50 @@ export const typeDefs = gql`
     time: String
   }
 
+  type TotalTimeMs {
+    totalTimeMs: Float!
+    time: String
+  }
+
   type Query {
-    brokers(start: String, end: String, step: String): [Broker]!
+    brokers(
+      start: String
+      end: String
+      step: String
+      brokerIds: [Int]
+    ): [Broker]!
     broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
     topic(name: String!): Topic
     topics: [Topic]
+    totalTimeMs(request: String!, brokerIds: [Int]): TotalTimeMs
+    bytesInPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
+    bytesOutPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
+  }
+
+  input ConfigEntry {
+    name: String!
+    value: String!
+  }
+
+  type Mutation {
+    addTopic(
+      name: String!
+      replicationFactor: Int
+      numPartitions: Int
+      configEntries: [ConfigEntry]
+    ): Topic!
   }
 `;
