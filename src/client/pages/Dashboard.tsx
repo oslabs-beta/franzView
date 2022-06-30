@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
-import Broker from "../components/Broker";
+import TopicGrid from "../components/TopicGrid";
 import ConsumerCard from "../components/ConsumerCard";
 import { MonitorHeartTwoTone } from "@mui/icons-material";
 
@@ -144,7 +144,7 @@ function DashboardContent() {
               sx={{ p: 2, display: "flex", flexDirection: "column" }}
               elevation={4}
             >
-              <Broker />
+              <TopicGrid title="Kafka Cluster" rowCount={5} />
             </Paper>
           </Grid>
         </Grid>

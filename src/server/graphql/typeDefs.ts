@@ -101,4 +101,8 @@ export const typeDefs = gql`
       step: String!
     ): [TimeSeriesMetric]
   }
+
+  type Mutation {
+    addTopic(name: String!, replicationFactor: Int, numPartitions: Int): Topic!
+  }
 `;
