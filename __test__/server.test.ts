@@ -250,7 +250,7 @@ describe("GraphQL Queries", () => {
 
 describe("GraphQL Mutation", () => {
   describe("Delete Topic", () => {
-    it("The delete topic mutation returns the topic that was deleted.", async () => {
+    beforeEach(async () => {
       await global.testServer.executeOperation({
         query: `mutation AddTopic($name: String!) {
         addTopic(name: $name) {
@@ -261,8 +261,11 @@ describe("GraphQL Mutation", () => {
           name: "topicToBeDeleted",
         },
       });
+    });
+
+    it("The delete topic mutation returns the topic that was deleted.", async () => {
       const result = await global.testServer.executeOperation({
-        query: `mutation DeleteTopic(name: String!) {
+        query: `mutation DeleteTopic($name: String!) {
           deleteTopic(name: $name) {
             name
           }
@@ -271,6 +274,29 @@ describe("GraphQL Mutation", () => {
       });
 
       expect(result).toMatchSnapshot();
+    });
+
+    it("Deleting a topic removes it from the cluster and it can no longer be found in the cluster.", async () => {
+      await global.testServer.executeOperation({
+        query: `mutation DeleteTopic($name: String!) {
+          deleteTopic(name: $name) {
+            name
+          }
+        }`,
+        variables: { name: "topicToBeDeleted" },
+      });
+
+      const response = await global.testServer.executeOperation({
+        query: `query topic($name: String!) {
+          topic(name: $name) {
+            name
+          }
+        }`,
+
+        variables: { name: "topicToBeDeleted" },
+      });
+
+      expect(response.data.topic).toBeNull();
     });
   });
 });

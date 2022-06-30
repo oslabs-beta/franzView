@@ -92,7 +92,7 @@ export async function deleteTopic(topic: string) {
       ],
     });
 
-    if (canDelete[0].configValue != "true")
+    if (canDelete.resources[0].configEntries[0].configValue != "true")
       throw "Delete topic is not enabled on this cluster.";
 
     const topicToDelete = await getSingleTopic(topic);
