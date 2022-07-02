@@ -76,3 +76,14 @@ export interface ConfigEntries {
   name: string;
   value: string;
 }
+
+export interface DialogProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  title: string;
+  content: string;
+  label: string; //id and label will be same, but label may contain spaces?
+  actions: DocumentNode;
+  control: string;
+  args: any;
+}
