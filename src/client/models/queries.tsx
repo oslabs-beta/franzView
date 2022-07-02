@@ -173,7 +173,9 @@ export const UNDERREPLICATED_PARTITIONS = gql`
         time
         underreplicatedPartitions: metric
       }
-  `;
+    }
+  }
+`;
 
 export const ADD_TOPIC = gql`
   mutation AddTopic(
