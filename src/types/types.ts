@@ -81,3 +81,8 @@ export type MetricsCardProps = {
   variables?: any;
   searchingFor?: string;
 };
+
+export interface ConfigEntries {
+  name: string;
+  value: string;
+}

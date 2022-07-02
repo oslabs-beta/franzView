@@ -451,18 +451,34 @@ const resolvers = {
   },
 
   Mutation: {
-    addTopic: async (parent, { name, replicationFactor, numPartitions }) => {
+    addTopic: async (
+      parent,
+      { name, replicationFactor, numPartitions, configEntries }
+    ) => {
       try {
         const topic = await brokerData.createTopic(
           name,
           replicationFactor,
-          numPartitions
+          numPartitions,
+          configEntries
         );
         return topic;
       } catch (error) {
         console.warn(
           `Mutation addTopic failed for topic: ${name}. Error: ${error}`
         );
+      }
+    },
+
+    deleteTopic: async (parent, { name }) => {
+      try {
+        const topic = await brokerData.deleteTopic(name);
+        return topic;
+      } catch (error) {
+        console.warn(
+          `Mutation deleteTopic failed for topic: ${name}. Error: ${error}`
+        );
+        return error;
       }
     },
   },
