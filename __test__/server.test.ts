@@ -358,13 +358,13 @@ describe("GraphQL Mutation", () => {
           }
         }`,
 
-        variables: { name: "newTopic" },
+        variables: {
+          name: "newTopic",
+        },
       });
 
-      console.log("Result: ", result);
-      console.log("Response: ", response);
       expect(result.errors).toBeUndefined();
-      expect(response.data.topic.name).toBe(result.data.topic.name);
+      expect(response.data.topic.name).toBe(result.data.addTopic.name);
     });
   });
 });
