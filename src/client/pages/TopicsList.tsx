@@ -1,5 +1,5 @@
 import React from "react";
-import TopicGrid from "../components/TopicGrid";
+// import TopicGrid from "../components/TopicGrid";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 
@@ -19,7 +19,7 @@ const TopicsList = () => {
             Add Topic
           </Button>
         </div>
-        <TopicGrid rowCount={10} />
+        {/* <TopicGrid rowCount={10} /> */}
       </Container>
     </>
   );

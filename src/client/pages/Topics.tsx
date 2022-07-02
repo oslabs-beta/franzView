@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import MetricsCard from "../components/MetricsCard";
 import { useQuery } from "@apollo/client";
 import RealTimeLineChart from "../components/RealTimeLineChart";
-import TopicDataGrid from "../components/TopicGrid";
+import TopicDataGrid from "../components/TopicDataGrid";
 import {
   BYTES_IN_PER_SECOND,
   BYTES_OUT_PER_SECOND,

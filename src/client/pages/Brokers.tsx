@@ -11,7 +11,8 @@ import {
   BYTES_IN_PER_SECOND,
   BYTES_OUT_PER_SECOND,
   AVERAGE_TOTALTIMEMS,
-  CARD_METRICS_QUERY,
+  DASHBOARD_CARD_METRICS_QUERY,
+  BROKER_PAGE_QUERY,
 } from "../models/queries";
 
 //Move real-line charts to top of page
@@ -43,7 +44,15 @@ const Brokers = () => {
   });
 
   // various counts from card metric query
-  const counts = useQuery(CARD_METRICS_QUERY, {
+  const counts = useQuery(DASHBOARD_CARD_METRICS_QUERY, {
+    variables: {
+      request: "FetchUnderRep",
+      brokerIds: filter.length > 0 ? filter : null,
+    },
+    pollInterval: 20000,
+  });
+
+  const test = useQuery(BROKER_PAGE_QUERY, {
     variables: {
       request: "FetchUnderRep",
       brokerIds: filter.length > 0 ? filter : null,
@@ -60,7 +69,58 @@ const Brokers = () => {
           searchingFor="brokers"
           query={CORE_ALL_BROKERS_QUERY}
         />
+
         <Grid container spacing={3} sx={{ mt: 1, mb: 4 }}>
+          {/* Bytes in per second chart */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
+              elevation={16}
+            >
+              <RealTimeLineChart
+                query={BYTES_IN_PER_SECOND}
+                metric="bytesInPerSecond"
+                step="30s"
+                duration={5}
+                pollInterval={60}
+                title="Bytes In Per Second"
+                yAxisLabel="BytesPerSecond"
+                resource="topic"
+                label="topic"
+                args={{ brokerIds: filter.length > 0 ? filter : null }}
+              />
+            </Paper>
+          </Grid>
+
+          {/* BYTES OUT PER SEC LINE CHART */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
+              elevation={16}
+            >
+              <RealTimeLineChart
+                query={BYTES_OUT_PER_SECOND}
+                metric="bytesOutPerSecond"
+                step="30s"
+                duration={5}
+                pollInterval={60}
+                title="Bytes Out Per Second"
+                yAxisLabel="BytesPerSecond"
+                resource="topic"
+                label="topic"
+                args={{ brokerIds: filter.length > 0 ? filter : null }}
+              />
+            </Paper>
+          </Grid>
+
           {/* Metric card 1 - Reduce request */}
           <Grid item xs={12} md={4}>
             <Paper
@@ -167,62 +227,12 @@ const Brokers = () => {
             >
               <MetricsCard
                 value={
-                  counts.loading
+                  test.loading
                     ? "Loading..."
-                    : // We checked this in graphql the response is null, when we checked it in prometheus it was 0. We (P & R) suspect that the graphql is pulling the 0 and returning null
-                    counts.data.cluster.underMinIsr.metric
-                    ? counts.data.cluster.underMinIsr.metric
-                    : 0
+                    : test.data.cluster.underMinIsr.metric
                 }
                 title="Under Min ISR"
                 toBe="Should be zero."
-              />
-            </Paper>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-              }}
-              elevation={16}
-            >
-              <RealTimeLineChart
-                query={BYTES_IN_PER_SECOND}
-                metric="bytesInPerSecond"
-                step="30s"
-                duration={5}
-                pollInterval={60}
-                title="Bytes In Per Second"
-                yAxisLabel="BytesPerSecond"
-                resource="topic"
-                label="topic"
-                args={{ brokerIds: filter.length > 0 ? filter : null }}
-              />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-              }}
-              elevation={16}
-            >
-              <RealTimeLineChart
-                query={BYTES_OUT_PER_SECOND}
-                metric="bytesOutPerSecond"
-                step="30s"
-                duration={5}
-                pollInterval={60}
-                title="Bytes Out Per Second"
-                yAxisLabel="BytesPerSecond"
-                resource="topic"
-                label="topic"
-                args={{ brokerIds: filter.length > 0 ? filter : null }}
               />
             </Paper>
           </Grid>

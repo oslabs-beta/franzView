@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-//(p & r) - We think this should be renamed to Dashboard_ Brokers_Metrics_Query;
 export const DASHBOARD_CARD_METRICS_QUERY = gql`
   query Cluster {
     cluster {
@@ -13,13 +12,11 @@ export const DASHBOARD_CARD_METRICS_QUERY = gql`
       numberUnderReplicatedPartitions {
         underReplicatedPartitions
       }
-      underMinIsr {
-        metric
-      }
     }
   }
 `;
-//This should be renamed to Topic_Metrics_Query
+
+//originally broker_metric_query
 export const TOPIC_DATAGRID_QUERY = gql`
   query Topics {
     topics {
