@@ -1,6 +1,18 @@
 import request from "supertest";
+import appServer from "../src/server/server";
+import { admin } from "../src/server/kafka/kafka";
 
 const server = "http://localhost:3000";
+
+beforeAll(async () => {
+  global.testServer = await appServer;
+  global.admin = await admin;
+});
+
+afterAll(async () => {
+  await global.admin.disconnect();
+  await global.testServer.stop();
+});
 
 describe("REST Server", () => {
   describe("404s for non-existant routes", () => {
