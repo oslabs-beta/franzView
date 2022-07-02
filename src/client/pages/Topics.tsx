@@ -133,7 +133,7 @@ const Topics = () => {
                     ? "Loading..."
                     : test.data.cluster.underMinIsr.metric
                 }
-                title="Under Min ISR"
+                title="Total Under Min ISR"
                 toBe="Should be zero."
               />
             </Paper>
@@ -145,7 +145,7 @@ const Topics = () => {
               sx={{ p: 2, display: "flex", flexDirection: "column" }}
               elevation={4}
             >
-              <TopicGrid />
+              <TopicGrid title="Kafka Cluster" rowCount={5} />
             </Paper>
           </Grid>
         </Grid>

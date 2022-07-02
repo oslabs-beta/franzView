@@ -146,8 +146,7 @@ function DashboardContent() {
               sx={{ p: 2, display: "flex", flexDirection: "column" }}
               elevation={4}
             >
-              <TopicGrid />
-              {/* <TopicGrid title="Kafka Cluster" rowCount={5} /> */}
+              <TopicGrid title="Kafka Cluster" rowCount={5} />
             </Paper>
           </Grid>
         </Grid>

@@ -38,11 +38,6 @@ const columns: GridColDef[] = [
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
 ];
 
-// <<<<<<<< HEAD:src/client/components/TopicDataGrid.tsx
-// export default function TopicDataGrid() {
-//   const [rowData, setRowData] = useState([]);
-//   const { loading, error, data } = useQuery(TOPIC_DATAGRID_QUERY, {
-// // ========
 interface TopicGridProps {
   title?: string;
   rowCount?: number;
