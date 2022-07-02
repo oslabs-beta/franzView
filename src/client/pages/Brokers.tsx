@@ -11,8 +11,10 @@ import {
   BYTES_IN_PER_SECOND,
   BYTES_OUT_PER_SECOND,
   AVERAGE_TOTALTIMEMS,
+  CARD_METRICS_QUERY,
 } from "../models/queries";
 
+//Move real-line charts to top of page
 const Brokers = () => {
   const [filter, setFilter] = useState([]);
 
@@ -40,6 +42,15 @@ const Brokers = () => {
     pollInterval: 20000,
   });
 
+  // various counts from card metric query
+  const counts = useQuery(CARD_METRICS_QUERY, {
+    variables: {
+      request: "FetchUnderRep",
+      brokerIds: filter.length > 0 ? filter : null,
+    },
+    pollInterval: 20000,
+  });
+
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
@@ -50,6 +61,7 @@ const Brokers = () => {
           query={CORE_ALL_BROKERS_QUERY}
         />
         <Grid container spacing={3} sx={{ mt: 1, mb: 4 }}>
+          {/* Metric card 1 - Reduce request */}
           <Grid item xs={12} md={4}>
             <Paper
               sx={{
@@ -71,7 +83,8 @@ const Brokers = () => {
               />
             </Paper>
           </Grid>
-          {/* Metrics Card 2 */}
+
+          {/* Metrics Card 2 - Consumer Request*/}
           <Grid item xs={12} md={4}>
             <Paper
               sx={{
@@ -93,7 +106,8 @@ const Brokers = () => {
               />
             </Paper>
           </Grid>
-          {/* Metrics Card 3 */}
+
+          {/* Metrics Card 3 - Follower Request */}
           <Grid item xs={12} md={4}>
             <Paper
               sx={{
@@ -115,6 +129,57 @@ const Brokers = () => {
               />
             </Paper>
           </Grid>
+
+          {/* Metrics Card 4 - Underreplicated Partitions  */}
+          <Grid item xs={12} md={4}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                height: 200,
+              }}
+              elevation={8}
+            >
+              <MetricsCard
+                value={
+                  counts.loading
+                    ? "Loading..."
+                    : counts.data.cluster.numberUnderReplicatedPartitions
+                        .underReplicatedPartitions
+                }
+                title="Underreplicated partitions"
+                toBe="Should be zero."
+              />
+            </Paper>
+          </Grid>
+
+          {/* Metrics Card 5 - Under Min ISR  */}
+          <Grid item xs={12} md={4}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                height: 200,
+              }}
+              elevation={8}
+            >
+              <MetricsCard
+                value={
+                  counts.loading
+                    ? "Loading..."
+                    : // We checked this in graphql the response is null, when we checked it in prometheus it was 0. We (P & R) suspect that the graphql is pulling the 0 and returning null
+                    counts.data.cluster.underMinIsr.metric
+                    ? counts.data.cluster.underMinIsr.metric
+                    : 0
+                }
+                title="Under Min ISR"
+                toBe="Should be zero."
+              />
+            </Paper>
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <Paper
               sx={{

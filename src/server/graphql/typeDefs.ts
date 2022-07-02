@@ -7,6 +7,7 @@ export const typeDefs = gql`
     brokers: [Broker]!
     offlinePartitionCount: OfflinePartitionCount
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
+    underMinIsr: Metric
   }
 
   type Broker {

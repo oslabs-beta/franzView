@@ -73,7 +73,7 @@ const menuItems = [
   {
     text: "Topics",
     icon: <Topic />,
-    link: "/",
+    link: "Topics/",
   },
 ];
 
