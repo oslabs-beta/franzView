@@ -6,6 +6,7 @@ import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
 // import TopicGrid from "../components/TopicGrid";
 import ConsumerCard from "../components/ConsumerCard";
+import TopicGrid from "../components/TopicGrid";
 
 import {
   ALL_BROKER_CPU_USAGE,
@@ -13,7 +14,6 @@ import {
   ALL_BROKER_DISK_USAGE,
 } from "../models/queries";
 import { useQuery } from "@apollo/client";
-import TopicDataGrid from "../components/TopicDataGrid";
 
 function DashboardContent() {
   const { loading, data } = useQuery(DASHBOARD_CARD_METRICS_QUERY, {
@@ -146,7 +146,7 @@ function DashboardContent() {
               sx={{ p: 2, display: "flex", flexDirection: "column" }}
               elevation={4}
             >
-              <TopicDataGrid />
+              <TopicGrid />
               {/* <TopicGrid title="Kafka Cluster" rowCount={5} /> */}
             </Paper>
           </Grid>

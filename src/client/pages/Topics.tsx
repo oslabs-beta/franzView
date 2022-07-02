@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
-import SearchBar from "../components/Searchbar";
-import { CORE_ALL_BROKERS_QUERY } from "../models/queries";
+// import SearchBar from "../components/Searchbar";
+// import { CORE_ALL_BROKERS_QUERY } from "../models/queries";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import MetricsCard from "../components/MetricsCard";
 import { useQuery } from "@apollo/client";
 import RealTimeLineChart from "../components/RealTimeLineChart";
-import TopicDataGrid from "../components/TopicDataGrid";
+import TopicGrid from "../components/TopicGrid";
 import {
   BYTES_IN_PER_SECOND,
   BYTES_OUT_PER_SECOND,
   // AVERAGE_TOTALTIMEMS,
   DASHBOARD_CARD_METRICS_QUERY,
   BROKER_PAGE_QUERY,
-  TOPIC_DATAGRID_QUERY,
+  // TOPIC_DATAGRID_QUERY,
 } from "../models/queries";
 
 const Topics = () => {
@@ -145,7 +145,7 @@ const Topics = () => {
               sx={{ p: 2, display: "flex", flexDirection: "column" }}
               elevation={4}
             >
-              <TopicDataGrid />
+              <TopicGrid />
             </Paper>
           </Grid>
         </Grid>
