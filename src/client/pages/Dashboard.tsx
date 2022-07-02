@@ -109,6 +109,7 @@ function DashboardContent() {
                 icon={<MonitorHeartTwoTone />}
                 query={CARD_METRICS_QUERY}
                 searchingFor="count"
+                variables={{ pollInterval: 60000 }}
               />
             </Paper>
           </Grid>

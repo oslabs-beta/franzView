@@ -29,7 +29,7 @@ const MetricsCard = ({
   searchingFor,
 }: MetricsCardProps) => {
   if (query) {
-    const { loading, data } = useQuery(query, { pollInterval: 60000 });
+    const { loading, data } = useQuery(query, { ...variables });
     value = loading ? "Loading..." : keySearch(data, searchingFor);
   }
 
