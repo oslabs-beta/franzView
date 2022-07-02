@@ -27,6 +27,7 @@ function SearchBar({ query, searchingFor, setFilter }: searchProps) {
                 option += `${key}: ${item[key]} `;
                 if (key === keyMap[searchingFor]) value = item[key];
               }
+              option = option.trimEnd();
               return { label: option, id: value };
             })
       }

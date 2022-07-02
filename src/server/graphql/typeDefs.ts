@@ -102,4 +102,19 @@ export const typeDefs = gql`
       step: String!
     ): [TimeSeriesMetric]
   }
+
+  input ConfigEntry {
+    name: String!
+    value: String!
+  }
+
+  type Mutation {
+    addTopic(
+      name: String!
+      replicationFactor: Int
+      numPartitions: Int
+      configEntries: [ConfigEntry]
+    ): Topic!
+    deleteTopic(name: String!): Topic
+  }
 `;

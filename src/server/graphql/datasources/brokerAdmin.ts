@@ -1,5 +1,6 @@
 import { admin } from "../../kafka/kafka";
-import { Cluster, Broker } from "../../../types/types";
+import { ConfigResourceTypes } from "kafkajs";
+import { Cluster, Broker, ConfigEntries } from "../../../types/types";
 
 /**
  * TODO: Keep admin connection to avoid needing to reconnect multiple times. Disconnect if not needed for extended time.
@@ -51,5 +52,56 @@ export async function getAllTopics() {
     return topics.topics;
   } catch (error) {
     console.log(`Kafka Admin Error getting single topic: ${error}`);
+  }
+}
+
+export async function createTopic(
+  topic: string,
+  replicationFactor: number,
+  numPartitions: number,
+  configEntries: ConfigEntries[]
+) {
+  const topicConfig = {
+    topic,
+    replicationFactor,
+    numPartitions,
+    configEntries,
+  };
+
+  try {
+    if (await admin.createTopics({ topics: [topicConfig] })) {
+      const topics = await admin.fetchTopicMetadata({ topics: [topic] });
+      return topics.topics[0];
+    } else {
+      throw `Topic ${topic} already exists`;
+    }
+  } catch (error) {
+    console.warn(`Error when creating topic: ${topic}. Error: ${error}`);
+  }
+}
+
+export async function deleteTopic(topic: string) {
+  try {
+    const cluster = await admin.describeCluster();
+    const canDelete = await admin.describeConfigs({
+      includeSynonyms: true,
+      resources: [
+        {
+          type: ConfigResourceTypes.BROKER,
+          name: cluster.brokers[0].nodeId.toString(),
+          configNames: ["delete.topic.enable"],
+        },
+      ],
+    });
+
+    if (canDelete.resources[0].configEntries[0].configValue != "true")
+      throw "Delete topic is not enabled on this cluster.";
+
+    const topicToDelete = await getSingleTopic(topic);
+    await admin.deleteTopics({ topics: [topic] });
+    return topicToDelete;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 }

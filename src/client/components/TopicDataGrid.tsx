@@ -38,9 +38,21 @@ const columns: GridColDef[] = [
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
 ];
 
-export default function TopicDataGrid() {
+// <<<<<<<< HEAD:src/client/components/TopicDataGrid.tsx
+// export default function TopicDataGrid() {
+//   const [rowData, setRowData] = useState([]);
+//   const { loading, error, data } = useQuery(TOPIC_DATAGRID_QUERY, {
+// // ========
+interface TopicGridProps {
+  title?: string;
+  rowCount?: number;
+}
+
+export default function TopicGrid({ title, rowCount }: TopicGridProps) {
   const [rowData, setRowData] = useState([]);
+  const [pageSize, setPageSize] = useState(rowCount);
   const { loading, error, data } = useQuery(TOPIC_DATAGRID_QUERY, {
+    // >>>>>>>> dev:src/client/components/TopicGrid.tsx
     onCompleted: (data) => {
       const newRowData = data.topics.map((item, index) => {
         return {
@@ -58,22 +70,25 @@ export default function TopicDataGrid() {
       return data;
     },
   });
-  console.log("this is the data", data);
 
   return (
-    <React.Fragment>
-      <Title>Kafka Cluster</Title>
+    <div style={{ height: "100%" }}>
+      {title && <Title>{title}</Title>}
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div style={{ height: 400, width: "100%" }}>
+        <div style={{ width: "100%" }}>
           <DataGrid
             rows={rowData}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
+            pageSize={pageSize}
+            onPageSizeChange={(pageSize) => setPageSize(pageSize)}
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            style={{ height: 52 * rowCount + 147 }}
           />
         </div>
       )}
-    </React.Fragment>
+    </div>
   );
 }

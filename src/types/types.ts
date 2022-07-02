@@ -73,3 +73,8 @@ export interface GqlChartProps {
   label?: string;
   args?: any;
 }
+
+export interface ConfigEntries {
+  name: string;
+  value: string;
+}

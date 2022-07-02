@@ -7,6 +7,7 @@ import {
   Count,
   JVMMemoryUsage,
 } from "../../types/types";
+import { Topic } from "@mui/icons-material";
 
 /**
  * TODO: Throw graphql errors from catch statements.
@@ -281,15 +282,33 @@ const resolvers = {
       return parent.partitions.length;
     },
 
-    totalReplicas: async ({ name }, args, { dataSources }): Promise<number> => {
+    totalReplicas: async (
+      { name, partitions },
+      args,
+      { dataSources }
+    ): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalReplicas(name);
-
+      if (metric.length === 0) {
+        return partitions.reduce(
+          (prev, current) => prev + current.replicas.length,
+          0
+        );
+      }
       return metric[0].totalReplicas;
     },
 
-    totalIsrs: async ({ name }, args, { dataSources }): Promise<number> => {
+    totalIsrs: async (
+      { name, partitions },
+      args,
+      { dataSources }
+    ): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalIsrs(name);
-
+      if (metric.length === 0) {
+        return partitions.reduce(
+          (prev, current) => prev + current.isr.length,
+          0
+        );
+      }
       return metric[0].totalIsrs;
     },
 
@@ -438,6 +457,39 @@ const resolvers = {
         return allBytesOutPerSecond;
       } catch (error) {
         console.log(`An error has occured with Query Total Time MS: ${error}`);
+      }
+    },
+  },
+
+  Mutation: {
+    addTopic: async (
+      parent,
+      { name, replicationFactor, numPartitions, configEntries }
+    ) => {
+      try {
+        const topic = await brokerData.createTopic(
+          name,
+          replicationFactor,
+          numPartitions,
+          configEntries
+        );
+        return topic;
+      } catch (error) {
+        console.warn(
+          `Mutation addTopic failed for topic: ${name}. Error: ${error}`
+        );
+      }
+    },
+
+    deleteTopic: async (parent, { name }) => {
+      try {
+        const topic = await brokerData.deleteTopic(name);
+        return topic;
+      } catch (error) {
+        console.warn(
+          `Mutation deleteTopic failed for topic: ${name}. Error: ${error}`
+        );
+        return error;
       }
     },
   },

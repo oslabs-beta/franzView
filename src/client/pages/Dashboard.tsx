@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
+// import TopicGrid from "../components/TopicGrid";
 import ConsumerCard from "../components/ConsumerCard";
 
 import {
@@ -146,6 +147,7 @@ function DashboardContent() {
               elevation={4}
             >
               <TopicDataGrid />
+              {/* <TopicGrid title="Kafka Cluster" rowCount={5} /> */}
             </Paper>
           </Grid>
         </Grid>
