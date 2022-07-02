@@ -43,7 +43,8 @@ export interface Metric {
 }
 
 export interface Count extends Metric {
-  count: number;
+  count?: number;
+  metric?: number;
 }
 
 export interface Cluster {

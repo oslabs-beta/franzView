@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-import { BROKER_METRICS_QUERY } from "../models/queries";
+import { TOPIC_DATAGRID_QUERY } from "../models/queries";
 import { useQuery } from "@apollo/client";
 
 // onQueryCallback with use query
@@ -24,8 +24,8 @@ const columns: GridColDef[] = [
     width: 150,
   },
   {
-    field: "isrPerPart",
-    headerName: "# ISRs per partition",
+    field: "underMinISR",
+    headerName: "Under Min ISR",
     type: "number",
     width: 150,
   },
@@ -38,9 +38,9 @@ const columns: GridColDef[] = [
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
 ];
 
-export default function Broker() {
+export default function TopicDataGrid() {
   const [rowData, setRowData] = useState([]);
-  const { loading, error, data } = useQuery(BROKER_METRICS_QUERY, {
+  const { loading, error, data } = useQuery(TOPIC_DATAGRID_QUERY, {
     onCompleted: (data) => {
       const newRowData = data.topics.map((item, index) => {
         return {
@@ -48,7 +48,7 @@ export default function Broker() {
           topic: item.name,
           partitionNum: item.numPartitions,
           partitionRep: item.totalReplicas,
-          isrPerPart: item.totalIsrs,
+          underMinISR: `${item.totalIsrs - item.totalReplicas}`,
           brokersRep: item.brokersWithReplicas,
           logSize: `${item.logSize} GB`,
         };

@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
-//(p & r) - We think this should be renamed to Dashboard_ Brokers_Metrics_Query;
-export const CARD_METRICS_QUERY = gql`
+export const DASHBOARD_CARD_METRICS_QUERY = gql`
   query Cluster {
     cluster {
       activeControllerCount {
@@ -13,14 +12,22 @@ export const CARD_METRICS_QUERY = gql`
       numberUnderReplicatedPartitions {
         underReplicatedPartitions
       }
+    }
+  }
+`;
+
+export const BROKER_PAGE_QUERY = gql`
+  query Cluster {
+    cluster {
       underMinIsr {
         metric
       }
     }
   }
 `;
-//This should be renamed to Topic_Metrics_Query
-export const BROKER_METRICS_QUERY = gql`
+
+//originally broker_metric_query
+export const TOPIC_DATAGRID_QUERY = gql`
   query Topics {
     topics {
       name
@@ -32,8 +39,6 @@ export const BROKER_METRICS_QUERY = gql`
     }
   }
 `;
-
-//Add additional query for metrics on broker page only
 
 export const ALL_BROKER_CPU_USAGE = gql`
   query BrokersCPUUsage($start: String, $end: String, $step: String) {
@@ -145,28 +150,6 @@ export const BYTES_OUT_PER_SECOND = gql`
       bytesOutPerSecond: values {
         time
         bytesOutPerSecond: metric
-      }
-    }
-  }
-`;
-
-export const UNDERMIN_ISR = gql`
-  query UnderMinIsr(
-    $start: String!
-    $end: String!
-    $step: String!
-    $brokerIds: [Int]
-  ) {
-    topic: underMinIsr(
-      start: $start
-      end: $end
-      step: $step
-      brokerIds: $brokerIds
-    ) {
-      topic
-      underMinIsr: values {
-        time
-        underMinIsr: metric
       }
     }
   }
