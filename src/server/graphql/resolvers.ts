@@ -264,6 +264,10 @@ const resolvers = {
 
       return metric[0];
     },
+
+    deleteTopic: async () => {
+      return await brokerData.canDelete();
+    },
   },
 
   Topic: {

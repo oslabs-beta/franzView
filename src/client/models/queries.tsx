@@ -26,6 +26,9 @@ export const BROKER_METRICS_QUERY = gql`
       brokersWithReplicas
       logSize
     }
+    cluster {
+      deleteTopic
+    }
   }
 `;
 export const ALL_BROKER_CPU_USAGE = gql`
