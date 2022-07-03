@@ -2,11 +2,10 @@ import * as React from "react";
 import { useState } from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-import { BROKER_METRICS_QUERY } from "../models/queries";
+import { BROKER_METRICS_QUERY, DELETE_TOPIC } from "../models/queries";
 import { useQuery } from "@apollo/client";
-
+import ConfirmationDialog from "./ConfirmationDialog";
 // onQueryCallback with use query
-
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
   { field: "topic", headerName: "Topic", width: 150 },
@@ -35,6 +34,43 @@ const columns: GridColDef[] = [
     width: 90,
   },
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
+  {
+    field: "delete",
+    filterable: false,
+    align: "center",
+    width: 180,
+    renderCell: (params) => {
+      return params.value ? (
+        <ConfirmationDialog
+          title={`Delete ${params.row.topic}?`}
+          content={`Are you sure you want to delete topic: ${params.row.topic}? \n
+        Enter the topic name below to confirm. This is irreversible!`}
+          label="Delete"
+          actions={DELETE_TOPIC}
+          control={params.row.topic}
+          args={{ name: params.row.topic }}
+          variant="contained"
+          color="error"
+          cta="DELETE"
+          disabled={!params.value}
+        />
+      ) : (
+        <ConfirmationDialog
+          title={`Delete ${params.row.topic}?`}
+          content={`Are you sure you want to delete topic: ${params.row.topic}? \n
+        Enter the topic name below to confirm. This is irreversible!`}
+          label="Delete"
+          actions={DELETE_TOPIC}
+          control={params.row.topic}
+          args={{ name: params.row.topic }}
+          variant="contained"
+          color="error"
+          cta="DELETE"
+          disabled={params.value}
+        />
+      );
+    },
+  },
 ];
 
 interface TopicGridProps {
@@ -45,6 +81,7 @@ interface TopicGridProps {
 export default function TopicGrid({ title, rowCount }: TopicGridProps) {
   const [rowData, setRowData] = useState([]);
   const [pageSize, setPageSize] = useState(rowCount);
+
   const { loading, error, data } = useQuery(BROKER_METRICS_QUERY, {
     onCompleted: (data) => {
       const newRowData = data.topics.map((item, index) => {
@@ -56,6 +93,7 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
           isrPerPart: item.totalIsrs,
           brokersRep: item.brokersWithReplicas,
           logSize: item.logSize,
+          delete: data.cluster.deleteTopic,
         };
       });
 

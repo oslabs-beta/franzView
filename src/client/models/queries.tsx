@@ -161,3 +161,11 @@ export const ADD_TOPIC = gql`
     }
   }
 `;
+
+export const DELETE_TOPIC = gql`
+  mutation DeleteTopic($name: String!) {
+    deleteTopic(name: $name) {
+      name
+    }
+  }
+`;

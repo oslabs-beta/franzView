@@ -30,6 +30,9 @@ const client = new ApolloClient({
         merge: true,
         fields: {},
       },
+      Cluster: {
+        keyFields: [],
+      },
     },
   }),
 });

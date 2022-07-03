@@ -11,18 +11,25 @@ import { DialogProps } from "../../types/types";
 import { useMutation } from "@apollo/client";
 
 export default function ConfirmationDialog({
-  open,
-  setOpen,
   title,
   content,
   label,
   actions,
   control,
   args,
+  variant,
+  color,
+  cta,
+  disabled,
 }: DialogProps) {
   const [value, setValue] = useState("");
   const [formError, setFormError] = useState(false);
+  const [open, setOpen] = useState(false);
   const [mutation, { loading, error }] = useMutation(actions);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -47,6 +54,14 @@ export default function ConfirmationDialog({
 
   return (
     <>
+      <Button
+        variant={variant}
+        color={color}
+        disabled={disabled}
+        onClick={handleOpen}
+      >
+        {cta}
+      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
@@ -61,10 +76,13 @@ export default function ConfirmationDialog({
           fullWidth
           variant="standard"
           value={value}
+          onChange={(e) => setValue(e.target.value)}
         />
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Confirm</Button>
+          <Button onClick={handleSubmit} variant={variant} color={color}>
+            {cta}
+          </Button>
         </DialogActions>
       </Dialog>
     </>
