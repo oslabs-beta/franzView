@@ -2,16 +2,13 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Cluster {
-    activeControllerCount: ActiveControllerCount
+    activeControllerCount: Metric
     activeController: Broker
     brokers: [Broker]!
-    offlinePartitionCount: OfflinePartitionCount
+    offlinePartitionCount: Metric
     numberUnderReplicatedPartitions: UnderReplicatedPartitions
-<<<<<<< HEAD
     deleteTopic: Boolean
-=======
     underMinIsr: Metric
->>>>>>> dev
   }
 
   type Broker {

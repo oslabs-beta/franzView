@@ -146,7 +146,7 @@ const resolvers = {
       parent,
       args,
       { dataSources }
-    ): Promise<UnderReplicatedPartitions> => {
+    ): Promise<Count> => {
       try {
         const totalUnderReplicatedPartitions =
           await dataSources.prometheusAPI.getUnderReplicatedPartitions();
@@ -154,6 +154,8 @@ const resolvers = {
           totalUnderReplicatedPartitions.filter(
             (elem) => elem.brokerId === parent.brokerId
           )[0];
+
+        console.log(brokerUnderReplicatedPartitions);
 
         return brokerUnderReplicatedPartitions;
       } catch (error) {
@@ -229,7 +231,7 @@ const resolvers = {
     ): Promise<Count> => {
       const metric = await dataSources.prometheusAPI.getActiveControllerCount();
       const activeControllerCount: Count = {
-        count: metric.reduce(
+        metric: metric.reduce(
           (prev, curr) => (prev += curr.activeControllerCount),
           0
         ),
@@ -246,7 +248,7 @@ const resolvers = {
     ): Promise<Count> => {
       const metric = await dataSources.prometheusAPI.getOfflinePartitionCount();
       const offlinePartitionCount: Count = {
-        count: metric.reduce(
+        metric: metric.reduce(
           (prev, curr) => (prev += curr.offlinePartitionCount),
           0
         ),
@@ -257,7 +259,6 @@ const resolvers = {
 
     underMinIsr: async (parent, args, { dataSources }): Promise<Count> => {
       const metric = await dataSources.prometheusAPI.getUnderMinIsr();
-      // console.log(metric);
       const underMinIsr: Count = {
         metric: metric.reduce((prev, curr) => (prev += curr.underMinIsr), 0),
         time: metric[0].time,

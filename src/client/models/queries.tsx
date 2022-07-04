@@ -4,10 +4,10 @@ export const DASHBOARD_CARD_METRICS_QUERY = gql`
   query Cluster {
     cluster {
       activeControllerCount {
-        count
+        count: metric
       }
       offlinePartitionCount {
-        count
+        count: metric
       }
       numberUnderReplicatedPartitions {
         underReplicatedPartitions

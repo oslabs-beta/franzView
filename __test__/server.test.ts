@@ -25,7 +25,7 @@ describe("GraphQL Queries", () => {
         query: `query Cluster {
           cluster {
             activeControllerCount {
-              count
+              count: metric
               time
             }
           }
@@ -129,7 +129,7 @@ describe("GraphQL Queries", () => {
         query: `query Cluster {
           cluster {
             offlinePartitionCount {
-                count
+                count: metric
                 time
               }
             }
