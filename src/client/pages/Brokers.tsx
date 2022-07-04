@@ -43,23 +43,6 @@ const Brokers = () => {
     pollInterval: 20000,
   });
 
-  // various counts from card metric query
-  const counts = useQuery(DASHBOARD_CARD_METRICS_QUERY, {
-    variables: {
-      request: "FetchUnderRep",
-      brokerIds: filter.length > 0 ? filter : null,
-    },
-    pollInterval: 20000,
-  });
-
-  const test = useQuery(BROKER_PAGE_QUERY, {
-    variables: {
-      request: "FetchUnderRep",
-      brokerIds: filter.length > 0 ? filter : null,
-    },
-    pollInterval: 20000,
-  });
-
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
@@ -186,53 +169,6 @@ const Brokers = () => {
                 }
                 title="Follower Request (TotalTimeMs)"
                 toBe="milliseconds"
-              />
-            </Paper>
-          </Grid>
-
-          {/* Metrics Card 4 - Underreplicated Partitions  */}
-          <Grid item xs={12} md={4}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 200,
-              }}
-              elevation={8}
-            >
-              <MetricsCard
-                value={
-                  counts.loading
-                    ? "Loading..."
-                    : counts.data.cluster.numberUnderReplicatedPartitions
-                        .underReplicatedPartitions
-                }
-                title="Underreplicated partitions"
-                toBe="Should be zero."
-              />
-            </Paper>
-          </Grid>
-
-          {/* Metrics Card 5 - Under Min ISR  */}
-          <Grid item xs={12} md={4}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 200,
-              }}
-              elevation={8}
-            >
-              <MetricsCard
-                value={
-                  test.loading
-                    ? "Loading..."
-                    : test.data.cluster.underMinIsr.metric
-                }
-                title="Under Min ISR"
-                toBe="Should be zero."
               />
             </Paper>
           </Grid>
