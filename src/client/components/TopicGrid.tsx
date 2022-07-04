@@ -39,8 +39,8 @@ const columns: GridColDef[] = [
 ];
 
 interface TopicGridProps {
-  title?: string;
-  rowCount?: number;
+  title: string;
+  rowCount: number;
 }
 
 export default function TopicGrid({ title, rowCount }: TopicGridProps) {
