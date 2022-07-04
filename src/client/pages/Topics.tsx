@@ -1,43 +1,37 @@
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
-import SearchBar from "../components/Searchbar";
-import { CORE_ALL_BROKERS_QUERY } from "../models/queries";
+// import SearchBar from "../components/Searchbar";
+// import { CORE_ALL_BROKERS_QUERY } from "../models/queries";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import MetricsCard from "../components/MetricsCard";
 import { useQuery } from "@apollo/client";
 import RealTimeLineChart from "../components/RealTimeLineChart";
+import TopicGrid from "../components/TopicGrid";
 import {
   BYTES_IN_PER_SECOND,
   BYTES_OUT_PER_SECOND,
-  AVERAGE_TOTALTIMEMS,
+  // AVERAGE_TOTALTIMEMS,
   DASHBOARD_CARD_METRICS_QUERY,
   BROKER_PAGE_QUERY,
+  // TOPIC_DATAGRID_QUERY,
 } from "../models/queries";
 
-//Move real-line charts to top of page
-const Brokers = () => {
+const Topics = () => {
   const [filter, setFilter] = useState([]);
 
-  const produce = useQuery(AVERAGE_TOTALTIMEMS, {
+  // Metric cards -
+  const counts = useQuery(DASHBOARD_CARD_METRICS_QUERY, {
     variables: {
-      request: "Produce",
+      request: "FetchUnderRep",
       brokerIds: filter.length > 0 ? filter : null,
     },
     pollInterval: 20000,
   });
 
-  const consumer = useQuery(AVERAGE_TOTALTIMEMS, {
+  const test = useQuery(BROKER_PAGE_QUERY, {
     variables: {
-      request: "FetchConsumer",
-      brokerIds: filter.length > 0 ? filter : null,
-    },
-    pollInterval: 20000,
-  });
-
-  const follower = useQuery(AVERAGE_TOTALTIMEMS, {
-    variables: {
-      request: "FetchFollower",
+      request: "FetchUnderRep",
       brokerIds: filter.length > 0 ? filter : null,
     },
     pollInterval: 20000,
@@ -46,15 +40,8 @@ const Brokers = () => {
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
-        <h1>Brokers</h1>
-        <SearchBar
-          setFilter={setFilter}
-          searchingFor="brokers"
-          query={CORE_ALL_BROKERS_QUERY}
-        />
-
-        <Grid container spacing={3} sx={{ mt: 1, mb: 4 }}>
-          {/* Bytes in per second chart */}
+        <Grid container spacing={3}>
+          {/*Bytes in per second chart*/}
           <Grid item xs={12} md={6}>
             <Paper
               sx={{
@@ -104,7 +91,8 @@ const Brokers = () => {
             </Paper>
           </Grid>
 
-          {/* Metric card 1 - Reduce request */}
+          {/* Cards */}
+          {/* Metrics Card 4 - Underreplicated Partitions  */}
           <Grid item xs={12} md={4}>
             <Paper
               sx={{
@@ -117,17 +105,18 @@ const Brokers = () => {
             >
               <MetricsCard
                 value={
-                  produce.loading
+                  counts.loading
                     ? "Loading..."
-                    : produce.data.totalTimeMs.totalTimeMs.toFixed(2)
+                    : counts.data.cluster.numberUnderReplicatedPartitions
+                        .underReplicatedPartitions
                 }
-                title="Produce Request (TotalTimeMs)"
-                toBe="milliseconds"
+                title="Underreplicated partitions"
+                toBe="Should be zero."
               />
             </Paper>
           </Grid>
 
-          {/* Metrics Card 2 - Consumer Request*/}
+          {/* Metrics Card 5 - Under Min ISR  */}
           <Grid item xs={12} md={4}>
             <Paper
               sx={{
@@ -140,42 +129,45 @@ const Brokers = () => {
             >
               <MetricsCard
                 value={
-                  consumer.loading
+                  test.loading
                     ? "Loading..."
-                    : consumer.data.totalTimeMs.totalTimeMs.toFixed(2)
+                    : test.data.cluster.underMinIsr.metric
                 }
-                title="Consumer Request (TotalTimeMs)"
-                toBe="milliseconds"
+                title="Total Under Min ISR"
+                toBe="Should be zero."
               />
             </Paper>
           </Grid>
 
-          {/* Metrics Card 3 - Follower Request */}
-          <Grid item xs={12} md={4}>
+          {/* Datagrid */}
+          <Grid item xs={12}>
             <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 200,
-              }}
-              elevation={8}
+              sx={{ p: 2, display: "flex", flexDirection: "column" }}
+              elevation={4}
             >
-              <MetricsCard
-                value={
-                  follower.loading
-                    ? "Loading..."
-                    : follower.data.totalTimeMs.totalTimeMs.toFixed(2)
-                }
-                title="Follower Request (TotalTimeMs)"
-                toBe="milliseconds"
-              />
+              <TopicGrid title="Kafka Cluster" rowCount={5} />
             </Paper>
           </Grid>
         </Grid>
       </Container>
     </>
+
+    // charts
+    // Bytes in
+    // Average
+    // per topic when clicked
+    // bytes out
+    // Average
+    // per topic when clicked
+
+    // card
+    // under replicated partitions
+    // Total undermin ISR
+    // total log
+
+    // data grid of topics
+    // replace ISR per partition with undermin ISR
   );
 };
 
-export default Brokers;
+export default Topics;

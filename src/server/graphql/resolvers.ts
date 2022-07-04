@@ -162,6 +162,7 @@ const resolvers = {
         );
       }
     },
+
     produceTotalTimeMs: async (
       parent,
       args,
@@ -252,6 +253,16 @@ const resolvers = {
         time: metric[0].time,
       };
       return offlinePartitionCount;
+    },
+
+    underMinIsr: async (parent, args, { dataSources }): Promise<Count> => {
+      const metric = await dataSources.prometheusAPI.getUnderMinIsr();
+      // console.log(metric);
+      const underMinIsr: Count = {
+        metric: metric.reduce((prev, curr) => (prev += curr.underMinIsr), 0),
+        time: metric[0].time,
+      };
+      return underMinIsr;
     },
 
     numberUnderReplicatedPartitions: async (

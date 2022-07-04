@@ -4,18 +4,19 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
-import TopicGrid from "../components/TopicGrid";
+// import TopicGrid from "../components/TopicGrid";
 import ConsumerCard from "../components/ConsumerCard";
+import TopicGrid from "../components/TopicGrid";
 
 import {
   ALL_BROKER_CPU_USAGE,
-  CARD_METRICS_QUERY,
+  DASHBOARD_CARD_METRICS_QUERY,
   ALL_BROKER_DISK_USAGE,
 } from "../models/queries";
 import { useQuery } from "@apollo/client";
 
 function DashboardContent() {
-  const { loading, data } = useQuery(CARD_METRICS_QUERY, {
+  const { loading, data } = useQuery(DASHBOARD_CARD_METRICS_QUERY, {
     pollInterval: 60000,
   });
 
@@ -45,6 +46,7 @@ function DashboardContent() {
               />
             </Paper>
           </Grid>
+
           {/* Chart 2 */}
           <Grid item xs={12} md={6}>
             <Paper
@@ -67,6 +69,7 @@ function DashboardContent() {
               />
             </Paper>
           </Grid>
+
           {/* Metrics Card */}
           <Grid item xs={12} md={4}>
             <Paper
@@ -90,6 +93,7 @@ function DashboardContent() {
               />
             </Paper>
           </Grid>
+
           {/* Metrics Card 2 */}
           <Grid item xs={12} md={4}>
             <Paper
@@ -112,6 +116,7 @@ function DashboardContent() {
               />
             </Paper>
           </Grid>
+
           {/* Metrics Card 3 */}
           <Grid item xs={12} md={4}>
             <Paper
@@ -134,6 +139,7 @@ function DashboardContent() {
               />
             </Paper>
           </Grid>
+
           {/* Broker Component */}
           <Grid item xs={12}>
             <Paper

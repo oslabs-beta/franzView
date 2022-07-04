@@ -76,6 +76,14 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "offlinePartitionCount");
   }
 
+  async getUnderMinIsr() {
+    const query = "query=kafka_cluster_partition_underminisr";
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "underMinIsr");
+  }
+
   async getJVMMemoryUsage() {
     const query =
       'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_committed{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
