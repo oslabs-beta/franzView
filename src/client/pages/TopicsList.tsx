@@ -19,7 +19,7 @@ const TopicsList = () => {
             Add Topic
           </Button>
         </div>
-        {/* <TopicGrid rowCount={10} /> */}
+        <TopicGrid rowCount={10} />
       </Container>
     </>
   );
