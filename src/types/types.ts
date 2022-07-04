@@ -43,6 +43,7 @@ export interface Metric {
 }
 
 export interface Count extends Metric {
+  // purposefully using a quick fix. to get code pushed up before correcting things
   count?: number;
   metric?: number;
 }
