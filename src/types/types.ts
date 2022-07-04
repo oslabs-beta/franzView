@@ -1,5 +1,5 @@
 import { DocumentNode } from "graphql";
-
+import { OverridableStringUnion } from "@mui/types";
 export interface DefaultErr {
   log: string;
   status: number;
@@ -78,4 +78,25 @@ export interface GqlChartProps {
 export interface ConfigEntries {
   name: string;
   value: string;
+}
+
+export interface DialogProps {
+  title: string;
+  content: string;
+  label: string; //id and label will be same, but label may contain spaces?
+  actions: DocumentNode;
+  control: string;
+  args: any;
+  variant: OverridableStringUnion<"text" | "outlined" | "contained">;
+  cta: string;
+  color: OverridableStringUnion<
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning"
+  >;
+  disabled: boolean;
 }

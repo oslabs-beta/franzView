@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GraphQL Mutation Delete Topic The delete topic mutation returns the topic that was deleted. 1`] = `
+exports[`GraphQL Mutations Delete Topic The delete topic mutation returns the topic that was deleted. 1`] = `
 Object {
   "data": Object {
     "deleteTopic": Object {

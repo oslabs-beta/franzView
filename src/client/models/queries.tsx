@@ -27,6 +27,9 @@ export const TOPIC_DATAGRID_QUERY = gql`
       brokersWithReplicas
       logSize
     }
+    cluster {
+      deleteTopic
+    }
   }
 `;
 
@@ -168,6 +171,14 @@ export const ADD_TOPIC = gql`
       replicationFactor: $replicationFactor
       numPartitions: $numPartitions
     ) {
+      name
+    }
+  }
+`;
+
+export const DELETE_TOPIC = gql`
+  mutation DeleteTopic($name: String!) {
+    deleteTopic(name: $name) {
       name
     }
   }

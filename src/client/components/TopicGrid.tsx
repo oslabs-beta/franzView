@@ -2,9 +2,9 @@ import * as React from "react";
 import { useState } from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-import { TOPIC_DATAGRID_QUERY } from "../models/queries";
+import { TOPIC_DATAGRID_QUERY, DELETE_TOPIC } from "../models/queries";
 import { useQuery } from "@apollo/client";
-
+import ConfirmationDialog from "./ConfirmationDialog";
 // onQueryCallback with use query
 
 // data grid schema
@@ -36,6 +36,43 @@ const columns: GridColDef[] = [
     width: 150,
   },
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
+  {
+    field: "delete",
+    filterable: false,
+    align: "center",
+    width: 180,
+    renderCell: (params) => {
+      return params.value ? (
+        <ConfirmationDialog
+          title={`Delete ${params.row.topic}?`}
+          content={`Are you sure you want to delete topic: ${params.row.topic}? \n
+        Enter the topic name below to confirm. This is irreversible!`}
+          label="Delete"
+          actions={DELETE_TOPIC}
+          control={params.row.topic}
+          args={{ name: params.row.topic }}
+          variant="contained"
+          color="error"
+          cta="DELETE"
+          disabled={!params.value}
+        />
+      ) : (
+        <ConfirmationDialog
+          title={`Delete ${params.row.topic}?`}
+          content={`Are you sure you want to delete topic: ${params.row.topic}? \n
+        Enter the topic name below to confirm. This is irreversible!`}
+          label="Delete"
+          actions={DELETE_TOPIC}
+          control={params.row.topic}
+          args={{ name: params.row.topic }}
+          variant="contained"
+          color="error"
+          cta="DELETE"
+          disabled={params.value}
+        />
+      );
+    },
+  },
 ];
 
 interface TopicGridProps {
@@ -56,6 +93,7 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
           partitionRep: item.totalReplicas,
           underMinISR: `${item.totalIsrs - item.totalReplicas}`,
           brokersRep: item.brokersWithReplicas,
+          delete: data.cluster.deleteTopic,
           logSize: `${item.logSize} GB`,
         };
       });
