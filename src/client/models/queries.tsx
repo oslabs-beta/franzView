@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const CARD_METRICS_QUERY = gql`
+export const DASHBOARD_CARD_METRICS_QUERY = gql`
   query Cluster {
     cluster {
       activeControllerCount {
@@ -16,7 +16,8 @@ export const CARD_METRICS_QUERY = gql`
   }
 `;
 
-export const BROKER_METRICS_QUERY = gql`
+//originally broker_metric_query
+export const TOPIC_DATAGRID_QUERY = gql`
   query Topics {
     topics {
       name
@@ -31,6 +32,19 @@ export const BROKER_METRICS_QUERY = gql`
     }
   }
 `;
+
+export const BROKER_PAGE_QUERY = gql`
+  query Cluster {
+    cluster {
+      underMinIsr {
+        metric
+      }
+    }
+  }
+`;
+
+//Add additional query for metrics on broker page only
+
 export const ALL_BROKER_CPU_USAGE = gql`
   query BrokersCPUUsage($start: String, $end: String, $step: String) {
     broker: brokers(start: $start, end: $end, step: $step) {
@@ -166,6 +180,50 @@ export const DELETE_TOPIC = gql`
   mutation DeleteTopic($name: String!) {
     deleteTopic(name: $name) {
       name
+    }
+  }
+`;
+
+export const UNDERMIN_ISR = gql`
+  query UnderMinIsr(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: underMinIsr(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      underMinIsr: values {
+        time
+        underMinIsr: metric
+      }
+    }
+  }
+`;
+
+export const UNDERREPLICATED_PARTITIONS = gql`
+  query UnderreplicatedPartitions(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: underreplicatedPartitions(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      underreplicatedPartitions: values {
+        time
+        underreplicatedPartitions: metric
+      }
     }
   }
 `;
