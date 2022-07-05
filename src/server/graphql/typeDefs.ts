@@ -6,7 +6,7 @@ export const typeDefs = gql`
     activeController: Broker
     brokers: [Broker]!
     offlinePartitionCount: Metric
-    numberUnderReplicatedPartitions: UnderReplicatedPartitions
+    numberUnderReplicatedPartitions: Metric
     deleteTopic: Boolean
     underMinIsr: Metric
   }
@@ -15,11 +15,11 @@ export const typeDefs = gql`
     brokerId: Int!
     brokerPort: Int!
     brokerHost: String!
-    numberUnderReplicatedPartitions: UnderReplicatedPartitions
-    cpuUsage: BrokerCpuUsage
-    JVMMemoryUsage: JVMMemoryUsage
-    cpuUsageOverTime: [BrokerCpuUsage]
-    JVMMemoryUsageOverTime: [JVMMemoryUsage]
+    numberUnderReplicatedPartitions: Metric
+    cpuUsage: Metric
+    JVMMemoryUsage: Metric
+    cpuUsageOverTime: [Metric]
+    JVMMemoryUsageOverTime: [Metric]
     produceTotalTimeMs: TotalTimeMs
     consumerTotalTimeMs: TotalTimeMs
     followerTotalTimeMs: TotalTimeMs

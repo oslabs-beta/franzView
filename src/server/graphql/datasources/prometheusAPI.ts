@@ -229,7 +229,7 @@ class PrometheusAPI extends RESTDataSource {
         brokerId: brokerMap[result.metric.instance],
         topic: result.metric.topic,
       };
-      obj[metric] = Number(result.value[1]);
+      obj["metric"] = Number(result.value[1]);
       formattedData.push(obj);
     });
 
@@ -261,7 +261,7 @@ class PrometheusAPI extends RESTDataSource {
             hour12: false,
           }),
         };
-        point[metric] = Number(value[1]).toFixed(2);
+        point["metric"] = Number(value[1]).toFixed(2);
         obj.values.push(point);
       });
       formattedData.push(obj);

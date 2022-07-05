@@ -51,11 +51,11 @@ describe("GraphQL Queries", () => {
               brokerId
               brokerPort
               cpuUsage {
-                cpuUsage
+                cpuUsage: metric
                 time
               }
               numberUnderReplicatedPartitions {
-                  underReplicatedPartitions
+                  underReplicatedPartitions: metric
                   time
                 }
             }
@@ -92,11 +92,11 @@ describe("GraphQL Queries", () => {
             brokerId
             brokerPort
             cpuUsage {
-              cpuUsage
+              cpuUsage:metric
               time
             }
             numberUnderReplicatedPartitions {
-                underReplicatedPartitions
+                underReplicatedPartitions: metric
                 time
               }
             }
@@ -166,11 +166,11 @@ describe("GraphQL Queries", () => {
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
               cpuUsage {
-                cpuUsage
+                cpuUsage: metric
                 time
               }
               numberUnderReplicatedPartitions {
-                underReplicatedPartitions
+                underReplicatedPartitions: metric
                 time
               }
               brokerHost
@@ -204,11 +204,11 @@ describe("GraphQL Queries", () => {
             brokerId
             brokerPort
             cpuUsage {
-              cpuUsage
+              cpuUsage:metric
               time
             }
             numberUnderReplicatedPartitions {
-                underReplicatedPartitions
+                underReplicatedPartitions: metric
                 time
               }
           }
@@ -240,7 +240,7 @@ describe("GraphQL Queries", () => {
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
               JVMMemoryUsage {
-                JVMMemoryUsage
+                JVMMemoryUsage: metric
                 time
               }
             }

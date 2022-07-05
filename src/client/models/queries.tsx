@@ -10,7 +10,7 @@ export const DASHBOARD_CARD_METRICS_QUERY = gql`
         count: metric
       }
       numberUnderReplicatedPartitions {
-        underReplicatedPartitions
+        underReplicatedPartitions: metric
       }
     }
   }
@@ -50,7 +50,7 @@ export const ALL_BROKER_CPU_USAGE = gql`
     broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
       cpuUsage: cpuUsageOverTime {
-        cpuUsage
+        cpuUsage: metric
         time
       }
     }
@@ -62,7 +62,7 @@ export const ALL_BROKER_DISK_USAGE = gql`
     broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
       JVMMemoryUsage: JVMMemoryUsageOverTime {
-        JVMMemoryUsage
+        JVMMemoryUsage: metric
         time
       }
     }

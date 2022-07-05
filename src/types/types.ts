@@ -14,7 +14,7 @@ export interface Broker {
   brokerId: number;
   brokerPort: number;
   brokerHost: string;
-  brokerCpuUsage?: BrokerCpuUsage;
+  brokerCpuUsage?: Count;
   start?: string;
   end?: string;
   step?: string;
@@ -44,8 +44,12 @@ export interface Metric {
 
 export interface Count extends Metric {
   // purposefully using a quick fix. to get code pushed up before correcting things
-  count?: number;
-  metric?: number;
+  metric: number;
+}
+
+export interface TimeSeriesCount {
+  topic?: string;
+  values: Count[];
 }
 
 export interface Cluster {
