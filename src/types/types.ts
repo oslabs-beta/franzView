@@ -75,7 +75,7 @@ export interface GqlChartProps {
   args?: any;
 }
 
-export type MetricsCardProps = {
+export interface MetricsCardProps {
   value?: string | number;
   title: string;
   description: string;
@@ -83,7 +83,7 @@ export type MetricsCardProps = {
   query?: DocumentNode;
   variables?: any;
   searchingFor?: string;
-};
+}
 
 export interface ConfigEntries {
   name: string;
