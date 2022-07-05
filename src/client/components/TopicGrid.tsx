@@ -2,11 +2,12 @@ import * as React from "react";
 import { useState } from "react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import Title from "./Title";
-import { BROKER_METRICS_QUERY } from "../models/queries";
+import { TOPIC_DATAGRID_QUERY } from "../models/queries";
 import { useQuery } from "@apollo/client";
 
 // onQueryCallback with use query
 
+// data grid schema
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
   { field: "topic", headerName: "Topic", width: 150 },
@@ -14,25 +15,25 @@ const columns: GridColDef[] = [
     field: "partitionNum",
     headerName: "Partition",
     type: "number",
-    width: 100,
+    width: 150,
   },
   {
     field: "partitionRep",
     headerName: "Replicas per partition",
     type: "number",
-    width: 100,
+    width: 150,
   },
   {
-    field: "isrPerPart",
-    headerName: "# ISRs per partition",
+    field: "underMinISR",
+    headerName: "Under Min ISR",
     type: "number",
-    width: 90,
+    width: 150,
   },
   {
     field: "brokersRep",
     headerName: "# Brokers with replicas",
     type: "number",
-    width: 90,
+    width: 150,
   },
   { field: "logSize", headerName: "logSize", type: "number", width: 90 },
 ];
@@ -45,7 +46,7 @@ interface TopicGridProps {
 export default function TopicGrid({ title, rowCount }: TopicGridProps) {
   const [rowData, setRowData] = useState([]);
   const [pageSize, setPageSize] = useState(rowCount);
-  const { loading, error, data } = useQuery(BROKER_METRICS_QUERY, {
+  const { loading, error, data } = useQuery(TOPIC_DATAGRID_QUERY, {
     onCompleted: (data) => {
       const newRowData = data.topics.map((item, index) => {
         return {
@@ -53,9 +54,9 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
           topic: item.name,
           partitionNum: item.numPartitions,
           partitionRep: item.totalReplicas,
-          isrPerPart: item.totalIsrs,
+          underMinISR: `${item.totalIsrs - item.totalReplicas}`,
           brokersRep: item.brokersWithReplicas,
-          logSize: item.logSize,
+          logSize: `${item.logSize} GB`,
         };
       });
 

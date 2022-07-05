@@ -43,7 +43,9 @@ export interface Metric {
 }
 
 export interface Count extends Metric {
-  count: number;
+  // purposefully using a quick fix. to get code pushed up before correcting things
+  count?: number;
+  metric?: number;
 }
 
 export interface Cluster {
@@ -51,6 +53,7 @@ export interface Cluster {
   brokers: Broker[];
   activeControllerCount?: Count;
   offlinePartitionCount?: Count;
+  underMinIsr?: Count;
 }
 
 export interface UnderReplicatedPartitions {
