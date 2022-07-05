@@ -89,3 +89,8 @@ export interface ConfigEntries {
   name: string;
   value: string;
 }
+
+export interface MoreInfoProps {
+  icon: React.ReactNode;
+  content: string;
+}

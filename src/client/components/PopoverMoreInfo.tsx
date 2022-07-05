@@ -3,7 +3,9 @@ import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-export default function MoreInfo() {
+import { MoreInfoProps } from "../../types/types";
+
+export default function MoreInfo({ icon, content }: MoreInfoProps) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -21,9 +23,8 @@ export default function MoreInfo() {
 
   return (
     <div>
-      {/* enter icon here over button */}
       <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-        Open Popover
+        {icon}
       </Button>
       <Popover
         id={id}
@@ -35,8 +36,7 @@ export default function MoreInfo() {
           horizontal: "left",
         }}
       >
-        {/* add a content prop for the text */}
-        <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+        <Typography sx={{ p: 2 }}>{content}</Typography>
       </Popover>
     </div>
   );

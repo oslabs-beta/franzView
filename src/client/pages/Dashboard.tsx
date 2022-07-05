@@ -7,6 +7,7 @@ import MetricsCard from "../components/MetricsCard";
 import ConsumerCard from "../components/ConsumerCard";
 import TopicGrid from "../components/TopicGrid";
 import { MonitorHeartTwoTone } from "@mui/icons-material";
+import MoreInfo from "../components/PopoverMoreInfo";
 
 import {
   ALL_BROKER_CPU_USAGE,
@@ -90,7 +91,12 @@ function DashboardContent() {
                 }
                 title="Underreplicated partitions"
                 description="Should be zero."
-                icon={<MonitorHeartTwoTone />}
+                icon={
+                  <MoreInfo
+                    icon={<MonitorHeartTwoTone />}
+                    content="This metric should be 0 in a healthy cluster. If a broker becomes unavailable, this metric will increase sharply. Any non-zero value lets the developer know that there is potentially something wrong with the cluster and action is warranted."
+                  />
+                }
               />
             </Paper>
           </Grid>
@@ -109,7 +115,12 @@ function DashboardContent() {
               <MetricsCard
                 title="Active controller count"
                 description="Should be one."
-                icon={<MonitorHeartTwoTone />}
+                icon={
+                  <MoreInfo
+                    icon={<MonitorHeartTwoTone />}
+                    content="If this value is 0, there is a high potential for lost data. If this value is greater than 1 and the higher value persists for more than a minute (when active controllers may be switching between brokers) the cluster may be suffering from 'split brain.' Start troubleshooting!"
+                  />
+                }
                 query={DASHBOARD_CARD_METRICS_QUERY}
                 searchingFor="count"
                 variables={{ pollInterval: 60000 }}
