@@ -21,6 +21,7 @@ export default function ConfirmationDialog({
   color,
   cta,
   disabled,
+  update,
 }: DialogProps) {
   const [value, setValue] = useState("");
   const [formError, setFormError] = useState(false);
@@ -40,6 +41,9 @@ export default function ConfirmationDialog({
       mutation({
         variables: {
           ...args,
+        },
+        onCompleted: () => {
+          update();
         },
       });
       if (!loading && !error) {

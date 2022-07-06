@@ -238,7 +238,7 @@ const resolvers = {
     underMinIsr: async (parent, args, { dataSources }): Promise<Count> => {
       const metric = await dataSources.prometheusAPI.getUnderMinIsr();
       const underMinIsr: Count = {
-        metric: metric.reduce((prev, curr) => (prev += curr.underMinIsr), 0),
+        metric: metric.reduce((prev, curr) => (prev += curr.metric), 0),
         time: metric[0].time,
       };
       return underMinIsr;

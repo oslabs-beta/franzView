@@ -55,6 +55,7 @@ const columns: GridColDef[] = [
           color="error"
           cta="DELETE"
           disabled={!params.value}
+          update={params.row.update}
         />
       ) : (
         <ConfirmationDialog
@@ -69,6 +70,7 @@ const columns: GridColDef[] = [
           color="error"
           cta="DELETE"
           disabled={params.value}
+          update={params.row.update}
         />
       );
     },
@@ -83,7 +85,7 @@ interface TopicGridProps {
 export default function TopicGrid({ title, rowCount }: TopicGridProps) {
   const [rowData, setRowData] = useState([]);
   const [pageSize, setPageSize] = useState(rowCount);
-  const { loading, error, data } = useQuery(TOPIC_DATAGRID_QUERY, {
+  const { loading, error, data, refetch } = useQuery(TOPIC_DATAGRID_QUERY, {
     onCompleted: (data) => {
       const newRowData = data.topics.map((item, index) => {
         return {
@@ -95,6 +97,7 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
           brokersRep: item.brokersWithReplicas,
           delete: data.cluster.deleteTopic,
           logSize: `${item.logSize} GB`,
+          update: refetch,
         };
       });
 
