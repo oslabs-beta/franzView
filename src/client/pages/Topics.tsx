@@ -111,7 +111,7 @@ const Topics = () => {
                         .underReplicatedPartitions
                 }
                 title="Underreplicated partitions"
-                toBe="Should be zero."
+                description="Should be zero."
               />
             </Paper>
           </Grid>
@@ -134,7 +134,7 @@ const Topics = () => {
                     : test.data.cluster.underMinIsr.metric
                 }
                 title="Total Under Min ISR"
-                toBe="Should be zero."
+                description="Should be zero."
               />
             </Paper>
           </Grid>
