@@ -311,4 +311,60 @@ describe("GraphQL Mutation", () => {
       expect(response.data.topic).toBeNull();
     });
   });
+
+  describe("Add Topic", () => {
+    afterEach(async () => {
+      await global.testServer.executeOperation({
+        query: `mutation DeleteTopic($name: String!) {
+        deleteTopic(name: $name) {
+          name
+            }
+          }`,
+        variables: {
+          name: "newTopic",
+        },
+      });
+    });
+
+    it("The add topic mutation returns the topic that was created.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `mutation AddTopic($name: String!) {
+          addTopic(name: $name) {
+            name
+          }
+        }`,
+        variables: { name: "newTopic" },
+      });
+
+      expect(result.errors).toBeUndefined();
+      expect(result).toMatchSnapshot();
+    });
+
+    it("Adding a topic allows for the topic to be found in the cluster.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `mutation AddTopic($name: String!, $replicationFactor: Int, $numPartitions: Int, $configEntries: [ConfigEntry]) {
+          addTopic(name: $name, replicationFactor: $replicationFactor, numPartitions: $numPartitions, configEntries: $configEntries) {
+            name
+            numPartitions
+          }
+        }`,
+        variables: { name: "newTopic" },
+      });
+
+      const response = await global.testServer.executeOperation({
+        query: `query topic($name: String!) {
+          topic(name: $name) {
+            name
+          }
+        }`,
+
+        variables: {
+          name: "newTopic",
+        },
+      });
+
+      expect(result.errors).toBeUndefined();
+      expect(response.data.topic.name).toBe(result.data.addTopic.name);
+    });
+  });
 });
