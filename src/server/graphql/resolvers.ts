@@ -178,6 +178,7 @@ const resolvers = {
         const consumerTotalTimeMs = totalConsumerTotalTimeMs.filter(
           (elem) => elem.brokerId === parent.brokerId
         )[0];
+
         return consumerTotalTimeMs;
       } catch (error) {
         console.log(
@@ -286,7 +287,10 @@ const resolvers = {
     ): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalIsrs(name);
       if (metric.length === 0) {
-        return metric.reduce((prev, current) => prev + current.isr.length, 0);
+        return metric.reduce(
+          (prev, current) => prev + current.metric.length,
+          0
+        );
       }
       return metric[0].metric;
     },

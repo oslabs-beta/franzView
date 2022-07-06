@@ -91,15 +91,15 @@ export const ALL_BROKERS_TIME_MS = gql`
   query BrokerTimeMs {
     brokers {
       produceTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       consumerTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       followerTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       ...CoreBrokerFields
@@ -110,7 +110,7 @@ export const ALL_BROKERS_TIME_MS = gql`
 export const AVERAGE_TOTALTIMEMS = gql`
   query totalTimeMs($request: String!, $brokerIds: [Int]) {
     totalTimeMs(request: $request, brokerIds: $brokerIds) {
-      totalTimeMs
+      totalTimeMs: metric
       time
     }
   }

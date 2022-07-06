@@ -20,9 +20,9 @@ export const typeDefs = gql`
     JVMMemoryUsage: Metric
     cpuUsageOverTime: [Metric]
     JVMMemoryUsageOverTime: [Metric]
-    produceTotalTimeMs: TotalTimeMs
-    consumerTotalTimeMs: TotalTimeMs
-    followerTotalTimeMs: TotalTimeMs
+    produceTotalTimeMs: Metric
+    consumerTotalTimeMs: Metric
+    followerTotalTimeMs: Metric
     bytesInPerSecondOverTime: [TimeSeriesMetric]
     bytesOutPerSecondOverTime: [TimeSeriesMetric]
   }
@@ -87,7 +87,7 @@ export const typeDefs = gql`
     cluster: Cluster
     topic(name: String!): Topic
     topics: [Topic]
-    totalTimeMs(request: String!, brokerIds: [Int]): TotalTimeMs
+    totalTimeMs(request: String!, brokerIds: [Int]): Metric
     bytesInPerSecondOverTime(
       brokerIds: [Int]
       topics: [String]
