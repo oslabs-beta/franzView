@@ -1,5 +1,5 @@
 import { DocumentNode } from "graphql";
-
+import { OverridableStringUnion } from "@mui/types";
 export interface DefaultErr {
   log: string;
   status: number;
@@ -14,7 +14,7 @@ export interface Broker {
   brokerId: number;
   brokerPort: number;
   brokerHost: string;
-  brokerCpuUsage?: BrokerCpuUsage;
+  brokerCpuUsage?: Count;
   start?: string;
   end?: string;
   step?: string;
@@ -44,8 +44,12 @@ export interface Metric {
 
 export interface Count extends Metric {
   // purposefully using a quick fix. to get code pushed up before correcting things
-  count?: number;
-  metric?: number;
+  metric: number;
+}
+
+export interface TimeSeriesCount {
+  topic?: string;
+  values: Count[];
 }
 
 export interface Cluster {
@@ -90,6 +94,26 @@ export interface ConfigEntries {
   value: string;
 }
 
+export interface DialogProps {
+  title: string;
+  content: string;
+  label: string; //id and label will be same, but label may contain spaces?
+  actions: DocumentNode;
+  control: string;
+  args: any;
+  variant: OverridableStringUnion<"text" | "outlined" | "contained">;
+  cta: string;
+  color: OverridableStringUnion<
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning"
+  >;
+  disabled: boolean;
+}
 export interface MoreInfoProps {
   icon: React.ReactNode;
   content: string;

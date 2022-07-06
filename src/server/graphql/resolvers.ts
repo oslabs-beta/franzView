@@ -1,13 +1,5 @@
 import * as brokerData from "./datasources/brokerAdmin";
-import {
-  Broker,
-  BrokerCpuUsage,
-  UnderReplicatedPartitions,
-  Cluster,
-  Count,
-  JVMMemoryUsage,
-} from "../../types/types";
-import { Topic } from "@mui/icons-material";
+import { Broker, TimeSeriesCount, Cluster, Count } from "../../types/types";
 
 /**
  * TODO: Throw graphql errors from catch statements.
@@ -20,7 +12,7 @@ const resolvers = {
       parent,
       args,
       { dataSources }
-    ): Promise<BrokerCpuUsage> => {
+    ): Promise<Count> => {
       try {
         const brokerBytesInPerSecond =
           await dataSources.prometheusAPI.getBytesInPerSec(
@@ -42,7 +34,7 @@ const resolvers = {
       parent,
       args,
       { dataSources }
-    ): Promise<BrokerCpuUsage> => {
+    ): Promise<Count> => {
       try {
         const brokerBytesOutPerSecond =
           await dataSources.prometheusAPI.getBytesOutPerSec(
@@ -60,11 +52,7 @@ const resolvers = {
       }
     },
 
-    cpuUsage: async (
-      parent,
-      args,
-      { dataSources }
-    ): Promise<BrokerCpuUsage> => {
+    cpuUsage: async (parent, args, { dataSources }): Promise<Count> => {
       try {
         const brokerCpu = await dataSources.prometheusAPI.getBrokerCpuUsage();
         const singleBrokerCpu = brokerCpu.filter(
@@ -81,7 +69,7 @@ const resolvers = {
       parent,
       args,
       { dataSources }
-    ): Promise<BrokerCpuUsage> => {
+    ): Promise<Count[]> => {
       try {
         const brokerCpu =
           await dataSources.prometheusAPI.getBrokerCpuUsageOverTime(
@@ -89,6 +77,7 @@ const resolvers = {
             parent.end,
             parent.step
           );
+
         const singleBrokerCpu = brokerCpu.filter(
           (elem) => elem.brokerId === parent.brokerId
         )[0];
@@ -104,7 +93,7 @@ const resolvers = {
       parent,
       args,
       { dataSources }
-    ): Promise<BrokerCpuUsage> => {
+    ): Promise<Count[]> => {
       try {
         const totalBrokerJVMMemoryUsage =
           await dataSources.prometheusAPI.getJVMMemoryUsageOverTime(
@@ -123,11 +112,7 @@ const resolvers = {
       }
     },
 
-    JVMMemoryUsage: async (
-      parent,
-      args,
-      { dataSources }
-    ): Promise<JVMMemoryUsage> => {
+    JVMMemoryUsage: async (parent, args, { dataSources }): Promise<Count> => {
       try {
         const totalBrokerJVMMemoryUsage =
           await dataSources.prometheusAPI.getJVMMemoryUsage();
@@ -146,7 +131,7 @@ const resolvers = {
       parent,
       args,
       { dataSources }
-    ): Promise<UnderReplicatedPartitions> => {
+    ): Promise<Count> => {
       try {
         const totalUnderReplicatedPartitions =
           await dataSources.prometheusAPI.getUnderReplicatedPartitions();
@@ -193,6 +178,7 @@ const resolvers = {
         const consumerTotalTimeMs = totalConsumerTotalTimeMs.filter(
           (elem) => elem.brokerId === parent.brokerId
         )[0];
+
         return consumerTotalTimeMs;
       } catch (error) {
         console.log(
@@ -229,10 +215,7 @@ const resolvers = {
     ): Promise<Count> => {
       const metric = await dataSources.prometheusAPI.getActiveControllerCount();
       const activeControllerCount: Count = {
-        count: metric.reduce(
-          (prev, curr) => (prev += curr.activeControllerCount),
-          0
-        ),
+        metric: metric.reduce((prev, curr) => (prev += curr.metric), 0),
         time: metric[0].time,
       };
 
@@ -246,10 +229,7 @@ const resolvers = {
     ): Promise<Count> => {
       const metric = await dataSources.prometheusAPI.getOfflinePartitionCount();
       const offlinePartitionCount: Count = {
-        count: metric.reduce(
-          (prev, curr) => (prev += curr.offlinePartitionCount),
-          0
-        ),
+        metric: metric.reduce((prev, curr) => (prev += curr.metric), 0),
         time: metric[0].time,
       };
       return offlinePartitionCount;
@@ -257,7 +237,6 @@ const resolvers = {
 
     underMinIsr: async (parent, args, { dataSources }): Promise<Count> => {
       const metric = await dataSources.prometheusAPI.getUnderMinIsr();
-      // console.log(metric);
       const underMinIsr: Count = {
         metric: metric.reduce((prev, curr) => (prev += curr.underMinIsr), 0),
         time: metric[0].time,
@@ -275,6 +254,10 @@ const resolvers = {
 
       return metric[0];
     },
+
+    deleteTopic: async () => {
+      return await brokerData.canDelete();
+    },
   },
 
   Topic: {
@@ -289,12 +272,12 @@ const resolvers = {
     ): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalReplicas(name);
       if (metric.length === 0) {
-        return partitions.reduce(
-          (prev, current) => prev + current.replicas.length,
+        return metric.reduce(
+          (prev, current) => prev + current.metric.length,
           0
         );
       }
-      return metric[0].totalReplicas;
+      return metric[0].metric;
     },
 
     totalIsrs: async (
@@ -304,12 +287,12 @@ const resolvers = {
     ): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalIsrs(name);
       if (metric.length === 0) {
-        return partitions.reduce(
-          (prev, current) => prev + current.isr.length,
+        return metric.reduce(
+          (prev, current) => prev + current.metric.length,
           0
         );
       }
-      return metric[0].totalIsrs;
+      return metric[0].metric;
     },
 
     brokersWithReplicas: async (
@@ -326,7 +309,7 @@ const resolvers = {
 
     logSize: async ({ name }, args, { dataSources }): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getLogSize(name);
-      const logSizeGB = Number((metric[0].logSize / 1000000000).toFixed(2));
+      const logSizeGB = Number((metric[0].metric / 1000000000).toFixed(2));
 
       return logSizeGB;
     },

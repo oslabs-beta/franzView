@@ -80,7 +80,7 @@ export async function createTopic(
   }
 }
 
-export async function deleteTopic(topic: string) {
+export async function canDelete() {
   try {
     const cluster = await admin.describeCluster();
     const canDelete = await admin.describeConfigs({
@@ -94,9 +94,16 @@ export async function deleteTopic(topic: string) {
       ],
     });
 
-    if (canDelete.resources[0].configEntries[0].configValue != "true")
+    return canDelete.resources[0].configEntries[0].configValue === "true";
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+export async function deleteTopic(topic: string) {
+  try {
+    if (!(await canDelete()))
       throw "Delete topic is not enabled on this cluster.";
-
     const topicToDelete = await getSingleTopic(topic);
     await admin.deleteTopics({ topics: [topic] });
     return topicToDelete;

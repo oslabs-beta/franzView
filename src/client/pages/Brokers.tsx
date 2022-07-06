@@ -11,8 +11,6 @@ import {
   BYTES_IN_PER_SECOND,
   BYTES_OUT_PER_SECOND,
   AVERAGE_TOTALTIMEMS,
-  DASHBOARD_CARD_METRICS_QUERY,
-  BROKER_PAGE_QUERY,
 } from "../models/queries";
 
 //Move real-line charts to top of page

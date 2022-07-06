@@ -37,7 +37,7 @@ describe("GraphQL Queries", () => {
         query: `query Cluster {
           cluster {
             activeControllerCount {
-              count
+              count: metric
               time
             }
           }
@@ -63,11 +63,11 @@ describe("GraphQL Queries", () => {
               brokerId
               brokerPort
               cpuUsage {
-                cpuUsage
+                cpuUsage: metric
                 time
               }
               numberUnderReplicatedPartitions {
-                  underReplicatedPartitions
+                  underReplicatedPartitions: metric
                   time
                 }
             }
@@ -104,11 +104,11 @@ describe("GraphQL Queries", () => {
             brokerId
             brokerPort
             cpuUsage {
-              cpuUsage
+              cpuUsage:metric
               time
             }
             numberUnderReplicatedPartitions {
-                underReplicatedPartitions
+                underReplicatedPartitions: metric
                 time
               }
             }
@@ -141,7 +141,7 @@ describe("GraphQL Queries", () => {
         query: `query Cluster {
           cluster {
             offlinePartitionCount {
-                count
+                count: metric
                 time
               }
             }
@@ -157,6 +157,19 @@ describe("GraphQL Queries", () => {
         })
       );
     });
+
+    it("The cluster type can be queried to return a boolean if a topic can be delete.", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `query Cluster {
+          cluster {
+            deleteTopic
+            }
+          }`,
+      });
+
+      expect(result.errors).toBeUndefined();
+      expect(typeof result.data.cluster.deleteTopic).toBe("boolean");
+    });
   });
 
   describe("Broker Queries", () => {
@@ -165,11 +178,11 @@ describe("GraphQL Queries", () => {
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
               cpuUsage {
-                cpuUsage
+                cpuUsage: metric
                 time
               }
               numberUnderReplicatedPartitions {
-                underReplicatedPartitions
+                underReplicatedPartitions: metric
                 time
               }
               brokerHost
@@ -203,11 +216,11 @@ describe("GraphQL Queries", () => {
             brokerId
             brokerPort
             cpuUsage {
-              cpuUsage
+              cpuUsage:metric
               time
             }
             numberUnderReplicatedPartitions {
-                underReplicatedPartitions
+                underReplicatedPartitions: metric
                 time
               }
           }
@@ -239,7 +252,7 @@ describe("GraphQL Queries", () => {
         query: `query Broker($brokerId: Int!) {
           broker(brokerId: $brokerId) {
               JVMMemoryUsage {
-                JVMMemoryUsage
+                JVMMemoryUsage: metric
                 time
               }
             }
@@ -260,7 +273,7 @@ describe("GraphQL Queries", () => {
   });
 });
 
-describe("GraphQL Mutation", () => {
+describe("GraphQL Mutations", () => {
   describe("Delete Topic", () => {
     beforeEach(async () => {
       await global.testServer.executeOperation({
@@ -285,6 +298,7 @@ describe("GraphQL Mutation", () => {
         variables: { name: "topicToBeDeleted" },
       });
 
+      expect(result.errors).toBeUndefined();
       expect(result).toMatchSnapshot();
     });
 
@@ -308,6 +322,7 @@ describe("GraphQL Mutation", () => {
         variables: { name: "topicToBeDeleted" },
       });
 
+      expect(response.errors).toBeUndefined();
       expect(response.data.topic).toBeNull();
     });
   });
