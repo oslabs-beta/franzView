@@ -79,6 +79,16 @@ export interface GqlChartProps {
   args?: any;
 }
 
+export interface MetricsCardProps {
+  value?: string | number;
+  title: string;
+  description: string;
+  icon?: React.ReactNode;
+  query?: DocumentNode;
+  variables?: any;
+  searchingFor?: string;
+}
+
 export interface ConfigEntries {
   name: string;
   value: string;
@@ -103,4 +113,8 @@ export interface DialogProps {
     | "warning"
   >;
   disabled: boolean;
+}
+export interface MoreInfoProps {
+  icon: React.ReactNode;
+  content: string;
 }

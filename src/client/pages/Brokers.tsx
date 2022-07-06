@@ -120,7 +120,7 @@ const Brokers = () => {
                     : produce.data.totalTimeMs.totalTimeMs.toFixed(2)
                 }
                 title="Produce Request (TotalTimeMs)"
-                toBe="milliseconds"
+                description="milliseconds"
               />
             </Paper>
           </Grid>
@@ -143,7 +143,7 @@ const Brokers = () => {
                     : consumer.data.totalTimeMs.totalTimeMs.toFixed(2)
                 }
                 title="Consumer Request (TotalTimeMs)"
-                toBe="milliseconds"
+                description="milliseconds"
               />
             </Paper>
           </Grid>
@@ -166,7 +166,7 @@ const Brokers = () => {
                     : follower.data.totalTimeMs.totalTimeMs.toFixed(2)
                 }
                 title="Follower Request (TotalTimeMs)"
-                toBe="milliseconds"
+                description="milliseconds"
               />
             </Paper>
           </Grid>

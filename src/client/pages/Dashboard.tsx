@@ -4,9 +4,10 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
-// import TopicGrid from "../components/TopicGrid";
 import ConsumerCard from "../components/ConsumerCard";
 import TopicGrid from "../components/TopicGrid";
+import { MonitorHeartTwoTone } from "@mui/icons-material";
+import MoreInfo from "../components/PopoverMoreInfo";
 
 import {
   ALL_BROKER_CPU_USAGE,
@@ -77,7 +78,7 @@ function DashboardContent() {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: 200,
+                height: 150,
               }}
               elevation={8}
             >
@@ -89,7 +90,13 @@ function DashboardContent() {
                         .underReplicatedPartitions
                 }
                 title="Underreplicated partitions"
-                toBe="Should be zero."
+                description="Should be zero."
+                icon={
+                  <MoreInfo
+                    icon={<MonitorHeartTwoTone />}
+                    content="This metric should be 0 in a healthy cluster. If a broker becomes unavailable, this metric will increase sharply. Any non-zero value lets the developer know that there is potentially something wrong with the cluster and action is warranted."
+                  />
+                }
               />
             </Paper>
           </Grid>
@@ -101,18 +108,22 @@ function DashboardContent() {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: 200,
+                height: 150,
               }}
               elevation={8}
             >
               <MetricsCard
-                value={
-                  loading
-                    ? "Loading..."
-                    : data.cluster.activeControllerCount.count
-                }
                 title="Active controller count"
-                toBe="Should be one."
+                description="Should be one."
+                icon={
+                  <MoreInfo
+                    icon={<MonitorHeartTwoTone />}
+                    content="If this value is 0, there is a high potential for lost data. If this value is greater than 1 and the higher value persists for more than a minute (when active controllers may be switching between brokers) the cluster may be suffering from 'split brain.' Start troubleshooting!"
+                  />
+                }
+                query={DASHBOARD_CARD_METRICS_QUERY}
+                searchingFor="count"
+                variables={{ pollInterval: 60000 }}
               />
             </Paper>
           </Grid>
@@ -124,7 +135,7 @@ function DashboardContent() {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: 200,
+                height: 150,
               }}
               elevation={8}
             >
@@ -135,7 +146,8 @@ function DashboardContent() {
                     : data.cluster.offlinePartitionCount.count
                 }
                 title="Offline partitions count"
-                toBe="Should be zero."
+                description="Should be zero."
+                icon={<MonitorHeartTwoTone />}
               />
             </Paper>
           </Grid>

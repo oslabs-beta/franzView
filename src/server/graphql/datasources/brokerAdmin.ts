@@ -40,7 +40,7 @@ export async function getSingleTopic(name: string) {
 
     return topic;
   } catch (error) {
-    console.log(`Kafka Admin Error getting single topic: ${error}`);
+    console.log(`Kafka Admin Error getting single topic ${name}: ${error}`);
   }
 }
 
