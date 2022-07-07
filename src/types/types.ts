@@ -113,6 +113,7 @@ export interface DialogProps {
     | "warning"
   >;
   disabled: boolean;
+  update: () => Promise<any>;
 }
 export interface MoreInfoProps {
   icon: React.ReactNode;

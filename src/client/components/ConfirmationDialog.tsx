@@ -21,6 +21,7 @@ export default function ConfirmationDialog({
   color,
   cta,
   disabled,
+  update,
 }: DialogProps) {
   const [value, setValue] = useState("");
   const [formError, setFormError] = useState(false);
@@ -41,6 +42,9 @@ export default function ConfirmationDialog({
         variables: {
           ...args,
         },
+        onCompleted: () => {
+          update();
+        },
       });
       if (!loading && !error) {
         setValue("");
@@ -53,7 +57,7 @@ export default function ConfirmationDialog({
   };
 
   return (
-    <>
+    <div>
       <Button
         variant={variant}
         color={color}
@@ -66,18 +70,18 @@ export default function ConfirmationDialog({
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>{content}</DialogContentText>
+          <TextField
+            error={formError}
+            autoFocus
+            margin="dense"
+            id={label.replace("", "_")}
+            label={label}
+            fullWidth
+            variant="standard"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
         </DialogContent>
-        <TextField
-          error={formError}
-          autoFocus
-          margin="dense"
-          id={label.replace("", "_")}
-          label={label}
-          fullWidth
-          variant="standard"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit} variant={variant} color={color}>
@@ -85,6 +89,6 @@ export default function ConfirmationDialog({
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }

@@ -86,7 +86,7 @@ const secondaryMenuItems = [
   {
     text: "Manage Topics",
     icon: <ListAltIcon />,
-    link: "/",
+    link: "/topicslist",
   },
   {
     text: "Create a Topic",
