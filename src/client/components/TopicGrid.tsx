@@ -106,7 +106,7 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
 
       setRowData(newRowData);
     }
-  }, [loading]);
+  }, [data]);
 
   return (
     <div style={{ height: "100%" }}>
