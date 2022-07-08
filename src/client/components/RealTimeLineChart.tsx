@@ -137,7 +137,9 @@ export default function RealTimeLineChart({
 
   const { loading, data, refetch } = useQuery(query, {
     variables: {
-      start: new Date(timeNow.current.valueOf() - duration * 60000).toString(),
+      start: new Date(
+        timeNow.current.valueOf() - duration * 60000 * 2
+      ).toString(),
       end: timeNow.current.toString(),
       step: step,
       ...args,
