@@ -25,6 +25,7 @@ export const typeDefs = gql`
     followerTotalTimeMs: Metric
     bytesInPerSecondOverTime: [TimeSeriesMetric]
     bytesOutPerSecondOverTime: [TimeSeriesMetric]
+    messagesInPerSec: [TimeSeriesMetric]
   }
 
   type Topic {
@@ -96,6 +97,13 @@ export const typeDefs = gql`
       step: String!
     ): [TimeSeriesMetric]
     bytesOutPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
+    messagesInPerSec(
       brokerIds: [Int]
       topics: [String]
       start: String!

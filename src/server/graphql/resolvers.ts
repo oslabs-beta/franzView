@@ -442,6 +442,34 @@ const resolvers = {
         console.log(`An error has occured with Query Total Time MS: ${error}`);
       }
     },
+
+    messagesInPerSec: async (
+      parent,
+      { brokerIds, topics, start, step, end },
+      { dataSources }
+    ): Promise<Count> => {
+      try {
+        let allMessagesInPerSec =
+          await dataSources.prometheusAPI.getMessagesInPerSec(
+            start,
+            end,
+            step,
+            brokerIds
+          );
+
+        if (topics) {
+          allMessagesInPerSec = allMessagesInPerSec.filter((el) =>
+            topics.includes(el.topic)
+          );
+        }
+
+        return allMessagesInPerSec;
+      } catch (error) {
+        console.log(
+          `An error has occured with Query messagesInPerSec: ${error}`
+        );
+      }
+    },
   },
 
   Mutation: {

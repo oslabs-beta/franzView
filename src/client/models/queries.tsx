@@ -160,6 +160,28 @@ export const BYTES_OUT_PER_SECOND = gql`
   }
 `;
 
+export const MESSAGES_IN_PER_SEC = gql`
+  query MessagesInPerSec(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: messagesInPerSec(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      messagesInPerSecond: values {
+        time
+        messagesInPerSecond: metric
+      }
+    }
+  }
+`;
+
 export const ADD_TOPIC = gql`
   mutation AddTopic(
     $name: String!
