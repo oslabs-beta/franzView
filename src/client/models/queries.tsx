@@ -4,13 +4,13 @@ export const DASHBOARD_CARD_METRICS_QUERY = gql`
   query Cluster {
     cluster {
       activeControllerCount {
-        count
+        count: metric
       }
       offlinePartitionCount {
-        count
+        count: metric
       }
       numberUnderReplicatedPartitions {
-        underReplicatedPartitions
+        underReplicatedPartitions: metric
       }
     }
   }
@@ -26,6 +26,9 @@ export const TOPIC_DATAGRID_QUERY = gql`
       totalIsrs
       brokersWithReplicas
       logSize
+    }
+    cluster {
+      deleteTopic
     }
   }
 `;
@@ -47,7 +50,7 @@ export const ALL_BROKER_CPU_USAGE = gql`
     broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
       cpuUsage: cpuUsageOverTime {
-        cpuUsage
+        cpuUsage: metric
         time
       }
     }
@@ -59,7 +62,7 @@ export const ALL_BROKER_DISK_USAGE = gql`
     broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
       JVMMemoryUsage: JVMMemoryUsageOverTime {
-        JVMMemoryUsage
+        JVMMemoryUsage: metric
         time
       }
     }
@@ -88,15 +91,15 @@ export const ALL_BROKERS_TIME_MS = gql`
   query BrokerTimeMs {
     brokers {
       produceTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       consumerTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       followerTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       ...CoreBrokerFields
@@ -107,7 +110,7 @@ export const ALL_BROKERS_TIME_MS = gql`
 export const AVERAGE_TOTALTIMEMS = gql`
   query totalTimeMs($request: String!, $brokerIds: [Int]) {
     totalTimeMs(request: $request, brokerIds: $brokerIds) {
-      totalTimeMs
+      totalTimeMs: metric
       time
     }
   }
@@ -168,6 +171,14 @@ export const ADD_TOPIC = gql`
       replicationFactor: $replicationFactor
       numPartitions: $numPartitions
     ) {
+      name
+    }
+  }
+`;
+
+export const DELETE_TOPIC = gql`
+  mutation DeleteTopic($name: String!) {
+    deleteTopic(name: $name) {
       name
     }
   }
