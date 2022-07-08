@@ -85,8 +85,11 @@ interface TopicGridProps {
 export default function TopicGrid({ title, rowCount }: TopicGridProps) {
   const [rowData, setRowData] = useState([]);
   const [pageSize, setPageSize] = useState(rowCount);
-  const { loading, error, data, refetch } = useQuery(TOPIC_DATAGRID_QUERY, {
-    onCompleted: (data) => {
+  const { loading, error, data, refetch } = useQuery(TOPIC_DATAGRID_QUERY);
+
+  React.useEffect(() => {
+    if (loading) return;
+    else {
       const newRowData = data.topics.map((item, index) => {
         return {
           id: index,
@@ -102,9 +105,8 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
       });
 
       setRowData(newRowData);
-      return data;
-    },
-  });
+    }
+  }, [data]);
 
   return (
     <div style={{ height: "100%" }}>
