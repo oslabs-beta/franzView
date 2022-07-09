@@ -14,6 +14,7 @@ import {
   // AVERAGE_TOTALTIMEMS,
   DASHBOARD_CARD_METRICS_QUERY,
   BROKER_PAGE_QUERY,
+  MESSAGES_IN_PER_SEC,
   // TOPIC_DATAGRID_QUERY,
 } from "../models/queries";
 
@@ -91,53 +92,83 @@ const Topics = () => {
             </Paper>
           </Grid>
 
-          {/* Cards */}
-          {/* Metrics Card 4 - Underreplicated Partitions  */}
-          <Grid item xs={12} md={4}>
+          {/* MESSAGES IN PER SEC LINE CHART */}
+          <Grid item xs={12} md={6}>
             <Paper
               sx={{
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: 200,
               }}
-              elevation={8}
+              elevation={16}
             >
-              <MetricsCard
-                value={
-                  counts.loading
-                    ? "Loading..."
-                    : counts.data.cluster.numberUnderReplicatedPartitions
-                        .underReplicatedPartitions
-                }
-                title="Underreplicated partitions"
-                description="Should be zero."
+              <RealTimeLineChart
+                query={MESSAGES_IN_PER_SEC}
+                metric="messagesInPerSecond"
+                step="30s"
+                duration={5}
+                pollInterval={60}
+                title="Message In Per Second"
+                yAxisLabel="MessagesInPerSecond"
+                resource="topic"
+                label="topic"
+                args={{ brokerIds: filter.length > 0 ? filter : null }}
               />
             </Paper>
           </Grid>
 
-          {/* Metrics Card 5 - Under Min ISR  */}
-          <Grid item xs={12} md={4}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 200,
-              }}
-              elevation={8}
-            >
-              <MetricsCard
-                value={
-                  test.loading
-                    ? "Loading..."
-                    : test.data.cluster.underMinIsr.metric
-                }
-                title="Total Under Min ISR"
-                description="Should be zero."
-              />
-            </Paper>
-          </Grid>
+          {/* Cards */}
+
+          <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
+            {/* UNDERREPLICATED PARTITIONS CARD */}
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 200,
+                  }}
+                  elevation={8}
+                >
+                  <MetricsCard
+                    value={
+                      counts.loading
+                        ? "Loading..."
+                        : counts.data.cluster.numberUnderReplicatedPartitions
+                            .underReplicatedPartitions
+                    }
+                    title="Underreplicated partitions"
+                    description="Should be zero."
+                  />
+                </Paper>
+              </Grid>
+
+              {/* UNDER MIN ISR CARD  */}
+              <Grid item xs={12} md={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 200,
+                  }}
+                  elevation={8}
+                >
+                  <MetricsCard
+                    value={
+                      test.loading
+                        ? "Loading..."
+                        : test.data.cluster.underMinIsr.metric
+                    }
+                    title="Total Under Min ISR"
+                    description="Should be zero."
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
 
           {/* Datagrid */}
           <Grid item xs={12}>
