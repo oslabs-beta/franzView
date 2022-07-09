@@ -13,8 +13,9 @@ import {
   BYTES_OUT_PER_SECOND,
   // AVERAGE_TOTALTIMEMS,
   DASHBOARD_CARD_METRICS_QUERY,
-  BROKER_PAGE_QUERY,
+  TOPIC_PAGE_QUERY,
   MESSAGES_IN_PER_SEC,
+  // TOTAL_LOG_SIZE,
   // TOPIC_DATAGRID_QUERY,
 } from "../models/queries";
 
@@ -30,7 +31,7 @@ const Topics = () => {
     pollInterval: 20000,
   });
 
-  const test = useQuery(BROKER_PAGE_QUERY, {
+  const topicCardQuery = useQuery(TOPIC_PAGE_QUERY, {
     variables: {
       request: "FetchUnderRep",
       brokerIds: filter.length > 0 ? filter : null,
@@ -158,12 +159,39 @@ const Topics = () => {
                 >
                   <MetricsCard
                     value={
-                      test.loading
+                      topicCardQuery.loading
                         ? "Loading..."
-                        : test.data.cluster.underMinIsr.metric
+                        : topicCardQuery.data.cluster.underMinIsr.metric
                     }
                     title="Total Under Min ISR"
                     description="Should be zero."
+                  />
+                </Paper>
+              </Grid>
+
+              {/* TOTAL LOG SIZE  */}
+              <Grid item xs={12} md={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 200,
+                  }}
+                  elevation={8}
+                >
+                  <MetricsCard
+                    value={
+                      topicCardQuery.loading
+                        ? "Loading..."
+                        : topicCardQuery.data.topics
+                            .reduce((acc, val) => {
+                              return (acc += val.logSize);
+                            }, 0)
+                            .toFixed(2)
+                    }
+                    title="Total Log Size"
+                    description="Shown in GB."
                   />
                 </Paper>
               </Grid>

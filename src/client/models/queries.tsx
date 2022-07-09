@@ -33,12 +33,15 @@ export const TOPIC_DATAGRID_QUERY = gql`
   }
 `;
 
-export const BROKER_PAGE_QUERY = gql`
+export const TOPIC_PAGE_QUERY = gql`
   query Cluster {
     cluster {
       underMinIsr {
         metric
       }
+    }
+    topics {
+      logSize
     }
   }
 `;
@@ -245,6 +248,28 @@ export const UNDERREPLICATED_PARTITIONS = gql`
       underreplicatedPartitions: values {
         time
         underreplicatedPartitions: metric
+      }
+    }
+  }
+`;
+
+export const TOTAL_LOG_SIZE = gql`
+  query LogSize(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: logSize(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      logSize: values {
+        time
+        logSize: metric
       }
     }
   }

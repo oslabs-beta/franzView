@@ -35,7 +35,7 @@ const columns: GridColDef[] = [
     type: "number",
     width: 150,
   },
-  { field: "logSize", headerName: "logSize", type: "number", width: 90 },
+  { field: "logSize", headerName: "Log Size(GB)", type: "number", width: 120 },
   {
     field: "delete",
     filterable: false,
@@ -99,7 +99,7 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
           underMinISR: `${item.totalIsrs - item.totalReplicas}`,
           brokersRep: item.brokersWithReplicas,
           delete: data.cluster.deleteTopic,
-          logSize: `${item.logSize} GB`,
+          logSize: item.logSize, //`${item.logSize} GB`
           update: refetch,
         };
       });

@@ -208,7 +208,7 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getLogSize(name) {
-    const query = `query=(sum(kafka_log_log_size{topic=~"${name}"})by(topic))`;
+    const query = `query=(sum(kafka_log_log_size{topic="${name}"})by(topic))`;
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 

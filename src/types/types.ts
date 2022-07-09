@@ -58,6 +58,7 @@ export interface Cluster {
   activeControllerCount?: Count;
   offlinePartitionCount?: Count;
   underMinIsr?: Count;
+  logSize?: Count;
 }
 
 export interface UnderReplicatedPartitions {
