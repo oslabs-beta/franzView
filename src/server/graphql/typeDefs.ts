@@ -9,6 +9,7 @@ export const typeDefs = gql`
     numberUnderReplicatedPartitions: Metric
     deleteTopic: Boolean
     underMinIsr: Metric
+    # logSize: Metric We are not accessing this here anymore
   }
 
   type Broker {
@@ -87,7 +88,7 @@ export const typeDefs = gql`
     broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
     topic(name: String!): Topic
-    topics: [Topic]
+    topics(name: [String]): [Topic]
     totalTimeMs(request: String!, brokerIds: [Int]): Metric
     bytesInPerSecondOverTime(
       brokerIds: [Int]
