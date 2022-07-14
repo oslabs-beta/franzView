@@ -99,7 +99,7 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
           underMinISR: `${item.totalIsrs - item.totalReplicas}`,
           brokersRep: item.brokersWithReplicas,
           delete: data.cluster.deleteTopic,
-          logSize: item.logSize, //`${item.logSize} GB`
+          logSize: item.logSize, 
           update: refetch,
         };
       });
