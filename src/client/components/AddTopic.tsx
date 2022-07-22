@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { ADD_TOPIC, CORE_ALL_BROKERS_QUERY } from "../models/queries";
 import { useNavigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
+import ConfigEntry from "./ConfigEntry";
 
 function AddTopic() {
   const [topicName, setTopicName] = useState("");
@@ -20,6 +21,7 @@ function AddTopic() {
     fetchPolicy: "cache-and-network",
   });
   const [addTopic, { data, loading, error }] = useMutation(ADD_TOPIC);
+  const [configOptions, setConfigOptions] = useState([]);
   const navigate = useNavigate();
 
   const onSubmit = (e) => {
@@ -45,6 +47,7 @@ function AddTopic() {
         replicationFactor:
           Number(replicationFactor) <= 0 ? -1 : Number(replicationFactor),
         numPartitions: Number(numPartitions) <= 0 ? -1 : Number(numPartitions),
+        configEntries: [],
       },
     });
 
@@ -56,6 +59,10 @@ function AddTopic() {
       setNumPartitions("");
       navigate("/topicslist", { replace: true });
     }
+  };
+
+  const addConfigOption = () => {
+    setConfigOptions([...configOptions, { config: "", value: "" }]);
   };
 
   return (
@@ -123,9 +130,28 @@ function AddTopic() {
               onChange={(e) => setNumPartitions(e.target.value)}
             />
           </Grid>
+
+          <Grid item xs={12} justifyContent="flex-end">
+            {configOptions.length > 0 &&
+              configOptions.map((input, index) => {
+                return (
+                  <ConfigEntry
+                    key={index}
+                    configs={configOptions}
+                    setConfigs={setConfigOptions}
+                    index={index}
+                  />
+                );
+              })}
+          </Grid>
           <Grid item xs={12} justifyContent="flex-end">
             <Button variant="contained" type="submit">
               Submit
+            </Button>
+          </Grid>
+          <Grid item xs={12} justifyContent="flex-end">
+            <Button variant="contained" onClick={addConfigOption}>
+              Add Config Option
             </Button>
           </Grid>
         </Grid>
