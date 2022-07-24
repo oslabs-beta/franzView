@@ -190,7 +190,3 @@ export default function RealTimeLineChart({
     </>
   );
 }
-
-// export default function Chart({options, data}: LineProps) {
-//   return <Line options={options} data={data} />;
-// }
