@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Kafka Manager",
   "main": "index.js",
+  "sideEffects": false,
   "scripts": {
+    "start": "npm run build && npm run prod",
+    "build": "cross-env NODE_ENV=production webpack",   
+    "prod": "nodemon src/server/server.ts",
     "prepare": "husky install",
     "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"nodemon src/server/server.ts\"",
     "test": "jest",

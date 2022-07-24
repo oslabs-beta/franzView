@@ -15,6 +15,9 @@ const config = {
     clean: true,
     publicPath: "/",
   },
+  optimization: {
+    usedExports: true,
+  },
   module: {
     rules: [
       {
@@ -38,7 +41,8 @@ const config = {
       },
     ],
   },
-  devtool: "inline-source-map",
+  devtool:
+    process.env.NODE_ENV === "development" ? "inline-source-map" : "source-map",
   devServer: {
     proxy: {
       "*": "http://localhost:3000",

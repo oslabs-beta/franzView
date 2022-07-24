@@ -1,5 +1,5 @@
 import * as brokerData from "./datasources/brokerAdmin";
-import { Broker, TimeSeriesCount, Cluster, Count } from "../../types/types";
+import { Broker, Cluster, Count } from "../../types/types";
 
 /**
  * TODO: Throw graphql errors from catch statements.
@@ -265,11 +265,7 @@ const resolvers = {
       return parent.partitions.length;
     },
 
-    totalReplicas: async (
-      { name, partitions },
-      args,
-      { dataSources }
-    ): Promise<number> => {
+    totalReplicas: async ({ name }, args, { dataSources }): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalReplicas(name);
       if (metric.length === 0) {
         return metric.reduce(
@@ -280,11 +276,7 @@ const resolvers = {
       return metric[0].metric;
     },
 
-    totalIsrs: async (
-      { name, partitions },
-      args,
-      { dataSources }
-    ): Promise<number> => {
+    totalIsrs: async ({ name }, args, { dataSources }): Promise<number> => {
       const metric = await dataSources.prometheusAPI.getTotalIsrs(name);
       if (metric.length === 0) {
         return metric.reduce(

@@ -110,3 +110,4 @@ dist
 journal.md
 
 ./public/report.html
+./public/*
