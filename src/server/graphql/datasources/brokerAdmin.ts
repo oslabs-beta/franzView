@@ -1,11 +1,10 @@
 import { admin } from "../../kafka/kafka";
-import { ConfigResourceTypes } from "kafkajs";
+import {
+  ConfigResourceTypes,
+  PartitionReassignment,
+  OngoingTopicReassignment,
+} from "kafkajs";
 import { Cluster, Broker, ConfigEntries } from "../../../types/types";
-
-/**
- * TODO: Keep admin connection to avoid needing to reconnect multiple times. Disconnect if not needed for extended time.
- *
- */
 
 export async function getClusterInfo(): Promise<Cluster> {
   try {
@@ -100,6 +99,7 @@ export async function canDelete() {
     return error;
   }
 }
+
 export async function deleteTopic(topic: string) {
   try {
     if (!(await canDelete()))
@@ -109,6 +109,19 @@ export async function deleteTopic(topic: string) {
     return topicToDelete;
   } catch (error) {
     console.log(error);
+    return error;
+  }
+}
+
+export async function reassignPartitions(
+  topics: PartitionReassignment[]
+): Promise<OngoingTopicReassignment[]> {
+  try {
+    await admin.alterPartitionReassignments({ topics });
+    const result = await admin.listPartitionReassignments({ topics: null });
+    return result.topics;
+  } catch (error) {
+    console.warn(`Error occured reassigning partitions: ${error}`);
     return error;
   }
 }
