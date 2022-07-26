@@ -9,7 +9,6 @@ export const typeDefs = gql`
     numberUnderReplicatedPartitions: Metric
     deleteTopic: Boolean
     underMinIsr: Metric
-    # logSize: Metric We are not accessing this here anymore
   }
 
   type Broker {
@@ -46,6 +45,18 @@ export const typeDefs = gql`
   type Metric {
     time: String
     metric: Float
+  }
+
+  type OngoingTopicReassignment {
+    topic: String
+    partitions: [OngoingPartitionReassignment]
+  }
+
+  type OngoingPartitionReassignment {
+    partitionIndex: Number
+    replicas: [Number]
+    addingReplicas: [Number]
+    removingReplicas: [Number]
   }
 
   type Query {
@@ -88,6 +99,16 @@ export const typeDefs = gql`
     value: String!
   }
 
+  input ReplicaAssignment {
+    partition: Number!
+    replicas: [Number]
+  }
+
+  input PartitionReassignment {
+    topic: String!
+    PartitionAssigment: [ReplicaAssignment]!
+  }
+
   type Mutation {
     addTopic(
       name: String!
@@ -96,5 +117,8 @@ export const typeDefs = gql`
       configEntries: [ConfigEntry]
     ): Topic!
     deleteTopic(name: String!): Topic
+    reassignPartitions(
+      topics: [PartitionReassignment]
+    ): OngoingTopicReassignment
   }
 `;
