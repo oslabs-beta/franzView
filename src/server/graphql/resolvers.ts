@@ -1,5 +1,7 @@
 import * as brokerData from "./datasources/brokerAdmin";
 import { Broker, Cluster, Count } from "../../types/types";
+import { OngoingTopicReassignment } from "kafkajs";
+import { admin } from "../kafka/kafka";
 
 const resolvers = {
   Broker: {
@@ -489,6 +491,13 @@ const resolvers = {
         );
         return error;
       }
+    },
+
+    reassignPartitions: async (
+      parent,
+      { topics }
+    ): Promise<OngoingTopicReassignment[]> => {
+      return await brokerData.reassignPartitions(topics);
     },
   },
 };
