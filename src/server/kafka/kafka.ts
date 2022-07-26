@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Kafka } from "kafkajs";
 
 const kafka = new Kafka({
-  clientId: "my-app",
+  clientId: "franzView-client",
   brokers: [process.env.KAKFA_BROKER],
 });
 
