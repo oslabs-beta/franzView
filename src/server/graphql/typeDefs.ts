@@ -38,16 +38,6 @@ export const typeDefs = gql`
     logSize: Float
   }
 
-  type ActiveControllerCount {
-    count: Int!
-    time: String
-  }
-
-  type BrokerCpuUsage {
-    cpuUsage: Float!
-    time: String
-  }
-
   type TimeSeriesMetric {
     topic: String
     values: [Metric]
@@ -56,26 +46,6 @@ export const typeDefs = gql`
   type Metric {
     time: String
     metric: Float
-  }
-
-  type JVMMemoryUsage {
-    JVMMemoryUsage: Float!
-    time: String
-  }
-
-  type OfflinePartitionCount {
-    count: Int!
-    time: String
-  }
-
-  type UnderReplicatedPartitions {
-    underReplicatedPartitions: Int!
-    time: String
-  }
-
-  type TotalTimeMs {
-    totalTimeMs: Float!
-    time: String
   }
 
   type Query {
