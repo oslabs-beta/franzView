@@ -61,16 +61,6 @@ const menuItems = [
     link: "/brokers",
   },
   {
-    text: "Producers",
-    icon: <Login />,
-    link: "/",
-  },
-  {
-    text: "Consumers",
-    icon: <Logout />,
-    link: "/",
-  },
-  {
     text: "Topics",
     icon: <Topic />,
     link: "/topics",
@@ -78,11 +68,6 @@ const menuItems = [
 ];
 
 const secondaryMenuItems = [
-  {
-    text: "Franz",
-    icon: <BugReport />,
-    link: "/",
-  },
   {
     text: "Manage Topics",
     icon: <ListAltIcon />,
