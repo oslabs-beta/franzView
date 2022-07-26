@@ -110,4 +110,6 @@ dist
 journal.md
 
 ./public/report.html
-./public/bundle*
+bundle.js.map
+bundle.js
+bundle.js.LICENSE.txt
