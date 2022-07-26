@@ -17,13 +17,6 @@ import { GqlChartProps } from "../../types/types";
 import { useQuery } from "@apollo/client";
 import ChartStreaming from "chartjs-plugin-streaming";
 
-// https://react-chartjs-2.js.org/faq/typescript
-// import type { ChartData, ChartOptions } from 'chart.js';
-// interface LineProps {
-//   options: ChartOptions<'line'>;
-//   data: ChartData<'line'>;
-// }
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -87,8 +80,8 @@ export default function RealTimeLineChart({
           timeNow.current = new Date(variables.end);
           refetch({ ...variables }).then((result) => {
             if (loaded.current) {
-              result.data[resource].forEach((broker, index) => {
-                broker[`${metric}`].forEach((point) => {
+              result.data[resource].forEach((series, index) => {
+                series[`${metric}`].forEach((point) => {
                   chart.data.datasets[index].data.push(point);
                 });
               });
