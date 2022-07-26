@@ -17,7 +17,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "cpuUsage");
+    return this.formatResponse(data);
   }
 
   async getBrokerCpuUsageOverTime(start, end, step) {
@@ -31,7 +31,7 @@ class PrometheusAPI extends RESTDataSource {
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
 
-      return this.formatResponseSeries(data, "cpuUsage");
+      return this.formatResponseSeries(data);
     } catch (error) {
       console.log(`Error occured for CPU Usage Query to Prometheus with:
        start: ${start}, 
@@ -46,7 +46,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "underReplicatedPartitions");
+    return this.formatResponse(data);
   }
 
   async getTotalUnderReplicatedPartitions() {
@@ -55,7 +55,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "underReplicatedPartitions");
+    return this.formatResponse(data);
   }
 
   async getActiveControllerCount() {
@@ -64,7 +64,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "activeControllerCount");
+    return this.formatResponse(data);
   }
 
   async getOfflinePartitionCount() {
@@ -73,7 +73,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "offlinePartitionCount");
+    return this.formatResponse(data);
   }
 
   async getUnderMinIsr() {
@@ -81,7 +81,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "underMinIsr");
+    return this.formatResponse(data);
   }
 
   async getJVMMemoryUsage() {
@@ -90,7 +90,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "JVMMemoryUsage");
+    return this.formatResponse(data);
   }
 
   async getJVMMemoryUsageOverTime(start, end, step) {
@@ -104,7 +104,7 @@ class PrometheusAPI extends RESTDataSource {
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
 
-      return this.formatResponseSeries(data, "JVMMemoryUsage");
+      return this.formatResponseSeries(data);
     } catch (error) {
       console.log(`Error occured for Disk Usage Query to Prometheus with:
        start: ${start}, 
@@ -127,7 +127,7 @@ class PrometheusAPI extends RESTDataSource {
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
 
-      return this.formatResponseSeries(data, "metric");
+      return this.formatResponseSeries(data);
     } catch (error) {
       console.log(`Error occured for getBytesInPerSec Query to Prometheus with:
        start: ${start}, 
@@ -150,7 +150,7 @@ class PrometheusAPI extends RESTDataSource {
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
 
-      return this.formatResponseSeries(data, "metric");
+      return this.formatResponseSeries(data);
     } catch (error) {
       console.log(`Error occured for Disk Usage Query to Prometheus with:
        start: ${start}, 
@@ -173,7 +173,7 @@ class PrometheusAPI extends RESTDataSource {
       const result = await this.get(`api/v1/query_range?${query}`);
       const data = result.data.result;
 
-      return this.formatResponseSeries(data, "metric");
+      return this.formatResponseSeries(data);
     } catch (error) {
       console.log(`Error occured for Get Messages In Per Sec Query to Prometheus with:
        start: ${start}, 
@@ -188,7 +188,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "totalReplicas");
+    return this.formatResponse(data);
   }
 
   async getReplicasPerBroker(name) {
@@ -196,7 +196,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "totalReplicasPerBroker");
+    return this.formatResponse(data);
   }
 
   async getTotalIsrs(name) {
@@ -204,7 +204,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "totalIsrs");
+    return this.formatResponse(data);
   }
 
   async getLogSize(name) {
@@ -212,7 +212,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "logSize");
+    return this.formatResponse(data);
   }
 
   async getMedianTotalTimeMs(requestType, filter) {
@@ -222,7 +222,7 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "totalTimeMs");
+    return this.formatResponse(data);
   }
 
   async getAvgTotalTimeMs(requestType, filter) {
@@ -232,11 +232,11 @@ class PrometheusAPI extends RESTDataSource {
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
-    return this.formatResponse(data, "totalTimeMs");
+    return this.formatResponse(data);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formatResponse(data: any[], metric: string) {
+  formatResponse(data: any[]) {
     /* Remove for production */
     const brokerMap = {
       "kafka1:8081": 1,
@@ -260,7 +260,7 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formatResponseSeries(data: any[], metric: string) {
+  formatResponseSeries(data: any[]) {
     /* Remove for production */
     const brokerMap = {
       "kafka1:8081": 1,
