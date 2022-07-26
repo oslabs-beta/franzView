@@ -153,17 +153,17 @@ export default function RealTimeLineChart({
     if (loading || loaded.current) return;
     const datasets = [];
     const labels = [];
-    data[resource].forEach((broker, index) => {
-      const brokerData: any = {};
-      brokerData.label = `${resource}: ${broker.brokerId || broker[label]}`;
-      brokerData.backgroundColor = `#${colors[index]}`;
-      brokerData.borderColor = `#${colors[index]}`;
-      brokerData.pointRadius = 0;
-      brokerData.tension = 0.2;
+    data[resource].forEach((series, index) => {
+      const seriesData: any = {};
+      seriesData.label = `${resource}: ${series[label]}`;
+      seriesData.backgroundColor = `#${colors[index]}`;
+      seriesData.borderColor = seriesData.backgroundColor;
+      seriesData.pointRadius = 0;
+      seriesData.tension = 0.2;
 
-      brokerData.data = broker[`${metric}`];
+      seriesData.data = series[`${metric}`];
 
-      datasets.push(brokerData);
+      datasets.push(seriesData);
     });
 
     setChartData({

@@ -44,6 +44,7 @@ function DashboardContent() {
                 title="CPU Usage"
                 yAxisLabel="% CPU Used"
                 resource="broker"
+                label="brokerId"
               />
             </Paper>
           </Grid>
@@ -67,6 +68,7 @@ function DashboardContent() {
                 title="Disk Usage"
                 yAxisLabel="% Memory Used"
                 resource="broker"
+                label="brokerId"
               />
             </Paper>
           </Grid>

@@ -1,11 +1,6 @@
 import * as brokerData from "./datasources/brokerAdmin";
 import { Broker, Cluster, Count } from "../../types/types";
 
-/**
- * TODO: Throw graphql errors from catch statements.
- * TODO: Refactor prometheusAPI to take brokerId to avoid fetching all data and then needing to filter
- */
-
 const resolvers = {
   Broker: {
     bytesInPerSecondOverTime: async (
