@@ -13,8 +13,8 @@ export const typeDefs = gql`
 
   type Broker {
     brokerId: Int!
-    brokerPort: Int!
-    brokerHost: String!
+    brokerPort: Int
+    brokerHost: String
     numberUnderReplicatedPartitions: Metric
     cpuUsage: Metric
     JVMMemoryUsage: Metric
@@ -35,6 +35,14 @@ export const typeDefs = gql`
     totalIsrs: Int
     brokersWithReplicas: [Int]
     logSize: Float
+    partitions: [Partition]
+  }
+
+  type Partition {
+    partitionId: Int!
+    leader: Broker
+    replicas: [Broker]
+    isr: [Broker]
   }
 
   type TimeSeriesMetric {

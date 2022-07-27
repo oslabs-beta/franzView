@@ -1,7 +1,6 @@
 import * as brokerData from "./datasources/brokerAdmin";
 import { Broker, Cluster, Count } from "../../types/types";
 import { OngoingTopicReassignment } from "kafkajs";
-import { admin } from "../kafka/kafka";
 
 const resolvers = {
   Broker: {
@@ -304,6 +303,24 @@ const resolvers = {
     },
   },
 
+  Partition: {
+    leader: (parent) => {
+      parent.leader = { brokerId: parent.leader };
+      return parent.leader;
+    },
+
+    replicas: (parent) => {
+      return parent.replicas.map(
+        (replica) => (replica = { brokerId: replica })
+      );
+    },
+
+    isr: (parent) => {
+      if (parent.isr.length === 0) return null;
+      return parent.isr.map((replica) => (replica = { brokerId: replica }));
+    },
+  },
+
   Query: {
     brokers: async (
       parent,
@@ -353,6 +370,8 @@ const resolvers = {
 
     topic: async (parent, { name }): Promise<any> => {
       const topic = await brokerData.getSingleTopic(name);
+
+      console.log(topic);
 
       return topic;
     },
