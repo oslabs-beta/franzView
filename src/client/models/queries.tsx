@@ -24,7 +24,6 @@ export const TOPIC_DATAGRID_QUERY = gql`
       numPartitions
       totalReplicas
       totalIsrs
-      brokersWithReplicas
       logSize
     }
     cluster {

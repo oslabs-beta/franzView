@@ -9,11 +9,10 @@ import ConfirmationDialog from "./ConfirmationDialog";
 
 // data grid schema
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 50 },
   { field: "topic", headerName: "Topic", width: 150 },
   {
     field: "partitionNum",
-    headerName: "Partition",
+    headerName: "Number of Partitions",
     type: "number",
     width: 150,
   },
@@ -29,15 +28,10 @@ const columns: GridColDef[] = [
     type: "number",
     width: 150,
   },
-  {
-    field: "brokersRep",
-    headerName: "# Brokers with replicas",
-    type: "number",
-    width: 150,
-  },
   { field: "logSize", headerName: "Log Size(GB)", type: "number", width: 120 },
   {
     field: "delete",
+    headerName: "",
     filterable: false,
     align: "center",
     width: 180,
@@ -97,9 +91,8 @@ export default function TopicGrid({ title, rowCount }: TopicGridProps) {
           partitionNum: item.numPartitions,
           partitionRep: item.totalReplicas,
           underMinISR: `${item.totalIsrs - item.totalReplicas}`,
-          brokersRep: item.brokersWithReplicas,
           delete: data.cluster.deleteTopic,
-          logSize: item.logSize, 
+          logSize: item.logSize,
           update: refetch,
         };
       });
