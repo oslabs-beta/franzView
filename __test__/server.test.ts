@@ -1,5 +1,6 @@
 import request from "supertest";
 import appServer from "../src/server/server";
+import crypto from "node:crypto";
 import { admin } from "../src/server/kafka/kafka";
 
 const server = "http://localhost:3000";
@@ -275,7 +276,9 @@ describe("GraphQL Queries", () => {
 
 describe("GraphQL Mutations", () => {
   describe("Delete Topic", () => {
+    let topicName;
     beforeEach(async () => {
+      topicName = `test-topic-${crypto.randomUUID()}`;
       await global.testServer.executeOperation({
         query: `mutation AddTopic($name: String!) {
         addTopic(name: $name) {
@@ -283,7 +286,7 @@ describe("GraphQL Mutations", () => {
             }
           }`,
         variables: {
-          name: "topicToBeDeleted",
+          name: topicName,
         },
       });
     });
@@ -295,11 +298,15 @@ describe("GraphQL Mutations", () => {
             name
           }
         }`,
-        variables: { name: "topicToBeDeleted" },
+        variables: { name: topicName },
       });
 
       expect(result.errors).toBeUndefined();
-      expect(result).toMatchSnapshot();
+      expect(result.data).toEqual({
+        deleteTopic: {
+          name: topicName,
+        },
+      });
     });
 
     it("Deleting a topic removes it from the cluster and it can no longer be found in the cluster.", async () => {
@@ -309,9 +316,15 @@ describe("GraphQL Mutations", () => {
             name
           }
         }`,
-        variables: { name: "topicToBeDeleted" },
+        variables: { name: topicName },
       });
 
+      jest.spyOn(console, "warn").mockImplementation(() => {
+        return;
+      });
+      jest.spyOn(console, "log").mockImplementation(() => {
+        return;
+      });
       const response = await global.testServer.executeOperation({
         query: `query topic($name: String!) {
           topic(name: $name) {
@@ -319,7 +332,7 @@ describe("GraphQL Mutations", () => {
           }
         }`,
 
-        variables: { name: "topicToBeDeleted" },
+        variables: { name: topicName },
       });
 
       expect(response.errors).toBeUndefined();
@@ -328,6 +341,7 @@ describe("GraphQL Mutations", () => {
   });
 
   describe("Add Topic", () => {
+    let topicName;
     afterEach(async () => {
       await global.testServer.executeOperation({
         query: `mutation DeleteTopic($name: String!) {
@@ -336,26 +350,32 @@ describe("GraphQL Mutations", () => {
             }
           }`,
         variables: {
-          name: "newTopic",
+          name: topicName,
         },
       });
     });
 
     it("The add topic mutation returns the topic that was created.", async () => {
+      topicName = `test-topic-${crypto.randomUUID()}`;
       const result = await global.testServer.executeOperation({
         query: `mutation AddTopic($name: String!) {
           addTopic(name: $name) {
             name
           }
         }`,
-        variables: { name: "newTopic" },
+        variables: { name: topicName },
       });
 
       expect(result.errors).toBeUndefined();
-      expect(result).toMatchSnapshot();
+      expect(result.data).toEqual({
+        addTopic: {
+          name: topicName,
+        },
+      });
     });
 
     it("Adding a topic allows for the topic to be found in the cluster.", async () => {
+      topicName = `test-topic-${crypto.randomUUID()}`;
       const result = await global.testServer.executeOperation({
         query: `mutation AddTopic($name: String!, $replicationFactor: Int, $numPartitions: Int, $configEntries: [ConfigEntry]) {
           addTopic(name: $name, replicationFactor: $replicationFactor, numPartitions: $numPartitions, configEntries: $configEntries) {
@@ -363,7 +383,7 @@ describe("GraphQL Mutations", () => {
             numPartitions
           }
         }`,
-        variables: { name: "newTopic" },
+        variables: { name: topicName },
       });
 
       const response = await global.testServer.executeOperation({
@@ -374,12 +394,82 @@ describe("GraphQL Mutations", () => {
         }`,
 
         variables: {
-          name: "newTopic",
+          name: topicName,
         },
       });
 
       expect(result.errors).toBeUndefined();
       expect(response.data.topic.name).toBe(result.data.addTopic.name);
+    });
+  });
+
+  describe("Reassign Partitions", () => {
+    let topicName;
+    beforeAll(async () => {
+      topicName = `test-topic-${crypto.randomUUID()}`;
+      return await global.admin.createTopics({
+        topics: [
+          {
+            topic: topicName,
+            replicaAssignment: [{ partition: 0, replicas: [1, 0] }],
+          },
+        ],
+      });
+    });
+
+    afterAll(async () => {
+      jest.setTimeout(10000);
+      return await global.admin.deleteTopics({
+        topics: [topicName],
+      });
+    });
+
+    it("Returns ongoing partition reassignment", async () => {
+      const result = await global.testServer.executeOperation({
+        query: `mutation ReassignPartitions($topics: [PartitionReassignment]) {
+        reassignPartitions(topics: $topics) {
+          name
+          partitions {
+            partition
+            replicas
+            addingReplicas
+            removingReplicas
+          }
+        }
+      }`,
+        variables: {
+          topics: [
+            {
+              topic: topicName,
+              partitionAssignment: [
+                {
+                  partition: 0,
+                  replicas: [3, 4],
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      expect(result.errors).toBeUndefined();
+      expect(
+        result.data.reassignPartitions.filter(
+          (topic) => topic.name === topicName
+        )
+      ).toEqual([
+        {
+          name: topicName,
+          partitions: [
+            {
+              partition: 0,
+              replicas: [3, 4, 1, 0],
+              addingReplicas: [3, 4],
+              removingReplicas: [1, 0],
+            },
+          ],
+        },
+      ]);
     });
   });
 });

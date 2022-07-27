@@ -3,6 +3,7 @@ import {
   ConfigResourceTypes,
   PartitionReassignment,
   OngoingTopicReassignment,
+  ITopicConfig,
 } from "kafkajs";
 import { Cluster, Broker, ConfigEntries } from "../../../types/types";
 
@@ -60,19 +61,19 @@ export async function createTopic(
   numPartitions: number,
   configEntries: ConfigEntries[]
 ) {
-  const topicConfig = {
+  const topicConfig: ITopicConfig = {
     topic,
     replicationFactor,
     numPartitions,
-    configEntries,
   };
 
+  if (configEntries) topicConfig.configEntries = configEntries;
+
   try {
-    if (await admin.createTopics({ topics: [topicConfig] })) {
+    const topicCreated = await admin.createTopics({ topics: [topicConfig] });
+    if (topicCreated) {
       const topics = await admin.fetchTopicMetadata({ topics: [topic] });
       return topics.topics[0];
-    } else {
-      throw `Topic ${topic} already exists`;
     }
   } catch (error) {
     console.warn(`Error when creating topic: ${topic}. Error: ${error}`);
@@ -118,7 +119,8 @@ export async function reassignPartitions(
 ): Promise<OngoingTopicReassignment[]> {
   try {
     await admin.alterPartitionReassignments({ topics });
-    const result = await admin.listPartitionReassignments({ topics: null });
+    const result = await admin.listPartitionReassignments({});
+
     return result.topics;
   } catch (error) {
     console.warn(`Error occured reassigning partitions: ${error}`);

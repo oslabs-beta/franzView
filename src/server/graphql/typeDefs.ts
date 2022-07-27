@@ -48,15 +48,15 @@ export const typeDefs = gql`
   }
 
   type OngoingTopicReassignment {
-    topic: String
+    name: String
     partitions: [OngoingPartitionReassignment]
   }
 
   type OngoingPartitionReassignment {
-    partitionIndex: Number
-    replicas: [Number]
-    addingReplicas: [Number]
-    removingReplicas: [Number]
+    partition: Int
+    replicas: [Int]
+    addingReplicas: [Int]
+    removingReplicas: [Int]
   }
 
   type Query {
@@ -100,13 +100,13 @@ export const typeDefs = gql`
   }
 
   input ReplicaAssignment {
-    partition: Number!
-    replicas: [Number]
+    partition: Int!
+    replicas: [Int]
   }
 
   input PartitionReassignment {
     topic: String!
-    PartitionAssigment: [ReplicaAssignment]!
+    partitionAssignment: [ReplicaAssignment]!
   }
 
   type Mutation {
@@ -119,6 +119,6 @@ export const typeDefs = gql`
     deleteTopic(name: String!): Topic
     reassignPartitions(
       topics: [PartitionReassignment]
-    ): OngoingTopicReassignment
+    ): [OngoingTopicReassignment]
   }
 `;

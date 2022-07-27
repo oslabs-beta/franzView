@@ -242,6 +242,8 @@ class PrometheusAPI extends RESTDataSource {
       "kafka1:8081": 1,
       "kafka2:8081": 2,
       "kafka3:8081": 3,
+      "kafka4:8081": 4,
+      "kafka5:8081": 5,
     };
 
     const formattedData = [];
@@ -266,6 +268,8 @@ class PrometheusAPI extends RESTDataSource {
       "kafka1:8081": 1,
       "kafka2:8081": 2,
       "kafka3:8081": 3,
+      "kafka4:8081": 4,
+      "kafka5:8081": 5,
     };
 
     const formattedData = [];

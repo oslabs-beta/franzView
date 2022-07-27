@@ -464,7 +464,7 @@ const resolvers = {
   Mutation: {
     addTopic: async (
       parent,
-      { name, replicationFactor, numPartitions, configEntries }
+      { name, replicationFactor = -1, numPartitions = -1, configEntries }
     ) => {
       try {
         const topic = await brokerData.createTopic(
@@ -497,7 +497,14 @@ const resolvers = {
       parent,
       { topics }
     ): Promise<OngoingTopicReassignment[]> => {
-      return await brokerData.reassignPartitions(topics);
+      try {
+        return await brokerData.reassignPartitions(topics);
+      } catch (error) {
+        console.warn(
+          `Mutation reassignPartitions failed for topics: ${topics}. Error: ${error}`
+        );
+        return error;
+      }
     },
   },
 };

@@ -7,9 +7,9 @@
   "scripts": {
     "start": "npm run build && npm run prod",
     "build": "cross-env NODE_ENV=production webpack",   
-    "prod": "nodemon src/server/server.ts",
+    "prod": "cross-env NODE_ENV=production nodemon src/server/server.ts",
     "prepare": "husky install",
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"nodemon src/server/server.ts\"",
+    "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"cross-env NODE_ENV=development nodemon src/server/server.ts\"",
     "test": "jest",
     "windev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot\" \"nodemon src/server/server.ts\""
   },
