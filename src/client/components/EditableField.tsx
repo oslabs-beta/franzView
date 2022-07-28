@@ -36,20 +36,79 @@ function EditableField({ initial, update, revert, id }: EditFieldProps) {
       {!editing && (
         <>
           <span>{draft}</span>
-          <Button onClick={() => setEditing(true)}>Edit</Button>
-          {changed && <Button onClick={cancel}>Revert</Button>}
+          <Button
+            onClick={() => setEditing(true)}
+            variant="contained"
+            color="success"
+            size="small"
+            sx={{
+              color: "#F8F0E3",
+              mx: 1,
+              fontWeight: "bold",
+              width: "100px",
+              verticalAlign: "baseline",
+            }}
+          >
+            Edit
+          </Button>
+          {changed && (
+            <Button
+              onClick={cancel}
+              variant="contained"
+              color="error"
+              size="small"
+              sx={{
+                color: "#F8F0E3",
+                mx: 1,
+                fontWeight: "bold",
+                width: "100px",
+              }}
+            >
+              Revert
+            </Button>
+          )}
         </>
       )}
       {editing && (
-        <>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <TextField
             size="small"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
+            margin="none"
+            inputProps={{
+              style: { fontSize: ".875rem", height: "1em" },
+            }}
           />
-          <Button onClick={save}>Save</Button>
-          <Button onClick={cancel}>Cancel</Button>
-        </>
+          <Button
+            onClick={save}
+            variant="contained"
+            color="success"
+            size="small"
+            sx={{
+              color: "#F8F0E3",
+              mx: 1,
+              fontWeight: "bold",
+              width: "100px",
+            }}
+          >
+            Save
+          </Button>
+          <Button
+            onClick={cancel}
+            variant="contained"
+            color="error"
+            size="small"
+            sx={{
+              color: "#F8F0E3",
+              mx: 1,
+              fontWeight: "bold",
+              width: "100px",
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
       )}
     </>
   );

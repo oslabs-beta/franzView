@@ -100,8 +100,21 @@ function ReassignPartitions() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Button>Save</Button>
-        <Button onClick={() => navigate(-1)}>Cancel</Button>
+        <Button
+          color="success"
+          variant="contained"
+          sx={{ color: "#F8F0E3", m: 1, fontWeight: "bold", width: "100px" }}
+        >
+          Save
+        </Button>
+        <Button
+          onClick={() => navigate(-1)}
+          color="error"
+          variant="contained"
+          sx={{ color: "#F8F0E3", m: 1, fontWeight: "bold", width: "100px" }}
+        >
+          Cancel
+        </Button>
       </Container>
     </>
   );
