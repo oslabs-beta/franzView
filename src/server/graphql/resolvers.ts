@@ -371,8 +371,6 @@ const resolvers = {
     topic: async (parent, { name }): Promise<any> => {
       const topic = await brokerData.getSingleTopic(name);
 
-      console.log(topic);
-
       return topic;
     },
 

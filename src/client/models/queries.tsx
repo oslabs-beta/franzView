@@ -45,6 +45,23 @@ export const TOPIC_PAGE_QUERY = gql`
   }
 `;
 
+export const TOPIC_QUERY = gql`
+  query Topic($name: String!) {
+    topic(name: $name) {
+      name
+      partitions {
+        partitionId
+        leader {
+          brokerId
+        }
+        replicas {
+          brokerId
+        }
+      }
+    }
+  }
+`;
+
 //Add additional query for metrics on broker page only
 
 export const ALL_BROKER_CPU_USAGE = gql`

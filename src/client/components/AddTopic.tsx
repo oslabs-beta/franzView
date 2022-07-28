@@ -18,7 +18,7 @@ function AddTopic() {
   const brokers = useQuery(CORE_ALL_BROKERS_QUERY, {
     fetchPolicy: "cache-and-network",
   });
-  const [addTopic, { data, loading, error }] = useMutation(ADD_TOPIC);
+  const [addTopic, { loading, error }] = useMutation(ADD_TOPIC);
   const navigate = useNavigate();
 
   const onSubmit = (e) => {
