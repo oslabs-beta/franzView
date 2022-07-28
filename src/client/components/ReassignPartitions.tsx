@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useParams } from "react-router";
-import { TOPIC_QUERY } from "../models/queries";
+import { TOPIC_QUERY, REASSIGN_PARTITIONS } from "../models/queries";
 import Container from "@mui/material/Container";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -24,6 +24,10 @@ function ReassignPartitions() {
       name: topicName,
     },
   });
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [reassignPartitions, { error }] = useMutation(REASSIGN_PARTITIONS);
 
   useEffect(() => {
     if (loading) return;
@@ -62,10 +66,32 @@ function ReassignPartitions() {
     );
   };
 
+  const save = async () => {
+    if (proposed.length < 1)
+      return setErrorMessage("There are no changed assignments.");
+    await reassignPartitions({
+      variables: {
+        topics: [
+          {
+            topic: topicName,
+            partitionAssignment: proposed,
+          },
+        ],
+      },
+    });
+
+    if (error)
+      return setErrorMessage("There was an issue starting the reassigment.");
+    else setErrorMessage("");
+
+    navigate("../", { replace: true });
+  };
+
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
         <h1>Reassign Partitions for topic: {topicName}</h1>
+        {errorMessage !== "" && <p>Error: {errorMessage}</p>}
         <TableContainer
           sx={{ width: "max-content" }}
           component={Paper}
@@ -101,6 +127,7 @@ function ReassignPartitions() {
           </Table>
         </TableContainer>
         <Button
+          onClick={save}
           color="success"
           variant="contained"
           sx={{ color: "#F8F0E3", m: 1, fontWeight: "bold", width: "100px" }}

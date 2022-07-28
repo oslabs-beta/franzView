@@ -225,6 +225,14 @@ export const DELETE_TOPIC = gql`
   }
 `;
 
+export const REASSIGN_PARTITIONS = gql`
+  mutation ReassignPartitions($topics: [PartitionReassignment]) {
+    reassignPartitions(topics: $topics) {
+      name
+    }
+  }
+`;
+
 export const UNDERMIN_ISR = gql`
   query UnderMinIsr(
     $start: String!
