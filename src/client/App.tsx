@@ -6,7 +6,7 @@ import Topics from "./pages/Topics";
 import AddTopic from "./components/AddTopic";
 import TopicsList from "./pages/TopicsList";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { ReassignPartitions } from "./components/ReassignPartitions";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { BatchHttpLink } from "@apollo/client/link/batch-http";
 import { Chart } from "chart.js";
@@ -64,6 +64,10 @@ const App: React.FC = () => {
               <Route path="/topics" element={<Topics />} />
               <Route path="/addtopic" element={<AddTopic />} />
               <Route path="/topicslist" element={<TopicsList />} />
+              <Route
+                path="/reassign/:topicName"
+                element={<ReassignPartitions />}
+              />
               <Route
                 path="*"
                 element={

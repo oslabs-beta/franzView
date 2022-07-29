@@ -20,10 +20,7 @@ import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DynamicFeed from "@mui/icons-material/DynamicFeed";
-import Login from "@mui/icons-material/Login";
-import Logout from "@mui/icons-material/Logout";
 import Topic from "@mui/icons-material/Topic";
-import { BugReport } from "@mui/icons-material";
 import Link from "@mui/material/Link";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Link as RouterLink } from "react-router-dom";
@@ -61,16 +58,6 @@ const menuItems = [
     link: "/brokers",
   },
   {
-    text: "Producers",
-    icon: <Login />,
-    link: "/",
-  },
-  {
-    text: "Consumers",
-    icon: <Logout />,
-    link: "/",
-  },
-  {
     text: "Topics",
     icon: <Topic />,
     link: "/topics",
@@ -78,11 +65,6 @@ const menuItems = [
 ];
 
 const secondaryMenuItems = [
-  {
-    text: "Franz",
-    icon: <BugReport />,
-    link: "/",
-  },
   {
     text: "Manage Topics",
     icon: <ListAltIcon />,

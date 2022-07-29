@@ -9,13 +9,12 @@ export const typeDefs = gql`
     numberUnderReplicatedPartitions: Metric
     deleteTopic: Boolean
     underMinIsr: Metric
-    # logSize: Metric We are not accessing this here anymore
   }
 
   type Broker {
     brokerId: Int!
-    brokerPort: Int!
-    brokerHost: String!
+    brokerPort: Int
+    brokerHost: String
     numberUnderReplicatedPartitions: Metric
     cpuUsage: Metric
     JVMMemoryUsage: Metric
@@ -36,6 +35,14 @@ export const typeDefs = gql`
     totalIsrs: Int
     brokersWithReplicas: [Int]
     logSize: Float
+    partitions: [Partition]
+  }
+
+  type Partition {
+    partitionId: Int!
+    leader: Broker
+    replicas: [Broker]
+    isr: [Broker]
   }
 
   type TimeSeriesMetric {
@@ -46,6 +53,18 @@ export const typeDefs = gql`
   type Metric {
     time: String
     metric: Float
+  }
+
+  type OngoingTopicReassignment {
+    name: String
+    partitions: [OngoingPartitionReassignment]
+  }
+
+  type OngoingPartitionReassignment {
+    partition: Int
+    replicas: [Int]
+    addingReplicas: [Int]
+    removingReplicas: [Int]
   }
 
   type Query {
@@ -88,6 +107,16 @@ export const typeDefs = gql`
     value: String!
   }
 
+  input ReplicaAssignment {
+    partition: Int!
+    replicas: [Int]
+  }
+
+  input PartitionReassignment {
+    topic: String!
+    partitionAssignment: [ReplicaAssignment]!
+  }
+
   type Mutation {
     addTopic(
       name: String!
@@ -96,5 +125,8 @@ export const typeDefs = gql`
       configEntries: [ConfigEntry]
     ): Topic!
     deleteTopic(name: String!): Topic
+    reassignPartitions(
+      topics: [PartitionReassignment]
+    ): [OngoingTopicReassignment]
   }
 `;

@@ -1,10 +1,6 @@
 import * as brokerData from "./datasources/brokerAdmin";
 import { Broker, Cluster, Count } from "../../types/types";
-
-/**
- * TODO: Throw graphql errors from catch statements.
- * TODO: Refactor prometheusAPI to take brokerId to avoid fetching all data and then needing to filter
- */
+import { OngoingTopicReassignment } from "kafkajs";
 
 const resolvers = {
   Broker: {
@@ -307,6 +303,24 @@ const resolvers = {
     },
   },
 
+  Partition: {
+    leader: (parent) => {
+      parent.leader = { brokerId: parent.leader };
+      return parent.leader;
+    },
+
+    replicas: (parent) => {
+      return parent.replicas.map(
+        (replica) => (replica = { brokerId: replica })
+      );
+    },
+
+    isr: (parent) => {
+      if (parent.isr.length === 0) return null;
+      return parent.isr.map((replica) => (replica = { brokerId: replica }));
+    },
+  },
+
   Query: {
     brokers: async (
       parent,
@@ -467,7 +481,7 @@ const resolvers = {
   Mutation: {
     addTopic: async (
       parent,
-      { name, replicationFactor, numPartitions, configEntries }
+      { name, replicationFactor = -1, numPartitions = -1, configEntries }
     ) => {
       try {
         const topic = await brokerData.createTopic(
@@ -491,6 +505,20 @@ const resolvers = {
       } catch (error) {
         console.warn(
           `Mutation deleteTopic failed for topic: ${name}. Error: ${error}`
+        );
+        return error;
+      }
+    },
+
+    reassignPartitions: async (
+      parent,
+      { topics }
+    ): Promise<OngoingTopicReassignment[]> => {
+      try {
+        return await brokerData.reassignPartitions(topics);
+      } catch (error) {
+        console.warn(
+          `Mutation reassignPartitions failed for topics: ${topics}. Error: ${error}`
         );
         return error;
       }
