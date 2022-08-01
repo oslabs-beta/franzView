@@ -41,12 +41,14 @@ class PrometheusAPI extends PromAPI {
 
   async queryData(query, filter?) {
     let queryString = `query=${query.query}`;
+    const regex = /filter/g;
+
     try {
       if (filter && filter.length >= 1) {
         if (query.type === "broker") filter = await this.filter(filter);
-        queryString = queryString.replaceAll("filter", filter);
+        queryString = queryString.replace(regex, filter);
       } else {
-        queryString = queryString.replaceAll("filter", ".*");
+        queryString = queryString.replace(regex, ".*");
       }
 
       const result = await this.get(`api/v1/query?${queryString}`);
@@ -54,7 +56,9 @@ class PrometheusAPI extends PromAPI {
 
       return await this.formatResponse(data);
     } catch (error) {
-      console.log(`Error occured with ${query.name}. Error: ${error}`);
+      console.log(`Error occured with ${query.name}.
+      Error: ${error}
+      Query: ${queryString}`);
     }
   }
 
@@ -62,16 +66,16 @@ class PrometheusAPI extends PromAPI {
     let queryString = `query=${query.query}`;
     const unixStart = Math.round(new Date(start).getTime() / 1000);
     const unixEnd = Math.round(new Date(end).getTime() / 1000);
-
+    const regex = /filter/g;
     try {
       if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
         throw "Date input incorrect";
 
       if (filter && filter.length >= 1) {
         if (query.type === "broker") filter = await this.filter(filter);
-        queryString = queryString.replaceAll("filter", filter);
+        queryString = queryString.replace(regex, filter);
       } else {
-        queryString = queryString.replaceAll("filter", ".*");
+        queryString = queryString.replace(regex, ".*");
       }
 
       queryString += `&start=${unixStart}&end=${unixEnd}&step=${step}`;
@@ -80,7 +84,9 @@ class PrometheusAPI extends PromAPI {
 
       return await this.formatResponseSeries(data);
     } catch (error) {
-      console.log(`Error occured with ${query.name}. Error: ${error}`);
+      console.log(`Error occured with ${query.name}. 
+      Error: ${error}
+      Query: ${queryString}`);
     }
   }
 
