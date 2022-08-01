@@ -42,7 +42,7 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
     info: {
-      main: "#8338EC",
+      main: "#9d5ee1",
     },
   },
 });

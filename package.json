@@ -6,9 +6,9 @@
   "sideEffects": false,
   "types": "types/index.d.ts",
   "scripts": {
-    "start": "npm run build && npm run prod",
+    "prod": "npm run build && npm run start",
     "build": "cross-env NODE_ENV=production webpack",
-    "prod": "cross-env NODE_ENV=production ts-node src/server/server.ts",
+    "start": "cross-env NODE_ENV=production ts-node src/server/server.ts",
     "prepare": "husky install",
     "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"cross-env NODE_ENV=development nodemon src/server/server.ts\"",
     "test": "jest",
