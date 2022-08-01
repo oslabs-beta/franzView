@@ -83,7 +83,7 @@ export interface GqlChartProps {
   yAxisLabel?: string;
   resource?: string;
   label?: string;
-  args?: unknown;
+  args?: any;
 }
 
 export interface MetricsCardProps {
