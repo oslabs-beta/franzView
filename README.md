@@ -42,7 +42,7 @@ Before starting setup you'll need to take the following steps:
 
 - Have node installed. FranzView is tested to work on Node 14+.
 - If you'd like to use our demo cluster make sure you have Docker Desktop and Docker Compose installed and then check the [demo instructions](#prometheus-server-and-demo-cluster)
-- Set up [JMX exporter](https://github.com/prometheus/jmx_exporter) on your cluster. You can find the configuration files in the `configs/jmx_exporter` folder in this repo.
+- Set up [JMX exporter](https://github.com/prometheus/jmx_exporter) on your cluster. You can find the configuration files and a copy of the JMX exporter jar file in the `configs/jmx_exporter` folder in this repo.
   1. If you're starting your Kafka cluster from the CLI you can set up JMX exporter following these commands:
   ```
   export KAFKA_OPTS='-javaagent:{PATH_TO_JMX_EXPORTER}/jmx-exporter.jar={PORT}:{PATH_TO_JMX_EXPORTER_KAFKA.yml}/kafka.yml'
@@ -122,8 +122,7 @@ We have a few different docker-compose files depending on your needs.
   docker-compose -f docker-compose-prom-only.yml up -d
   ```
 - If you just need want to spin up a Prometheus server + Kafka Cluster.:
-  1. Create a `prometheus.yml` file from the template `prometheus.template.yml`
-  1. Save it in the `configs/prometheus` folder
+  1. We already have a Prometheus config set up, so don't worry about it!
   1. Run the following command to spin up a Prometheus server running at http://localhost:9090 and 3 brokers ([localhost:9092](localhost:9092), [localhost:9093](localhost:9093), [localhost:9094](localhost:9094)):
   ```
   docker-compose -f docker-compose-kafka-prom.yml up -d
