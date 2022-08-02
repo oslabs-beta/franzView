@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://https://github.com/oslabs-beta/franz/">
-    <img src="./src/client/assets/franzView_logo.png" alt="Logo" height="300px" width="300px"/> 
+    <img src="./assets/franzView_logo.png" alt="Logo" height="300px" width="300px"/> 
   </a>
   <h1>FranzView</h1>
   <p>An open-source Kafka monitoring and management tool built with JavaScript developers in mind!<p>
@@ -72,8 +72,6 @@ npm install
 ```
 npm run build
 ```
-
-
 
 ### When you're ready to use FranzView
 
