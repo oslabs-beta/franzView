@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "Kafka Manager",
   "main": "index.js",
+  "sideEffects": false,
+  "types": "types/index.d.ts",
   "scripts": {
+    "start": "npm run build && npm run prod",
+    "build": "cross-env NODE_ENV=production webpack",
+    "prod": "cross-env NODE_ENV=production ts-node src/server/server.ts",
     "prepare": "husky install",
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"nodemon src/server/server.ts\"",
+    "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"cross-env NODE_ENV=development nodemon src/server/server.ts\"",
     "test": "jest",
     "windev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot\" \"nodemon src/server/server.ts\""
   },
@@ -64,7 +69,7 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.6",
+    "@apollo/client": "3.5.4",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -83,7 +88,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "graphql": "^16.5.0",
-    "kafkajs": "^2.0.1",
+    "kafkajs": "^2.2.0-beta.2",
     "luxon": "^2.4.0",
     "react": "^17.0.2",
     "react-chartjs-2": "^4.1.0",

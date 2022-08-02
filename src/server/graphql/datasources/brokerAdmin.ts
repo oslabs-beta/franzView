@@ -1,11 +1,11 @@
 import { admin } from "../../kafka/kafka";
-import { ConfigResourceTypes } from "kafkajs";
-import { Cluster, Broker, ConfigEntries } from "../../../types/types";
-
-/**
- * TODO: Keep admin connection to avoid needing to reconnect multiple times. Disconnect if not needed for extended time.
- *
- */
+import {
+  ConfigResourceTypes,
+  PartitionReassignment,
+  OngoingTopicReassignment,
+  ITopicConfig,
+} from "kafkajs";
+import { Cluster, Broker, ConfigEntries } from "../../../../types/types";
 
 export async function getClusterInfo(): Promise<Cluster> {
   try {
@@ -61,19 +61,19 @@ export async function createTopic(
   numPartitions: number,
   configEntries: ConfigEntries[]
 ) {
-  const topicConfig = {
+  const topicConfig: ITopicConfig = {
     topic,
     replicationFactor,
     numPartitions,
-    configEntries,
   };
 
+  if (configEntries) topicConfig.configEntries = configEntries;
+
   try {
-    if (await admin.createTopics({ topics: [topicConfig] })) {
+    const topicCreated = await admin.createTopics({ topics: [topicConfig] });
+    if (topicCreated) {
       const topics = await admin.fetchTopicMetadata({ topics: [topic] });
       return topics.topics[0];
-    } else {
-      throw `Topic ${topic} already exists`;
     }
   } catch (error) {
     console.warn(`Error when creating topic: ${topic}. Error: ${error}`);
@@ -100,6 +100,7 @@ export async function canDelete() {
     return error;
   }
 }
+
 export async function deleteTopic(topic: string) {
   try {
     if (!(await canDelete()))
@@ -109,6 +110,20 @@ export async function deleteTopic(topic: string) {
     return topicToDelete;
   } catch (error) {
     console.log(error);
+    return error;
+  }
+}
+
+export async function reassignPartitions(
+  topics: PartitionReassignment[]
+): Promise<OngoingTopicReassignment[]> {
+  try {
+    await admin.alterPartitionReassignments({ topics });
+    const result = await admin.listPartitionReassignments({});
+
+    return result.topics;
+  } catch (error) {
+    console.warn(`Error occured reassigning partitions: ${error}`);
     return error;
   }
 }

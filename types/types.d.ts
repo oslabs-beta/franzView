@@ -1,5 +1,11 @@
-import { DocumentNode } from "graphql";
+// import { DocumentNode } from "graphql";
 import { OverridableStringUnion } from "@mui/types";
+
+interface PromQuery {
+  name: string;
+  query: string;
+  type: string;
+}
 export interface DefaultErr {
   log: string;
   status: number;

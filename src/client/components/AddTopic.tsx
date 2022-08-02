@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import { useMutation, useQuery } from "@apollo/client";
 import { ADD_TOPIC, CORE_ALL_BROKERS_QUERY } from "../models/queries";
 import { useNavigate } from "react-router-dom";
-import LinearProgress from "@mui/material/LinearProgress";
+
 import ConfigEntry from "./ConfigEntry";
 
 function AddTopic() {
@@ -20,7 +20,7 @@ function AddTopic() {
   const brokers = useQuery(CORE_ALL_BROKERS_QUERY, {
     fetchPolicy: "cache-and-network",
   });
-  const [addTopic, { data, loading, error }] = useMutation(ADD_TOPIC);
+  const [addTopic, { loading, error }] = useMutation(ADD_TOPIC);
   const [configOptions, setConfigOptions] = useState([]);
   const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ function AddTopic() {
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
-        {loading && <LinearProgress />}
+        {loading}
         <h1>Create a Topic</h1>
         <Grid
           container

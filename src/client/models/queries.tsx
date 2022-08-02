@@ -24,7 +24,6 @@ export const TOPIC_DATAGRID_QUERY = gql`
       numPartitions
       totalReplicas
       totalIsrs
-      brokersWithReplicas
       logSize
     }
     cluster {
@@ -42,6 +41,23 @@ export const TOPIC_PAGE_QUERY = gql`
     }
     topics {
       logSize
+    }
+  }
+`;
+
+export const TOPIC_QUERY = gql`
+  query Topic($name: String!) {
+    topic(name: $name) {
+      name
+      partitions {
+        partitionId
+        leader {
+          brokerId
+        }
+        replicas {
+          brokerId
+        }
+      }
     }
   }
 `;
@@ -204,6 +220,14 @@ export const ADD_TOPIC = gql`
 export const DELETE_TOPIC = gql`
   mutation DeleteTopic($name: String!) {
     deleteTopic(name: $name) {
+      name
+    }
+  }
+`;
+
+export const REASSIGN_PARTITIONS = gql`
+  mutation ReassignPartitions($topics: [PartitionReassignment]) {
+    reassignPartitions(topics: $topics) {
       name
     }
   }

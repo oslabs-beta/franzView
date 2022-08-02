@@ -7,11 +7,6 @@ import { render, screen } from "@testing-library/react";
 
 import MetricsCard from "../src/client/components/MetricsCard";
 
-// test("use jsdom in this test file", () => {
-//   const element = document.createElement("div");
-//   expect(element).not.toBeNull();
-// });
-
 describe("MetricsCard", () => {
   test("renders MetricsCard component", () => {
     render(
