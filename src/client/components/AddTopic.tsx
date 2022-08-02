@@ -57,7 +57,7 @@ function AddTopic() {
       setTopicName("");
       setReplicationFactor("");
       setNumPartitions("");
-      navigate("/topics", { replace: true });
+      navigate("/topicslist", { replace: true });
     }
   };
 

@@ -13,6 +13,7 @@ import {
   AVERAGE_TOTALTIMEMS,
 } from "../models/queries";
 
+//Move real-line charts to top of page
 const Brokers = () => {
   const [filter, setFilter] = useState([]);
 
@@ -49,72 +50,9 @@ const Brokers = () => {
           searchingFor="brokers"
           query={CORE_ALL_BROKERS_QUERY}
         />
+
         <Grid container spacing={3} sx={{ mt: 1, mb: 4 }}>
-          <Grid item xs={12} md={4}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 200,
-              }}
-              elevation={8}
-            >
-              <MetricsCard
-                value={
-                  produce.loading
-                    ? "Loading..."
-                    : produce.data.totalTimeMs.totalTimeMs.toFixed(2)
-                }
-                title="Produce Request (TotalTimeMs)"
-                toBe="milliseconds"
-              />
-            </Paper>
-          </Grid>
-          {/* Metrics Card 2 */}
-          <Grid item xs={12} md={4}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 200,
-              }}
-              elevation={8}
-            >
-              <MetricsCard
-                value={
-                  consumer.loading
-                    ? "Loading..."
-                    : consumer.data.totalTimeMs.totalTimeMs.toFixed(2)
-                }
-                title="Consumer Request (TotalTimeMs)"
-                toBe="milliseconds"
-              />
-            </Paper>
-          </Grid>
-          {/* Metrics Card 3 */}
-          <Grid item xs={12} md={4}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 200,
-              }}
-              elevation={8}
-            >
-              <MetricsCard
-                value={
-                  follower.loading
-                    ? "Loading..."
-                    : follower.data.totalTimeMs.totalTimeMs.toFixed(2)
-                }
-                title="Follower Request (TotalTimeMs)"
-                toBe="milliseconds"
-              />
-            </Paper>
-          </Grid>
+          {/* Bytes in per second chart */}
           <Grid item xs={12} md={6}>
             <Paper
               sx={{
@@ -138,6 +76,8 @@ const Brokers = () => {
               />
             </Paper>
           </Grid>
+
+          {/* BYTES OUT PER SEC LINE CHART */}
           <Grid item xs={12} md={6}>
             <Paper
               sx={{
@@ -158,6 +98,75 @@ const Brokers = () => {
                 resource="topic"
                 label="topic"
                 args={{ brokerIds: filter.length > 0 ? filter : null }}
+              />
+            </Paper>
+          </Grid>
+
+          {/* Metric card 1 - Reduce request */}
+          <Grid item xs={12} md={4}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                height: 200,
+              }}
+              elevation={8}
+            >
+              <MetricsCard
+                value={
+                  produce.loading
+                    ? "Loading..."
+                    : produce.data.totalTimeMs.totalTimeMs.toFixed(2)
+                }
+                title="Produce Request (TotalTimeMs)"
+                description="milliseconds"
+              />
+            </Paper>
+          </Grid>
+
+          {/* Metrics Card 2 - Consumer Request*/}
+          <Grid item xs={12} md={4}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                height: 200,
+              }}
+              elevation={8}
+            >
+              <MetricsCard
+                value={
+                  consumer.loading
+                    ? "Loading..."
+                    : consumer.data.totalTimeMs.totalTimeMs.toFixed(2)
+                }
+                title="Consumer Request (TotalTimeMs)"
+                description="milliseconds"
+              />
+            </Paper>
+          </Grid>
+
+          {/* Metrics Card 3 - Follower Request */}
+          <Grid item xs={12} md={4}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                height: 200,
+              }}
+              elevation={8}
+            >
+              <MetricsCard
+                value={
+                  follower.loading
+                    ? "Loading..."
+                    : follower.data.totalTimeMs.totalTimeMs.toFixed(2)
+                }
+                title="Follower Request (TotalTimeMs)"
+                description="milliseconds"
               />
             </Paper>
           </Grid>

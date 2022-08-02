@@ -76,6 +76,14 @@ class PrometheusAPI extends RESTDataSource {
     return this.formatResponse(data, "offlinePartitionCount");
   }
 
+  async getUnderMinIsr() {
+    const query = "query=kafka_cluster_partition_underminisr";
+    const result = await this.get(`api/v1/query?${query}`);
+    const data = result.data.result;
+
+    return this.formatResponse(data, "underMinIsr");
+  }
+
   async getJVMMemoryUsage() {
     const query =
       'query=(sum(avg_over_time(jvm_memory_bytes_used{area="heap", job!="zookeeper"}[1m]))by(application,instance)/sum(avg_over_time(jvm_memory_bytes_committed{area="heap", job!="zookeeper"}[1m]))by(application,instance))*100';
@@ -152,6 +160,29 @@ class PrometheusAPI extends RESTDataSource {
     }
   }
 
+  async getMessagesInPerSec(start, end, step, filter) {
+    const unixStart = Math.round(new Date(start).getTime() / 1000);
+    const unixEnd = Math.round(new Date(end).getTime() / 1000);
+
+    try {
+      if (!unixStart || !unixEnd || isNaN(unixStart) || isNaN(unixEnd))
+        throw "Date input incorrect";
+      const query = `query=sum(rate(kafka_server_brokertopicmetrics_messagesinpersec{topic!=""${
+        filter ? `,instance=~"${this.filter(filter)}"` : ""
+      }}[${step}]))by(topic)&start=${unixStart}&end=${unixEnd}&step=${step}`;
+      const result = await this.get(`api/v1/query_range?${query}`);
+      const data = result.data.result;
+
+      return this.formatResponseSeries(data, "metric");
+    } catch (error) {
+      console.log(`Error occured for Get Messages In Per Sec Query to Prometheus with:
+       start: ${start}, 
+       end:  ${end},
+       step: ${step}
+       Error: ${error}`);
+    }
+  }
+
   async getTotalReplicas(name) {
     const query = `query=(sum(kafka_cluster_partition_replicascount{topic="${name}"})by(topic))`;
     const result = await this.get(`api/v1/query?${query}`);
@@ -177,7 +208,7 @@ class PrometheusAPI extends RESTDataSource {
   }
 
   async getLogSize(name) {
-    const query = `query=(sum(kafka_log_log_size{topic=~"${name}"})by(topic))`;
+    const query = `query=(sum(kafka_log_log_size{topic="${name}"})by(topic))`;
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
 
@@ -221,7 +252,7 @@ class PrometheusAPI extends RESTDataSource {
         brokerId: brokerMap[result.metric.instance],
         topic: result.metric.topic,
       };
-      obj[metric] = Number(result.value[1]);
+      obj["metric"] = Number(result.value[1]);
       formattedData.push(obj);
     });
 
@@ -253,7 +284,7 @@ class PrometheusAPI extends RESTDataSource {
             hour12: false,
           }),
         };
-        point[metric] = Number(value[1]).toFixed(2);
+        point["metric"] = Number(value[1]).toFixed(2);
         obj.values.push(point);
       });
       formattedData.push(obj);

@@ -2,27 +2,31 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Cluster {
-    activeControllerCount: ActiveControllerCount
+    activeControllerCount: Metric
     activeController: Broker
     brokers: [Broker]!
-    offlinePartitionCount: OfflinePartitionCount
-    numberUnderReplicatedPartitions: UnderReplicatedPartitions
+    offlinePartitionCount: Metric
+    numberUnderReplicatedPartitions: Metric
+    deleteTopic: Boolean
+    underMinIsr: Metric
+    # logSize: Metric We are not accessing this here anymore
   }
 
   type Broker {
     brokerId: Int!
     brokerPort: Int!
     brokerHost: String!
-    numberUnderReplicatedPartitions: UnderReplicatedPartitions
-    cpuUsage: BrokerCpuUsage
-    JVMMemoryUsage: JVMMemoryUsage
-    cpuUsageOverTime: [BrokerCpuUsage]
-    JVMMemoryUsageOverTime: [JVMMemoryUsage]
-    produceTotalTimeMs: TotalTimeMs
-    consumerTotalTimeMs: TotalTimeMs
-    followerTotalTimeMs: TotalTimeMs
+    numberUnderReplicatedPartitions: Metric
+    cpuUsage: Metric
+    JVMMemoryUsage: Metric
+    cpuUsageOverTime: [Metric]
+    JVMMemoryUsageOverTime: [Metric]
+    produceTotalTimeMs: Metric
+    consumerTotalTimeMs: Metric
+    followerTotalTimeMs: Metric
     bytesInPerSecondOverTime: [TimeSeriesMetric]
     bytesOutPerSecondOverTime: [TimeSeriesMetric]
+    messagesInPerSec: [TimeSeriesMetric]
   }
 
   type Topic {
@@ -84,8 +88,8 @@ export const typeDefs = gql`
     broker(brokerId: Int!, start: String, end: String, step: String): Broker
     cluster: Cluster
     topic(name: String!): Topic
-    topics: [Topic]
-    totalTimeMs(request: String!, brokerIds: [Int]): TotalTimeMs
+    topics(name: [String]): [Topic]
+    totalTimeMs(request: String!, brokerIds: [Int]): Metric
     bytesInPerSecondOverTime(
       brokerIds: [Int]
       topics: [String]
@@ -94,6 +98,13 @@ export const typeDefs = gql`
       step: String!
     ): [TimeSeriesMetric]
     bytesOutPerSecondOverTime(
+      brokerIds: [Int]
+      topics: [String]
+      start: String!
+      end: String!
+      step: String!
+    ): [TimeSeriesMetric]
+    messagesInPerSec(
       brokerIds: [Int]
       topics: [String]
       start: String!

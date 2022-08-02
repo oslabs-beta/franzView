@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GraphQL Mutation Add Topic The add topic mutation returns the topic that was created. 1`] = `
+exports[`GraphQL Mutations Add Topic The add topic mutation returns the topic that was created. 1`] = `
 Object {
   "data": Object {
     "addTopic": Object {
@@ -17,7 +17,7 @@ Object {
 }
 `;
 
-exports[`GraphQL Mutation Delete Topic The delete topic mutation returns the topic that was deleted. 1`] = `
+exports[`GraphQL Mutations Delete Topic The delete topic mutation returns the topic that was deleted. 1`] = `
 Object {
   "data": Object {
     "deleteTopic": Object {

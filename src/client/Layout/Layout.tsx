@@ -73,7 +73,7 @@ const menuItems = [
   {
     text: "Topics",
     icon: <Topic />,
-    link: "/",
+    link: "/topics",
   },
 ];
 
@@ -86,7 +86,7 @@ const secondaryMenuItems = [
   {
     text: "Manage Topics",
     icon: <ListAltIcon />,
-    link: "/",
+    link: "/topicslist",
   },
   {
     text: "Create a Topic",

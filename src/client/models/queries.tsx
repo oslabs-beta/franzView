@@ -1,22 +1,23 @@
 import { gql } from "@apollo/client";
 
-export const CARD_METRICS_QUERY = gql`
+export const DASHBOARD_CARD_METRICS_QUERY = gql`
   query Cluster {
     cluster {
       activeControllerCount {
-        count
+        count: metric
       }
       offlinePartitionCount {
-        count
+        count: metric
       }
       numberUnderReplicatedPartitions {
-        underReplicatedPartitions
+        underReplicatedPartitions: metric
       }
     }
   }
 `;
 
-export const BROKER_METRICS_QUERY = gql`
+//originally broker_metric_query
+export const TOPIC_DATAGRID_QUERY = gql`
   query Topics {
     topics {
       name
@@ -26,14 +27,33 @@ export const BROKER_METRICS_QUERY = gql`
       brokersWithReplicas
       logSize
     }
+    cluster {
+      deleteTopic
+    }
   }
 `;
+
+export const TOPIC_PAGE_QUERY = gql`
+  query Cluster {
+    cluster {
+      underMinIsr {
+        metric
+      }
+    }
+    topics {
+      logSize
+    }
+  }
+`;
+
+//Add additional query for metrics on broker page only
+
 export const ALL_BROKER_CPU_USAGE = gql`
   query BrokersCPUUsage($start: String, $end: String, $step: String) {
     broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
       cpuUsage: cpuUsageOverTime {
-        cpuUsage
+        cpuUsage: metric
         time
       }
     }
@@ -45,7 +65,7 @@ export const ALL_BROKER_DISK_USAGE = gql`
     broker: brokers(start: $start, end: $end, step: $step) {
       brokerId
       JVMMemoryUsage: JVMMemoryUsageOverTime {
-        JVMMemoryUsage
+        JVMMemoryUsage: metric
         time
       }
     }
@@ -74,15 +94,15 @@ export const ALL_BROKERS_TIME_MS = gql`
   query BrokerTimeMs {
     brokers {
       produceTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       consumerTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       followerTotalTimeMs {
-        totalTimeMs
+        totalTimeMs: metric
         time
       }
       ...CoreBrokerFields
@@ -93,7 +113,7 @@ export const ALL_BROKERS_TIME_MS = gql`
 export const AVERAGE_TOTALTIMEMS = gql`
   query totalTimeMs($request: String!, $brokerIds: [Int]) {
     totalTimeMs(request: $request, brokerIds: $brokerIds) {
-      totalTimeMs
+      totalTimeMs: metric
       time
     }
   }
@@ -143,6 +163,28 @@ export const BYTES_OUT_PER_SECOND = gql`
   }
 `;
 
+export const MESSAGES_IN_PER_SEC = gql`
+  query MessagesInPerSec(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: messagesInPerSec(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      messagesInPerSecond: values {
+        time
+        messagesInPerSecond: metric
+      }
+    }
+  }
+`;
+
 export const ADD_TOPIC = gql`
   mutation AddTopic(
     $name: String!
@@ -155,6 +197,80 @@ export const ADD_TOPIC = gql`
       numPartitions: $numPartitions
     ) {
       name
+    }
+  }
+`;
+
+export const DELETE_TOPIC = gql`
+  mutation DeleteTopic($name: String!) {
+    deleteTopic(name: $name) {
+      name
+    }
+  }
+`;
+
+export const UNDERMIN_ISR = gql`
+  query UnderMinIsr(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: underMinIsr(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      underMinIsr: values {
+        time
+        underMinIsr: metric
+      }
+    }
+  }
+`;
+
+export const UNDERREPLICATED_PARTITIONS = gql`
+  query UnderreplicatedPartitions(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: underreplicatedPartitions(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      underreplicatedPartitions: values {
+        time
+        underreplicatedPartitions: metric
+      }
+    }
+  }
+`;
+
+export const TOTAL_LOG_SIZE = gql`
+  query LogSize(
+    $start: String!
+    $end: String!
+    $step: String!
+    $brokerIds: [Int]
+  ) {
+    topic: logSize(
+      start: $start
+      end: $end
+      step: $step
+      brokerIds: $brokerIds
+    ) {
+      topic
+      logSize: values {
+        time
+        logSize: metric
+      }
     }
   }
 `;
