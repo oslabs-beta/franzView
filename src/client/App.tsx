@@ -11,9 +11,6 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { BatchHttpLink } from "@apollo/client/link/batch-http";
 import { Chart } from "chart.js";
 import { Layout } from "./Layout/Layout";
-//https://github.com/apollographql/apollo-client/issues/3733
-//typically would also import useQuery and gql - removed them because they were defined but not used
-
 // Create a batch link to have reduce network requests needed to query data
 const link = new BatchHttpLink({
   uri: "/graphql",

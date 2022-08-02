@@ -14,9 +14,9 @@
 		"resolveJsonModule": true,
 		"isolatedModules": false,
 		"jsx": "react",
-		"outDir": "build",
+		"outDir": "public",
 	},
 	"files": ["./types/types.d.ts"],
 	"include": [ "src", "src/server", "src/client", "__test__", "types"],
-	"exclude":["node_modules", "build/**/*"]
+	"exclude":["node_modules", "public/**/*"]
 }

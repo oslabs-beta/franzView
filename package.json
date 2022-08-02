@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Kafka Manager",
   "main": "index.js",
-  "sideEffects": false,
   "types": "types/index.d.ts",
   "scripts": {
     "prod": "npm run build && npm run start",
@@ -71,7 +70,7 @@
   "dependencies": {
     "@apollo/client": "3.5.4",
     "@emotion/react": "^11.9.0",
-    "@emotion/styled": "^11.8.1",
+    "@emotion/styled": "^11.9.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",

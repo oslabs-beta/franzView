@@ -60,14 +60,14 @@ Please check the docker-compose files in this repo as examples or to spin up a d
 git clone https://github.com/oslabs-beta/franz
 ```
 
-1. Create a `.env` file using the template in the `.env.template` file to set the environment variables\*.
-1. In the FranzView root directory to install all dependencies.
+2. Create a `.env` file using the template in the `.env.template` file to set the environment variables\*.
+3. In the FranzView root directory to install all dependencies.
 
 ```
 npm install
 ```
 
-1. Build your version of Franzview
+4. Build your version of Franzview
 
 ```
 npm run build
@@ -86,10 +86,10 @@ npm start
 ## Contributors
 
 - Chris Dunleavy | [GitHub](https://github.com/christopherdunleavy) | [Linkedin](https://www.linkedin.com/in/christopher-dunleavy-web-dev)
-- Ryan Hastie | [GitHub](https://github.com/rbhastie)| [Linkedin](https://www.linkedin.com/in/ryan-hastie)
-- Jonathan Haviv | [GitHub](https://github.com/jonathanhaviv)| [Linkedin](https://www.linkedin.com/in/jonathanhaviv)
-- Rachelle Maiorca | [GitHub](https://github.com/rmaiorca)| [Linkedin](https://www.linkedin.com/in/rmaiorca)
-- Patrick Reid | [GitHub](https://github.com/flyingwolf1701)| [Linkedin](https://www.linkedin.com/in/patrickjreid)
+- Ryan Hastie | [GitHub](https://github.com/rbhastie) | [Linkedin](https://www.linkedin.com/in/ryan-hastie)
+- Jonathan Haviv | [GitHub](https://github.com/jonathanhaviv) | [Linkedin](https://www.linkedin.com/in/jonathanhaviv)
+- Rachelle Maiorca | [GitHub](https://github.com/rmaiorca) | [Linkedin](https://www.linkedin.com/in/rmaiorca)
+- Patrick Reid | [GitHub](https://github.com/flyingwolf1701) | [Linkedin](https://www.linkedin.com/in/patrickjreid)
 
 ## Roadmap
 

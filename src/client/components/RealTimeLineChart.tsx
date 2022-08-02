@@ -165,7 +165,7 @@ export default function RealTimeLineChart({
     });
 
     return () => (loaded.current = true);
-  }, [data]);
+  }, [loading]);
 
   useEffect(() => {
     loaded.current = false;
