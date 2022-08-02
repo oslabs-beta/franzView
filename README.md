@@ -72,7 +72,7 @@ Please check the docker-compose files in this repo as examples or to spin up a d
 git clone https://github.com/oslabs-beta/franz
 ```
 
-2. Create a `.env` file using the template in the `.env.template` file to set the environment variables\*.
+2. Create a `.env` file using the template in the `.env.template` file to set the environment variables.
 3. In the FranzView root directory to install all dependencies:
 
 ```
