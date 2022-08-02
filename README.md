@@ -105,7 +105,7 @@ npm start
 
 ## Roadmap
 
-Franzview is in early stages, but we wanted to get it in the hands of developers as soon as possible to get feedback as soon as possible. Here are features we're working on bringing to FranzView in the near future:
+Franzview is in early stages, but we wanted to get it in the hands of developers as soon as possible to be able to start incorporating user feedback immediately. Here are features we're working on bringing to FranzView in the near future:
 
 - Additional filtering options for topics and to filter data by time
 - The option to auto-deploy a Prometheus server if one isn't passed in
