@@ -48,7 +48,7 @@ function ConfigEntry({ configs, setConfigs, index }) {
                 id="demo-simple-select"
                 value={age}
                 label="Age"
-                name="config"
+                name="name"
                 onChange={(event) => handleFormChange(index, event)}
               >
                 <MenuItem value="cleanup.policy">cleanup.policy</MenuItem>
