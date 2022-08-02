@@ -26,8 +26,6 @@
 
 ## About the Project
 
----
-
 FranzView is an open-source web application to help small teams with monitoring and management of Apache Kafka clusters. With FranzView you can monitor key metrics related to broker and topic performance and take actions around them. Through the UI you are able to:
 
 - Monitor key performance metrics in real time by broker or topic and diagnose any issues through different views
@@ -37,8 +35,6 @@ FranzView is an open-source web application to help small teams with monitoring 
 These features are supported by a GraphQL API for improved performance, for abstraction of PromQL queries, and is easily extendable based on the nuances of your cluster.
 
 ## Getting Started
-
----
 
 ### Requirements
 
@@ -77,7 +73,7 @@ npm install
 npm run build
 ```
 
----
+
 
 ### When you're ready to use FranzView
 
@@ -91,8 +87,6 @@ npm start
 
 ## Contributors
 
----
-
 - Chris Dunleavy | [GitHub](https://github.com/christopherdunleavy) | [Linkedin](https://www.linkedin.com/in/christopher-dunleavy-web-dev)
 - Ryan Hastie | [GitHub](https://github.com/rbhastie)| [Linkedin](https://www.linkedin.com/in/ryan-hastie)
 - Jonathan Haviv | [GitHub](https://github.com/jonathanhaviv)| [Linkedin](https://www.linkedin.com/in/jonathanhaviv)
@@ -100,8 +94,6 @@ npm start
 - Patrick Reid | [GitHub](https://github.com/flyingwolf1701)| [Linkedin](https://www.linkedin.com/in/patrickjreid)
 
 ## Roadmap
-
----
 
 Franzview is in early stages, but we wanted to get it in the hands of developers as soon as possible to get feedback as soon as possible. Here are features we're working on bringing to FranzView in the near future:
 
@@ -140,7 +132,5 @@ We have a few different docker-compose files depending on your needs.
   ```
 
 ## License
-
----
 
 This product is licensed under the MIT License without restriction.
