@@ -30,9 +30,20 @@ FranzView is an open-source web application to help small teams with monitoring 
 
 - Monitor key performance metrics in real time by broker or topic and diagnose any issues through different views
 - Create and delete topics within a cluster
-- Reassign partition replicas to support with load balancing, change replication factor for a topic, and solve for underreplication issues.
+- Reassign partition replicas to support with load balancing, change replication factor for a topic, and solve for underreplication issues
 
 These features are supported by a GraphQL API for improved performance, for abstraction of PromQL queries, and is easily extendable based on the nuances of your cluster.
+
+### Built With
+
+- [TypeScript](https://www.typescriptlang.org/)
+- [Apollo GraphQL](https://www.apollographql.com/)
+- [React](https://reactjs.org/)
+- [Material-UI](https://mui.com/)
+- [Chart.js](https://www.chartjs.org/docs/latest/)
+- [Jest](https://jestjs.io/)
+- [Prometheus](https://prometheus.io/)
+- [KafkaJS](https://kafka.js.org/)
 
 ## Getting Started
 
@@ -41,7 +52,7 @@ These features are supported by a GraphQL API for improved performance, for abst
 Before starting setup you'll need to take the following steps:
 
 - Have node installed. FranzView is tested to work on Node 14+.
-- If you'd like to use our demo cluster make sure you have Docker Desktop and Docker Compose installed and then check the [demo instructions](#prometheus-server-and-demo-cluster)
+- If you'd like to use our demo cluster make sure you have Docker Desktop and Docker Compose installed and then check the [demo instructions](#prometheus-server-and-demo-cluster).
 - Set up [JMX exporter](https://github.com/prometheus/jmx_exporter) on your cluster. You can find the configuration files and a copy of the JMX exporter jar file in the `configs/jmx_exporter` folder in this repo.
   1. If you're starting your Kafka cluster from the CLI you can set up JMX exporter following these commands:
   ```
