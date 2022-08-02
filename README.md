@@ -53,7 +53,7 @@ These features are supported by a GraphQL API for improved performance, for abst
 Before starting setup you'll need to take the following steps:
 
 - Have node installed. FranzView is tested to work on Node 14+.
-- If you'd like to use our demo cluster make sure you have Docker Desktop and Docker Compose installed and then check the [demo instructions](#prometheus-server-and-demo-cluster).
+- If you'd like to use our demo cluster, make sure you have Docker Desktop and Docker Compose installed and then check the [demo instructions](#prometheus-server-and-demo-cluster).
 - Set up [JMX exporter](https://github.com/prometheus/jmx_exporter) on your cluster. You can find the configuration files and a copy of the JMX exporter jar file in the `configs/jmx_exporter` folder in this repo.
   1. If you're starting your Kafka cluster from the CLI you can set up JMX exporter following these commands:
   ```
@@ -66,20 +66,20 @@ Please check the docker-compose files in this repo as examples or to spin up a d
 
 ### Installation
 
-1. Clone down this repository
+1. Clone down this repository:
 
 ```
 git clone https://github.com/oslabs-beta/franz
 ```
 
 2. Create a `.env` file using the template in the `.env.template` file to set the environment variables\*.
-3. In the FranzView root directory to install all dependencies.
+3. In the FranzView root directory to install all dependencies:
 
 ```
 npm install
 ```
 
-4. Build your version of Franzview
+4. Build your version of Franzview:
 
 ```
 npm run build
@@ -87,13 +87,13 @@ npm run build
 
 ### When you're ready to use FranzView
 
-1. Start the server
+1. Start the server:
 
 ```
 npm start
 ```
 
-2. FranzView defaults to running on port 3000. So simply go to http://localhost:3000, and voila view your metrics and start managing your Kafka cluster!
+2. FranzView defaults to running on port 3000. So simply go to http://localhost:3000, and voila! You can view your metrics and start managing your Kafka cluster!
 
 ## Contributors
 
@@ -114,7 +114,7 @@ Franzview is in early stages, but we wanted to get it in the hands of developers
 - Consumer metrics to monitor consumer performance and make improvements
 - Frontend querying tools so you can query data that is important to your team
 
-If you don't see a feature that you're looking for listed above, find any bugs, or have another suggestions please feel free to [open an issue](https://github.com/oslabs-beta/franz/issues) and our team will work with you to get it implemented!
+If you don't see a feature that you're looking for listed above, find any bugs, or have another suggestions, please feel free to [open an issue](https://github.com/oslabs-beta/franz/issues) and our team will work with you to get it implemented!
 
 Also if you create a custom implementation of FranzView we'd love to see how you're using it!
 
