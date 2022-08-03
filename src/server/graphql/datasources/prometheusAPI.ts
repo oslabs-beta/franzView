@@ -92,7 +92,7 @@ class PrometheusAPI extends PromAPI {
 
   async getMedianTotalTimeMs(requestType, filter) {
     const query = `query=kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"${
-      filter ? `,instance=~"${this.filter(filter)}"` : ""
+      filter ? `,instance=~"${await this.filter(filter)}"` : ""
     }}`;
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
@@ -102,11 +102,11 @@ class PrometheusAPI extends PromAPI {
 
   async getAvgTotalTimeMs(requestType, filter) {
     const query = `query=avg(kafka_network_requestmetrics_totaltimems{request=~"${requestType}", quantile=~"0.50"${
-      filter ? `,instance=~"${this.filter(filter)}"` : ""
+      filter ? `,instance=~"${await this.filter(filter)}"` : ""
     }})by(quantile)`;
     const result = await this.get(`api/v1/query?${query}`);
     const data = result.data.result;
-
+    console.log(query);
     return this.formatResponse(data);
   }
 
