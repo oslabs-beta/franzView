@@ -38,12 +38,9 @@ async function startApolloServer(typeDefs, resolvers) {
   await server.start();
   server.applyMiddleware({ app });
 
-  // For dev only
-  if (process.env.NODE_ENV === "development") {
-    app.get("/*", (req: express.Request, res: express.Response) => {
-      res.status(200).sendFile(path.resolve(__dirname, "../client/index.html"));
-    });
-  }
+  app.get("/*", (req: express.Request, res: express.Response) => {
+    res.status(200).sendFile(path.resolve(__dirname, "../client/index.html"));
+  });
 
   // Set up 404s for invalid requests
   app.use("*", (req: express.Request, res: express.Response) => {

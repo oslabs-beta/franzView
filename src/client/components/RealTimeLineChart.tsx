@@ -50,7 +50,7 @@ export default function RealTimeLineChart({
     datasets: [],
   });
 
-  const colors = ["00f5d4", "00bbf9", "9b5de5", "f15bb5", "fee440"];
+  const colors = ["00f5d4", "00bbf9", "9b5de5", "f15bb5", "93c8f7"];
 
   const options: ChartOptions<"line"> = {
     responsive: true,
@@ -165,7 +165,7 @@ export default function RealTimeLineChart({
     });
 
     return () => (loaded.current = true);
-  }, [data]);
+  }, [loading]);
 
   useEffect(() => {
     loaded.current = false;

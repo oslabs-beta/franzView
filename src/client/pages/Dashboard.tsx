@@ -4,7 +4,6 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import RealTimeLineChart from "../components/RealTimeLineChart";
 import MetricsCard from "../components/MetricsCard";
-import ConsumerCard from "../components/ConsumerCard";
 import TopicGrid from "../components/TopicGrid";
 import { MonitorHeartTwoTone } from "@mui/icons-material";
 import MoreInfo from "../components/PopoverMoreInfo";
@@ -163,10 +162,6 @@ function DashboardContent() {
               <TopicGrid title="Kafka Cluster" rowCount={5} />
             </Paper>
           </Grid>
-        </Grid>
-        {/* Consumer/Consumer Groups Components */}
-        <Grid item xs={2}>
-          <ConsumerCard />
         </Grid>
       </Container>
     </>

@@ -1,0 +1,92 @@
+version: '2.1'
+
+services:
+  zoo1:
+    image: confluentinc/cp-zookeeper:7.0.1
+    hostname: zoo1
+    container_name: zoo1
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_SERVERS: zoo1:2888:3888
+      EXTRA_ARGS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/zookeeper.yml
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+    volumes:
+    - ./configs/jmx_exporter:/usr/share/jmx_exporter/
+
+
+  kafka1:
+    image: confluentinc/cp-kafka:7.0.1
+    hostname: kafka1
+    container_name: kafka1
+    ports:
+      - "9092:9092"
+      - "8081:8081"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka1:19092,LISTENER_EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/kafka.yml
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+    depends_on:
+      - zoo1
+    volumes:
+    - ./configs/jmx_exporter:/usr/share/jmx_exporter/
+
+  kafka2:
+    image: confluentinc/cp-kafka:7.0.1
+    hostname: kafka2
+    container_name: kafka2
+    ports:
+      - "9093:9093"
+      - "8082:8081"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka2:19093,LISTENER_EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
+      KAFKA_BROKER_ID: 2
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/kafka.yml
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+    depends_on:
+      - zoo1
+    volumes:
+    - ./configs/jmx_exporter:/usr/share/jmx_exporter/
+
+
+  kafka3:
+    image: confluentinc/cp-kafka:7.0.1
+    hostname: kafka3
+    container_name: kafka3
+    ports:
+      - "9094:9094"
+      - "8083:8081"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka3:19094,LISTENER_EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
+      KAFKA_BROKER_ID: 3
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/kafka.yml
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+    depends_on:
+      - zoo1
+    volumes:
+    - ./configs/jmx_exporter:/usr/share/jmx_exporter/
+  
