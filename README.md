@@ -114,7 +114,7 @@ Franzview is in early stages, but we wanted to get it in the hands of developers
 - Consumer metrics to monitor consumer performance and make improvements
 - Frontend querying tools so you can query data that is important to your team
 
-If you don't see a feature that you're looking for listed above, find any bugs, or have another suggestions, please feel free to [open an issue](https://github.com/oslabs-beta/franz/issues) and our team will work with you to get it implemented!
+If you don't see a feature that you're looking for listed above, find any bugs, or have any other suggestions, please feel free to [open an issue](https://github.com/oslabs-beta/franz/issues) and our team will work with you to get it implemented!
 
 Also if you create a custom implementation of FranzView we'd love to see how you're using it!
 
