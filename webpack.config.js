@@ -10,10 +10,13 @@ const config = {
   mode: process.env.NODE_ENV,
   entry: "./src/client/index.tsx",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
     clean: true,
     publicPath: "/",
+  },
+  optimization: {
+    usedExports: true,
   },
   module: {
     rules: [
@@ -38,17 +41,18 @@ const config = {
       },
     ],
   },
-  devtool: "inline-source-map",
+  devtool:
+    process.env.NODE_ENV === "development" ? "inline-source-map" : "source-map",
   devServer: {
     proxy: {
-      "/*": "http://localhost:3000",
+      "*": "http://localhost:3000",
     },
     historyApiFallback: true,
     hot: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src/client/index.html"),
+      template: path.join(__dirname, "public/index.html"),
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: "static",

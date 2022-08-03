@@ -1,4 +1,6 @@
 .DS_Store
+public/report.html
+build/
 # Logs
 logs
 *.log
@@ -103,3 +105,11 @@ dist
 
 # TernJS port file
 .tern-port
+
+# My notes on the process of building this app. 
+journal.md
+
+./public/report.html
+bundle.js.map
+bundle.js
+bundle.js.LICENSE.txt

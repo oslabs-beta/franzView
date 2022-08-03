@@ -2,11 +2,12 @@ env:
   browser: true
   es2021: true
   node: true
+  jest: true
 extends:
   - eslint:recommended
   - plugin:react/recommended
   - plugin:@typescript-eslint/recommended
-parser: '@typescript-eslint/parser'
+parser: "@typescript-eslint/parser"
 parserOptions:
   ecmaFeatures:
     jsx: true
@@ -14,5 +15,25 @@ parserOptions:
   sourceType: commonJS
 plugins:
   - react
-  - '@typescript-eslint'
-rules: {}
+  - "@typescript-eslint"
+  - "testing-library"
+  - "jest-dom"
+# overrides:
+#   - files:
+#       - "**/__tests__/**/*.[jt]s?(x)"
+#   - extends:
+#       - "plugin:testing-library/react"
+rules: {
+    "@typescript-eslint/no-inferrable-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension":
+      [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    # "testing-library/await-async-query": "error",
+    # "testing-library/no-await-sync-query": "error",
+    # "testing-library/no-debugging-utils": "warn",
+    # "testing-library/no-dom-import": "off",
+    # "jest-dom/prefer-checked": "error",
+    # "jest-dom/prefer-enabled-disabled": "error",
+    # "jest-dom/prefer-required": "error",
+    # "jest-dom/prefer-to-have-attribute": "error",
+  }
