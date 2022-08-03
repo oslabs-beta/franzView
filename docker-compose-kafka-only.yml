@@ -11,7 +11,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_SERVERS: zoo1:2888:3888
-      EXTRA_ARGS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/zookeeper.yml
+      EXTRA_ARGS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.16.1.jar=8081:/usr/share/jmx_exporter/zookeeper.yml
       KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
     volumes:
     - ./configs/jmx_exporter:/usr/share/jmx_exporter/
@@ -34,7 +34,7 @@ services:
       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
-      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/kafka.yml
+      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.16.1.jar=8081:/usr/share/jmx_exporter/kafka.yml
       KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
     depends_on:
       - zoo1
@@ -58,7 +58,7 @@ services:
       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
-      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/kafka.yml
+      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.16.1.jar=8081:/usr/share/jmx_exporter/kafka.yml
       KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
     depends_on:
       - zoo1
@@ -83,7 +83,7 @@ services:
       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
-      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.17.0.jar=8081:/usr/share/jmx_exporter/kafka.yml
+      KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-0.16.1.jar=8081:/usr/share/jmx_exporter/kafka.yml
       KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
     depends_on:
       - zoo1
