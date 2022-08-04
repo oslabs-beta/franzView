@@ -49,7 +49,7 @@ export const MESSAGES_IN_PER_SEC: PromQuery = {
 export const GET_TOTAL_REPLICAS: PromQuery = {
   name: "Get Total Replicas",
   query:
-    '(sum(kafka_cluster_partition_replicascount{topic=~"filter"})by(instance))>0',
+    '(sum(kafka_cluster_partition_replicascount{topic=~"filter"})by(topic))>0',
   type: "topic",
 };
 
@@ -68,7 +68,7 @@ export const TOTAL_ISRS: PromQuery = {
 };
 
 export const LOG_SIZE: PromQuery = {
-  name: "Total ISRs",
+  name: "Log Size",
   query: '(sum(kafka_log_log_size{topic=~"filter"})by(topic))',
   type: "topic",
 };
