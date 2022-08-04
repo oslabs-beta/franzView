@@ -182,7 +182,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Franz
+            FranzView
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
