@@ -47,7 +47,7 @@ function AddTopic() {
         replicationFactor:
           Number(replicationFactor) <= 0 ? -1 : Number(replicationFactor),
         numPartitions: Number(numPartitions) <= 0 ? -1 : Number(numPartitions),
-        configEntries: [],
+        configEntries: configOptions,
       },
     });
 
@@ -62,7 +62,7 @@ function AddTopic() {
   };
 
   const addConfigOption = () => {
-    setConfigOptions([...configOptions, { config: "", value: "" }]);
+    setConfigOptions([...configOptions, { name: "", value: "" }]);
   };
 
   return (
