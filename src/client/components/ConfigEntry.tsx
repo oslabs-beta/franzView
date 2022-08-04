@@ -20,7 +20,6 @@ function ConfigEntry({ configs, setConfigs, index }) {
 
   const removeFields = (index) => {
     const data = [...configs];
-    console.log("This is data", data);
     data.splice(index, 1);
     setConfigs(data);
   };

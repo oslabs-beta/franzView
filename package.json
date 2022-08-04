@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "Kafka Manager",
   "main": "index.js",
-  "sideEffects": false,
   "types": "types/index.d.ts",
   "scripts": {
-    "start": "npm run build && npm run prod",
+    "prod": "npm run build && npm run start",
     "build": "cross-env NODE_ENV=production webpack",
-    "prod": "cross-env NODE_ENV=production ts-node src/server/server.ts",
+    "start": "cross-env NODE_ENV=production ts-node src/server/server.ts",
     "prepare": "husky install",
     "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"cross-env NODE_ENV=development nodemon src/server/server.ts\"",
     "test": "jest",
@@ -71,7 +70,7 @@
   "dependencies": {
     "@apollo/client": "3.5.4",
     "@emotion/react": "^11.9.0",
-    "@emotion/styled": "^11.8.1",
+    "@emotion/styled": "^11.9.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",

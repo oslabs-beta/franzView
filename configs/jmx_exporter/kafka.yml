@@ -1,0 +1,190 @@
+---
+startDelaySeconds: 120
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+cacheRules: true
+
+whitelistObjectNames:
+  - java.lang:*
+  - kafka.cluster:*
+  - kafka.controller:*
+  - kafka.log:*
+  - kafka.server:type=app-info,id=*
+  - kafka.server:type=KafkaServer,name=BrokerState
+  - kafka.server:type=KafkaRequestHandlerPool,*
+  - kafka.server:type=BrokerTopicMetrics,*
+  - kafka.server:type=DelayedFetchMetrics,*
+  - kafka.server:type=DelayedOperationPurgatory,*
+  - kafka.server:type=FetcherLagMetrics,*
+  - kafka.server:type=FetcherStats,*
+  - kafka.server:type=Request,*
+  - kafka.server:type=Fetch,*
+  - kafka.server:type=Produce,*
+  - kafka.server:type=ReplicaManager,*
+  - kafka.server:type=ReplicaFetcherManager,*
+  - kafka.server:type=SessionExpireListener,*
+  - kafka.server:type=controller-channel-metrics,*
+  - kafka.server:type=socket-server-metrics,*
+  - kafka.network:type=RequestChannel,*
+  - kafka.network:type=Processor,*
+  - kafka.network:type=SocketServer,*
+  - kafka.network:type=RequestMetrics,*
+  - kafka.network:type=RequestMetrics,name=*,request=OffsetCommit,version=*
+  - kafka.network:type=RequestMetrics,name=*,request=FetchConsumer,version=*
+  - kafka.network:type=RequestMetrics,name=*,request=FetchFollower,version=*
+  - kafka.network:type=RequestMetrics,name=*,request=Produce,version=*
+  - kafka.network:type=RequestMetrics,name=*,request=Metadata,version=*
+  - kafka.coordinator.group:*
+
+rules:
+  # This is by far the biggest contributor to the number of sheer metrics being produced.
+  # Always keep it on the top for the case of probability when so many metrics will hit the first condition and exit.
+  # "kafka.cluster:type=*, name=*, topic=*, partition=*"
+  # "kafka.log:type=*,name=*, topic=*, partition=*"
+  - pattern: kafka.(\w+)<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value
+    name: kafka_$1_$2_$3
+    type: GAUGE
+    labels:
+      topic: "$4"
+      partition: "$5"
+  # "kafka.server:type=*,name=*, client-id=*, topic=*, partition=*"
+  - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>Value
+    name: kafka_server_$1_$2
+    type: GAUGE
+    labels:
+      clientId: "$3"
+      topic: "$4"
+      partition: "$5"
+  - pattern: kafka.server<type=(.+), id=(.+)><>StartTimeMs
+    name: kafka_server_$1_$2
+    type: GAUGE
+    labels:
+      brokerId: "$2"
+  - pattern: kafka.server<type=app-info, name=(.+), clientId=(.+), brokerHost=(.+), brokerPort=(.+)><>Value
+    name: kafka_server_$1_$2
+    type: GAUGE
+    labels:
+      clientId: "$3"
+      broker: "$4:$5"
+  # "kafka.network:type=*, name=*, request=*, error=*"
+  # "kafka.network:type=*, name=*, request=*, version=*"
+  - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.+), (.+)=(.+)><>(Count|Value)
+    name: kafka_$1_$2_$3
+    labels:
+      "$4": "$5"
+      "$6": "$7"
+  - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.*), (.+)=(.+)><>(\d+)thPercentile
+    name: kafka_$1_$2_$3
+    type: GAUGE
+    labels:
+      "$4": "$5"
+      "$6": "$7"
+      quantile: "0.$8"
+  # "kafka.rest:type=*, topic=*, partition=*, client-id=*"
+  # "kafka.rest:type=*, cipher=*, protocol=*, client-id=*"
+  - pattern: kafka.(\w+)<type=(.+), (.+)=(.+), (.+)=(.+), (.+)=(.+)><>Value
+    name: kafka_$1_$2
+    labels:
+      "$3": "$4"
+      "$5": "$6"
+      "$7": "$8"
+  # Count and Value
+  # "kafka.server:type=*, name=*, topic=*"
+  # "kafka.server:type=*, name=*, clientId=*"
+  # "kafka.server:type=*, name=*, delayedOperation=*"
+  # "kafka.server:type=*, name=*, fetcherType=*"
+  # "kafka.network:type=*, name=*, networkProcessor=*"
+  # "kafka.network:type=*, name=*, processor=*"
+  # "kafka.network:type=*, name=*, request=*"
+  # "kafka.network:type=*, name=*, listener=*"
+  # "kafka.log:type=*, name=*, logDirectory=*"
+  # "kafka.log:type=*, name=*, op=*"
+  # "kafka.rest:type=*, node-id=*, client-id=*"
+  - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.+)><>(Count|Value)
+    name: kafka_$1_$2_$3
+    labels:
+      "$4": "$5"
+  # "kafka.consumer:type=*, topic=*, client-id=*"
+  # "kafka.producer:type=*, topic=*, client-id=*"
+  # "kafka.rest:type=*, topic=*, client-id=*"
+  # "kafka.server:type=*, broker-id=*, fetcher-id=*"
+  # "kafka.server:type=*, listener=*, networkProcessor=*"
+  - pattern: kafka.(\w+)<type=(.+), (.+)=(.+), (.+)=(.+)><>(Count|Value)
+    name: kafka_$1_$2
+    labels:
+      "$3": "$4"
+      "$5": "$6"
+  # "kafka.network:type=*, name=*"
+  # "kafka.server:type=*, name=*"
+  # "kafka.controller:type=*, name=*"
+  # "kafka.databalancer:type=*, name=*"
+  # "kafka.log:type=*, name=*"
+  # "kafka.utils:type=*, name=*"
+  - pattern: kafka.(\w+)<type=(.+), name=(.+)><>(Count|Value)
+    name: kafka_$1_$2_$3
+  # "kafka.producer:type=*, client-id=*"
+  # "kafka.producer:type=*, id=*"
+  # "kafka.rest:type=*, client-id=*"
+  # "kafka.rest:type=*, http-status-code=*"
+  # "kafka.server:type=*, BrokerId=*"
+  # "kafka.server:type=*, listener=*"
+  # "kafka.server:type=*, id=*"
+  - pattern: kafka.(\w+)<type=(.+), (.+)=(.+)><>Value
+    name: kafka_$1_$2
+    labels:
+      "$3": "$4"
+
+  - pattern: kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>OneMinuteRate
+    name: kafka_server_kafkarequesthandlerpool_requesthandleravgidlepercent_total
+    type: GAUGE
+  # "kafka.server:type=*, listener=*, networkProcessor=*, clientSoftwareName=*, clientSoftwareVersion=*"
+  - pattern: kafka.server<type=socket-server-metrics, clientSoftwareName=(.+), clientSoftwareVersion=(.+), listener=(.+), networkProcessor=(.+)><>connections
+    name: kafka_server_socketservermetrics_connections
+    type: GAUGE
+    labels:
+      client_software_name: "$1"
+      client_software_version: "$2"
+      listener: "$3"
+      network_processor: "$4"
+  - pattern: "kafka.server<type=socket-server-metrics, listener=(.+), networkProcessor=(.+)><>(.+):"
+    name: kafka_server_socketservermetrics_$3
+    type: GAUGE
+    labels:
+      listener: "$1"
+      network_processor: "$2"
+  # "kafka.coordinator.group:type=*, name=*"
+  # "kafka.coordinator.transaction:type=*, name=*"
+  - pattern: kafka.coordinator.(\w+)<type=(.+), name=(.+)><>(Count|Value)
+    name: kafka_coordinator_$1_$2_$3
+  # Percentile
+  - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.*)><>(\d+)thPercentile
+    name: kafka_$1_$2_$3
+    type: GAUGE
+    labels:
+      "$4": "$5"
+      quantile: "0.$6"
+  - pattern: kafka.(\w+)<type=(.+), name=(.+)><>(\d+)thPercentile
+    name: kafka_$1_$2_$3
+    type: GAUGE
+    labels:
+      quantile: "0.$4"
+
+  # Quotas
+  - pattern : 'kafka.server<type=(Produce|Fetch|Request), user=(.+), client-id=(.+)><>(.+):'
+    name: kafka_server_$1_$4
+    type: GAUGE
+    labels:
+      user: "$2"
+      client-id: "$3"
+  
+  - pattern : 'kafka.server<type=(Produce|Fetch|Request), user=(.+)><>(.+):'
+    name: kafka_server_$1_$3
+    type: GAUGE
+    labels:
+      user: "$2"
+  
+  - pattern : 'kafka.server<type=(Produce|Fetch|Request), client-id=(.+)><>(.+):'
+    name: kafka_server_$1_$3
+    type: GAUGE
+    labels:
+      client-id: "$2"
