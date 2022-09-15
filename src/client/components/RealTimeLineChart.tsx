@@ -79,7 +79,7 @@ export default function RealTimeLineChart({
           };
           timeNow.current = new Date(variables.end);
           refetch({ ...variables }).then((result) => {
-            if (loaded.current) {
+            if (loaded.current && typeof data[resource] !== "undefined") {
               result.data[resource].forEach((series, index) => {
                 series[`${metric}`].forEach((point) => {
                   chart.data.datasets[index].data.push(point);
