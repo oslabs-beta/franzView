@@ -160,11 +160,6 @@ const Topics = () => {
                   <MetricsCard
                     query={TOPIC_PAGE_QUERY}
                     searchingFor="metric"
-                    // value={
-                    //   topicCardQuery.loading
-                    //     ? "Loading..."
-                    //     : topicCardQuery.data.cluster.underMinIsr.metric
-                    // }
                     title="Total Under Min ISR"
                     description="Should be zero."
                   />
