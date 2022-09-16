@@ -158,11 +158,8 @@ const Topics = () => {
                   elevation={8}
                 >
                   <MetricsCard
-                    value={
-                      topicCardQuery.loading
-                        ? "Loading..."
-                        : topicCardQuery.data.cluster.underMinIsr.metric
-                    }
+                    query={TOPIC_PAGE_QUERY}
+                    searchingFor="metric"
                     title="Total Under Min ISR"
                     description="Should be zero."
                   />

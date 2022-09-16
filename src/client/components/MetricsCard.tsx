@@ -31,6 +31,7 @@ const MetricsCard = ({
   if (query) {
     const { loading, data } = useQuery(query, { ...variables });
     value = loading ? "Loading..." : keySearch(data, searchingFor);
+    if (value === undefined) value = "This metric is not available.";
   }
 
   return (
